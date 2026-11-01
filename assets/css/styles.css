@@ -42,7 +42,9 @@ body {
   margin: 0;
   font: 400 1.0625rem/1.65 var(--f-body);
   color: var(--ink);
-  background: var(--cream) url("../img/paper.svg");
+  /* Tacos de línea muy tenues (tacos.svg, opacidad dentro del SVG) sobre la textura de papel.
+     Empiezan debajo del encabezado para que la primera fila no quede cortada por su borde. */
+  background: url("../img/tacos.svg") 0 var(--header-h) / 340px 340px, var(--cream) url("../img/paper.svg");
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -263,6 +265,15 @@ h1 {
 .hero--clean .hero__copy { container-type: inline-size; }
 .hero--clean h1 { font-size: min(4rem, 9.4cqi); }
 
+/* Ventanas bajas (laptops, con la barra del navegador): en dos columnas el hero pide
+   ~885 px de alto y el boleto quedaba cortado. Se recorta el aire y el boleto con la
+   mascota se reduce por escalones para que quepa completo en la primera pantalla. */
+@media (min-width: 920px) and (max-height: 899px) { .hero--clean { padding-top: 40px; padding-bottom: 56px; } }
+@media (min-width: 920px) and (max-height: 830px) { .hero--clean .hero__art { zoom: .87; } }
+@media (min-width: 920px) and (max-height: 750px) { .hero--clean .hero__art { zoom: .76; } }
+@media (min-width: 920px) and (max-height: 670px) { .hero--clean .hero__art { zoom: .64; } }
+@media (min-width: 920px) and (max-height: 590px) { .hero--clean .hero__art { zoom: .55; } }
+
 /* Entrada del hero: escalonada y breve */
 .hero__copy > *, .hero__art { animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; }
 .hero__copy > :nth-child(2) { animation-delay: .08s; }
@@ -305,18 +316,15 @@ h2 {
 .section--green h2, .section--red h2 { color: var(--cream); }
 h3 { font: 700 1.15rem/1.3 var(--f-body); }
 
-/* La feria */
-.about { display: grid; gap: 56px; }
-@media (min-width: 900px) { .about { grid-template-columns: 1.1fr .9fr; gap: 80px; align-items: start; } }
-.about__main p { max-width: 36em; color: var(--ink-soft); }
-.callout { font: 400 clamp(1.3rem, 1rem + 1vw, 1.7rem)/1.3 var(--f-display); color: var(--red) !important; margin-top: 1.4em; }
-
-.why { background: var(--sand); border-radius: var(--r); padding: clamp(24px, 4vw, 40px); border: 1px solid var(--line); }
-.why h3 { font: 400 1.5rem/1.2 var(--f-display); text-transform: uppercase; color: var(--green); margin-bottom: 1em; }
-.why ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
-.why li { display: grid; grid-template-columns: 56px 1fr; gap: 8px; align-items: start; }
-.why__n { font: 400 2.4rem/1 var(--f-num); color: var(--red); }
-.why p { margin: 0; }
+/* La feria: intro centrada y con aire (título, párrafo de 2-3 líneas, cierre en rojo) */
+.about { max-width: 46rem; margin: 0 auto; padding-block: clamp(16px, 3vw, 48px); text-align: center; container-type: inline-size; }
+.about .eyebrow { justify-content: center; }
+.about .eyebrow::after { content: ""; width: 28px; height: 3px; background: currentColor; border-radius: 2px; }
+/* Una frase por línea (<br>): "INVITA A TUS AMIGOS." mide ~12.3em, así que en el celular
+   el tamaño baja con el ancho para no partirse en cuatro */
+.about h2 { font-size: min(clamp(2rem, 1.1rem + 3.4vw, 3.6rem), 7.9cqi); line-height: 1.08; margin-bottom: .55em; }
+.about p { max-width: 34em; margin-inline: auto; font-size: clamp(1.08rem, 1rem + .4vw, 1.25rem); line-height: 1.6; color: var(--ink-soft); text-wrap: balance; }
+.about .callout { font: 400 clamp(1.45rem, 1rem + 1.8vw, 2.2rem)/1.25 var(--f-display); color: var(--red); margin-top: 1.3em; text-wrap: balance; }
 
 /* Qué habrá */
 .tiles { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); }
@@ -599,11 +607,6 @@ h3 { font: 700 1.15rem/1.3 var(--f-body); }
   .tile h3 { font-size: 1.1rem; margin: .55em 0 .3em; }
   .tile__tag { justify-self: start; margin-top: 12px !important; }
   .services li { font-size: 1rem; }
-
-  /* La feria */
-  .about { gap: 40px; }
-  .why li { grid-template-columns: 48px 1fr; }
-  .why__n { font-size: 2.1rem; }
 
   /* Datos (fecha, horario…): etiqueta arriba y dato abajo, sin columnas apretadas */
   .facts { margin: 24px 0 28px; }
