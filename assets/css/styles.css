@@ -193,8 +193,8 @@ h1 {
 .ticket-wrap { filter: drop-shadow(0 24px 26px rgba(16, 67, 42, .26)); }   /* sombra suave */
 .ticket {
   --notch: 16px; --perf: 66%;
-  position: relative; display: flex; flex-direction: column; min-height: 440px;
-  padding: 30px 22px 0; text-align: center;
+  position: relative; display: flex; flex-direction: column; height: 440px;   /* alto fijo: las dos partes se miden en % */
+  padding: 0 22px; text-align: center;
   background: var(--green); color: var(--cream); border-radius: 28px;
   -webkit-mask:
     radial-gradient(circle at 0 var(--perf), #0000 var(--notch), #000 calc(var(--notch) + .5px)) left / 51% 100% no-repeat,
@@ -211,7 +211,10 @@ h1 {
 .ticket__dow { font: 700 .85rem var(--f-body); letter-spacing: .34em; text-transform: uppercase; color: var(--yellow); }
 .ticket__day { font: 400 9.5rem/.95 var(--f-num); color: var(--yellow); margin: .02em 0 .04em; }
 .ticket__mon { font: 400 1.55rem/1.1 var(--f-display); text-transform: uppercase; }
-.ticket__bottom { margin-top: auto; height: calc(100% - var(--perf)); min-height: 34%; display: grid; place-items: center; padding-bottom: 8px; }
+/* Fecha centrada entre el borde de arriba y la línea punteada; el padding compensa
+   las manos de la mascota, que tapan un poco el borde */
+.ticket__top { height: var(--perf); display: flex; flex-direction: column; justify-content: center; padding-top: 12px; }
+.ticket__bottom { height: calc(100% - var(--perf)); display: grid; place-items: center; padding-bottom: 8px; }
 
 .count__label { font: 700 .72rem/1.4 var(--f-body); letter-spacing: .18em; text-transform: uppercase; color: var(--yellow); margin-bottom: 10px !important; }
 .count__grid { display: none; grid-template-columns: repeat(4, 1fr); gap: 6px; min-width: 240px; }
@@ -228,11 +231,28 @@ h1 {
 .sticker--red { width: 112px; height: 112px; right: -28px; top: -30px; background: var(--red); color: #fff; --rot: 10deg; box-shadow: inset 0 0 0 4px var(--cream), inset 0 0 0 6px var(--red); }
 @keyframes pop { from { opacity: 0; transform: rotate(var(--rot)) scale(.4); } }
 
+/* Mascota asomándose sobre el boleto. La imagen mide 520 × 497 y la línea de abajo
+   del taco está al 92.8 % de su alto: se baja 7.2 % para que esa línea quede justo
+   en el borde del boleto y las manos lo sujeten por delante. El margen de arriba
+   reserva lo que sobresale: ancho × (497 / 520) × .928 = ancho × .887. */
+.ticket-wrap { --mascot-w: .56; margin-top: calc(min(100%, 340px) * var(--mascot-w) * .887); }
+.mascot {
+  position: absolute; z-index: 2; left: 50%; bottom: 100%;
+  width: calc(var(--mascot-w) * 100%); height: auto;
+  translate: -50% 7.2%;
+  pointer-events: none;
+  animation: peek .7s .55s cubic-bezier(.3, 1.35, .5, 1) backwards;
+}
+@keyframes peek { from { opacity: 0; translate: -50% 34%; } }
+.ticket-wrap .sticker { z-index: 3; }
+.ticket-wrap .sticker--red { top: 18px; right: -38px; }
+
 @media (max-width: 919px) {
   .hero { padding-top: 88px; }
   .hero__art { padding: 24px 0 20px; }
-  .ticket-wrap { width: min(100%, 320px); }
+  .ticket-wrap { width: min(100%, 320px); margin-top: calc(min(100%, 320px) * var(--mascot-w) * .887); }
   .sticker--red { right: -10px; }
+  .ticket-wrap .sticker--red { right: -14px; }
 }
 
 /* Hero sin guirnalda (inicio): menos aire arriba */
@@ -451,6 +471,7 @@ h3 { font: 700 1.15rem/1.3 var(--f-body); }
 /* 11. Interacción ---------------------------------------------------------- */
 .tile, .tcard { transition: transform .35s cubic-bezier(.2, .7, .2, 1), box-shadow .35s ease; }
 .tile__icon { transition: transform .35s cubic-bezier(.3, 1.4, .5, 1); }
+.mascot { transition: translate .35s cubic-bezier(.3, 1.4, .5, 1); }
 .btn .icon--arrow { transition: transform .2s ease; }
 .tcard__links a { transition: background-color .2s ease, color .2s ease; }
 .form input, .form textarea { transition: border-color .2s ease, box-shadow .2s ease; }
@@ -465,17 +486,19 @@ h3 { font: 700 1.15rem/1.3 var(--f-body); }
   .tile:hover, .tcard:hover { transform: translateY(-6px); box-shadow: 0 18px 30px -16px rgba(16, 67, 42, .45); }
   .section--green .tile:hover { box-shadow: 0 22px 36px -14px rgba(0, 0, 0, .55); }
   .tile:hover .tile__icon { transform: scale(1.1) rotate(-8deg); }
+  .ticket-wrap:hover .mascot { translate: -50% 2%; }   /* se asoma un poco más */
   .btn:hover .icon--arrow { transform: translateX(4px); }
   .marquee:hover .marquee__track { animation-play-state: paused; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .sticker, .marquee__track, .hero__copy > *, .hero__art { animation: none; }
+  .sticker, .marquee__track, .hero__copy > *, .hero__art, .mascot { animation: none; }
   .js .reveal { opacity: 1; }
   .js .reveal.is-in { animation: none; }
-  .tile, .tcard, .tile__icon, .btn, .btn .icon--arrow, .toast, .menu-btn__bars, .menu-btn__bars::before { transition: none; }
+  .tile, .tcard, .tile__icon, .btn, .btn .icon--arrow, .toast, .menu-btn__bars, .menu-btn__bars::before, .mascot { transition: none; }
   .tile:hover, .tcard:hover, .tile:hover .tile__icon, .btn:hover .icon--arrow { transform: none; }
+  .ticket-wrap:hover .mascot { translate: -50% 7.2%; }
 }
 
 /* 12. Estados de carga ----------------------------------------------------- */
@@ -558,7 +581,7 @@ h3 { font: 700 1.15rem/1.3 var(--f-body); }
   .place { margin-top: 1.3em; line-height: 1.45; }
   .place strong { display: block; }   /* lugar arriba, ciudad abajo, sin "·" colgando */
   .place .sep { display: none; }
-  .ticket { min-height: 360px; padding-top: 26px; --perf: 63%; }
+  .ticket { height: 360px; --perf: 63%; }
   .ticket__day { font-size: 7.25rem; }
   .ticket__mon { font-size: 1.35rem; }
   .sticker--red { width: 88px; height: 88px; top: -24px; right: -8px; font-size: .85rem; }

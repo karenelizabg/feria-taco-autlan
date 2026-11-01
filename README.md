@@ -19,11 +19,13 @@ index.html              Página principal (público)
 participa.html          Página para taquerías, con el formulario de registro
 assets/css/styles.css   Estilos de ambas páginas (tokens de color y tipografía al inicio)
 assets/js/main.js       Cuenta regresiva, menú, compartir, directorio y formulario
-assets/img/             Logo, favicons, imagen para redes (og.jpg), papel picado y textura
+assets/img/             Logo, mascota, favicons, imagen para redes (og.jpg), papel picado y textura
 data/taquerias.js       Lista de taquerías participantes (se llena sola en index.html)
 ```
 
 El encabezado y el pie están repetidos en las dos páginas (no hay paso de compilación): si cambias un enlace del menú, cámbialo en ambas.
+
+**Mascota:** el taco con sombrero se asoma sobre el boleto del hero (`assets/img/mascota-asomandose.webp`, 520 × 497, fondo transparente). Va fuera de `.ticket` porque la máscara del boleto la recortaría, y su posición depende de dónde cae la línea de abajo del taco en la imagen (comentario en la sección 5 de styles.css): si se cambia la imagen, hay que ajustar esos números.
 
 Las animaciones son sobrias y viven en [styles.css](assets/css/styles.css) (secciones 10 y 11): entrada escalonada del hero, aparición al hacer scroll y hover en cards y botones (solo en dispositivos con cursor). Todo se desactiva con `prefers-reduced-motion`.
 
@@ -52,6 +54,7 @@ Es una carpeta estática, se puede subir tal cual a Netlify, Cloudflare Pages, V
 ## Pendientes y decisiones abiertas
 
 - **Logo:** se usa un recorte del flyer (247 × 176 px), suficiente para encabezado y pie. Falta el archivo original (SVG o PNG grande con fondo transparente). Además hay **dos versiones del logo** (flyers: wordmark plano; PDF: letras de brocha con mascota) — confirmar cuál es la oficial. El SVG que se recibió (`Diseño sin título.svg`) es un trazo de un solo color y le faltan letras (R, C y O), así que no sirve como logo.
+- **Mascota:** la imagen actual se generó con IA (Gemini) y llegó como JPG con un cuadriculado falso en lugar de transparencia; se le quitó el fondo en local. Confirmar con el cliente si será la mascota oficial; para eso conviene que un ilustrador haga la versión final (vector) y las demás poses.
 - **Tipografías:** aproximadas con Google Fonts (Chonburi, Lexend, Anton). Reemplazar por las de la marca cuando lleguen los archivos.
 - **Fotos:** no hay material propio. Las imágenes del PDF traen marcas de agua (Unsplash+, Dreamstime), por eso no se usaron. La **galería** quedó fuera hasta tener fotos.
 - **Ubicación:** confirmar el punto exacto. La búsqueda "Jardín Las Montañas, Autlán de Navarro" en Google Maps cae en la colonia Las Montañas, junto a un negocio llamado "Montañas Garden" (Antonio Borbón 175). Ideal: enlace de Google Maps del lugar real para fijar el pin.
