@@ -258,6 +258,10 @@ h1 {
 /* Hero sin guirnalda (inicio): menos aire arriba */
 .hero--clean { padding-top: 64px; }
 @media (max-width: 919px) { .hero--clean { padding-top: 40px; } }
+/* Titular en tres líneas fijas (<br>): la más larga, "PRÓXIMO PLAN SE", mide ~10.3em,
+   así que el tamaño sale del ancho de la columna para que nunca se parta en cuatro */
+.hero--clean .hero__copy { container-type: inline-size; }
+.hero--clean h1 { font-size: min(4rem, 9.4cqi); }
 
 /* Entrada del hero: escalonada y breve */
 .hero__copy > *, .hero__art { animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; }
