@@ -76,13 +76,13 @@
 
         <p class="place">
           <svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>
-          <span><strong>Domingo 29 de noviembre de 2026</strong> · Jardín Las Montañas</span>
+          <span><strong>Domingo 29 de noviembre de 2026</strong><span class="sep"> · </span>Jardín Las Montañas</span>
         </p>
 
         <div class="cta">
           <a class="btn btn--red" href="#registro">
             Quiero participar
-            <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+            <svg class="icon icon--arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
           </a>
           <a class="btn btn--ghost" href="https://wa.me/523223785479?text=Hola%2C%20quiero%20informes%20para%20participar%20en%20la%20Feria%20del%20Taco%20Autl%C3%A1n%202026." target="_blank" rel="noopener">Escribir por WhatsApp</a>
         </div>
@@ -157,10 +157,10 @@
           <p class="form__hint">Te respondemos con los requisitos de participación.</p>
 
           <label>Nombre de la taquería
-            <input name="taqueria" type="text" autocomplete="organization" required>
+            <input name="taqueria" type="text" autocomplete="organization" autocapitalize="words" enterkeyhint="next" required>
           </label>
           <label>Tu nombre
-            <input name="nombre" type="text" autocomplete="name" required>
+            <input name="nombre" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="next" required>
           </label>
           <label>WhatsApp o teléfono
             <input name="telefono" type="tel" inputmode="tel" autocomplete="tel" pattern="[0-9+\(\)\-\s]{10,}" title="Escribe tu número a 10 dígitos" required>

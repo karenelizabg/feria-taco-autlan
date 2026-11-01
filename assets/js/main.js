@@ -24,6 +24,10 @@
   }
   menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
   menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+  // En el celular, tocar fuera del encabezado cierra el menú.
+  document.addEventListener('click', (e) => {
+    if (menu.classList.contains('is-open') && !e.target.closest('.site-header')) setMenu(false);
+  });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menu.classList.contains('is-open')) { setMenu(false); menuBtn.focus(); }
   });
@@ -60,7 +64,9 @@
       return true;
     }
 
-    if (tick()) {
+    const running = tick();
+    count.classList.add('is-ready');   // quita el estado de carga de los dígitos
+    if (running) {
       const id = setInterval(() => { if (!tick()) clearInterval(id); }, 1000);
     }
   }
@@ -82,7 +88,7 @@
   $$('[data-share]').forEach((btn) => btn.addEventListener('click', async () => {
     if (navigator.share) {
       try { await navigator.share({ title: document.title, text: shareText, url: pageUrl() }); }
-      catch { /* el usuario canceló */ }
+      catch (err) { if (!err || err.name !== 'AbortError') copyLink(); }   // cancelar no es error; si se rechaza, se copia el enlace
     } else {
       copyLink();
     }
@@ -120,14 +126,39 @@
     );
   }
 
-  if (mount && list.length) {
-    mount.replaceChildren(...list.filter((t) => t && t.nombre).map(taqueriaCard));
+  if (mount) {
+    const cards = list.filter((t) => t && t.nombre).map(taqueriaCard);
+    if (cards.length) mount.replaceChildren(...cards);
+    mount.removeAttribute('aria-busy');   // sin taquerías, el CSS muestra el aviso "muy pronto"
+  }
+
+  /* Mapa: aviso si tarda --------------------------------------------------- */
+  // El iframe marca .is-loaded con su onload. Si 8 s después de verse el mapa no ha
+  // cargado, se ofrece abrirlo en Google Maps.
+  const map = $('[data-map]');
+  if (map && 'IntersectionObserver' in window) {
+    const mapIo = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      mapIo.disconnect();
+      setTimeout(() => { if (!map.classList.contains('is-loaded')) map.classList.add('is-slow'); }, 8000);
+    });
+    mapIo.observe(map);
   }
 
   /* Formulario de taquerías → WhatsApp ------------------------------------- */
   const form = $('#form-taqueria');
   if (form) {
     const status = $('[data-form-status]', form);
+    const submit = $('[type="submit"]', form);
+    const submitLabel = submit.textContent;
+
+    // Mientras WhatsApp se abre, el botón muestra que está trabajando y no acepta otro envío.
+    // Se usa aria-disabled (no disabled) para que el foco no se pierda.
+    function setSending(on) {
+      submit.classList.toggle('is-loading', on);
+      submit.setAttribute('aria-disabled', String(on));
+      submit.textContent = on ? 'Abriendo WhatsApp…' : submitLabel;
+    }
 
     // El patrón solo restringe caracteres; aquí se exigen al menos 10 dígitos.
     const phone = form.elements.telefono;
@@ -138,7 +169,7 @@
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      if (!form.reportValidity()) return;
+      if (submit.classList.contains('is-loading') || !form.reportValidity()) return;
 
       const data = Object.fromEntries(new FormData(form).entries());
       const lines = [
@@ -153,13 +184,15 @@
       lines.push('', '¿Me comparten los requisitos de participación? Gracias.');
 
       const url = `https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(lines.join('\n'))}`;
-      const opened = window.open(url, '_blank', 'noopener');
+      // Con "noopener" window.open devuelve null aunque la ventana sí se abra: no sirve para detectar bloqueos.
+      window.open(url, '_blank', 'noopener');
+      setSending(true);
+      setTimeout(() => setSending(false), 3000);
 
       status.replaceChildren(
-        opened
-          ? document.createTextNode('Abrimos WhatsApp con tu mensaje listo para enviar. ')
-          : document.createTextNode('Tu navegador bloqueó la ventana. '),
-        link('Abrir WhatsApp', url)
+        document.createTextNode('Abrimos WhatsApp con tu mensaje listo para enviar. Si no se abrió, '),
+        link('toca aquí', url),
+        document.createTextNode('.')
       );
     });
   }

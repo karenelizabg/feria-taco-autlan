@@ -25,6 +25,12 @@ data/taquerias.js       Lista de taquerías participantes (se llena sola en inde
 
 El encabezado y el pie están repetidos en las dos páginas (no hay paso de compilación): si cambias un enlace del menú, cámbialo en ambas.
 
+Las animaciones son sobrias y viven en [styles.css](assets/css/styles.css) (secciones 10 y 11): entrada escalonada del hero, aparición al hacer scroll y hover en cards y botones (solo en dispositivos con cursor). Todo se desactiva con `prefers-reduced-motion`.
+
+Estados de carga (sección 12 de styles.css), visibles solo si algo tarda más de ~0.4 s: tarjetas de carga en el directorio de taquerías, dígitos de la cuenta regresiva y aviso sobre el mapa de Google (a los 8 s sin cargar ofrece abrirlo en Google Maps). El botón del formulario muestra "Abriendo WhatsApp…" unos segundos y evita envíos dobles.
+
+**Celular primero:** la mayoría de las visitas serán desde el celular. Los ajustes para pantallas de hasta 599 px viven juntos en la sección 13 de styles.css (boleto compacto, botones a todo el ancho, tarjetas con icono a la izquierda, datos apilados, pie en dos columnas); hay un ajuste extra para 320–359 px. Los `:hover` solo se aplican en dispositivos con cursor para que no se queden "pegados" al tocar. Revisar cualquier cambio a 320, 375 y 414 px antes que en escritorio.
+
 ## Cómo actualizar el contenido
 
 - **Taquerías participantes:** agregar objetos en [data/taquerias.js](data/taquerias.js). Mientras esté vacío, la página muestra "Muy pronto anunciaremos la lista".
@@ -45,7 +51,7 @@ Es una carpeta estática, se puede subir tal cual a Netlify, Cloudflare Pages, V
 
 ## Pendientes y decisiones abiertas
 
-- **Logo:** se usa un recorte del flyer (247 × 176 px), suficiente para encabezado y pie. Falta el archivo original (SVG o PNG grande con fondo transparente). Además hay **dos versiones del logo** (flyers: wordmark plano; PDF: letras de brocha con mascota) — confirmar cuál es la oficial.
+- **Logo:** se usa un recorte del flyer (247 × 176 px), suficiente para encabezado y pie. Falta el archivo original (SVG o PNG grande con fondo transparente). Además hay **dos versiones del logo** (flyers: wordmark plano; PDF: letras de brocha con mascota) — confirmar cuál es la oficial. El SVG que se recibió (`Diseño sin título.svg`) es un trazo de un solo color y le faltan letras (R, C y O), así que no sirve como logo.
 - **Tipografías:** aproximadas con Google Fonts (Chonburi, Lexend, Anton). Reemplazar por las de la marca cuando lleguen los archivos.
 - **Fotos:** no hay material propio. Las imágenes del PDF traen marcas de agua (Unsplash+, Dreamstime), por eso no se usaron. La **galería** quedó fuera hasta tener fotos.
 - **Ubicación:** confirmar el punto exacto. La búsqueda "Jardín Las Montañas, Autlán de Navarro" en Google Maps cae en la colonia Las Montañas, junto a un negocio llamado "Montañas Garden" (Antonio Borbón 175). Ideal: enlace de Google Maps del lugar real para fijar el pin.
