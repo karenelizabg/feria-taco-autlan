@@ -7,10 +7,10 @@ import { useSite } from '../../context/SiteContext';
 import { cx } from '../../lib/cx';
 
 // Encabezado con logo y menú.
-// En todos los tamaños: botón "Invita a la taquiza" (compartir) en la barra.
-// En escritorio: nav con links + "Soy taquero" como link. En celular: se oculta el hamburguesa.
+// Botón "Invita a la taquiza" (compartir) a la derecha en todos los tamaños.
+// En escritorio: nav con links. En celular: se oculta el hamburguesa.
 export default function Header() {
-  const { page, homeHref, sectionsHref } = useSite();
+  const { homeHref, sectionsHref } = useSite();
   const share = useShare();
   const [open, setOpen] = useState(false);
   const menuBtn = useRef(null);
@@ -40,17 +40,6 @@ export default function Header() {
           <img src="/assets/img/logo.png" alt="Feria del Taco Autlán" width="247" height="176" />
         </a>
 
-        {/* Botón visible solo en móvil: reemplaza al hamburguesa */}
-        <Button
-          variant="red"
-          size="sm"
-          className="header__mobile-cta"
-          onClick={share}
-        >
-          <Icon name="share" />
-          Invita a la taquiza
-        </Button>
-
         {/* Hamburguesa: solo visible en desktop-medio / tablet */}
         <button
           ref={menuBtn}
@@ -73,13 +62,18 @@ export default function Header() {
           {SECTION_LINKS.map((s) => (
             <a key={s.id} href={`${sectionsHref}#${s.id}`}>{s.label}</a>
           ))}
-          <a
-            href="participa.html"
-            aria-current={page === 'participa' ? 'page' : undefined}
-          >
-            Soy taquero
-          </a>
         </nav>
+
+        {/* Botón de compartir: esquina derecha en todos los tamaños */}
+        <Button
+          variant="red"
+          size="sm"
+          className="header__mobile-cta"
+          onClick={share}
+        >
+          <Icon name="share" />
+          Invita a la taquiza
+        </Button>
       </div>
     </header>
   );

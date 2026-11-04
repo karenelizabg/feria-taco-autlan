@@ -152,8 +152,11 @@ h1, h2, h3 { margin: 0; font-weight: 400; overflow-wrap: break-word; }
 .menu-btn[aria-expanded="true"] .menu-btn__bars { transform: translateY(3px) rotate(45deg); }
 .menu-btn[aria-expanded="true"] .menu-btn__bars::before { top: 0; transform: rotate(-90deg); }
 
-/* Botón "Invita a la taquiza": el mismo en celular y escritorio */
-.header__mobile-cta { display: inline-flex; }
+/* Botón "Invita a la taquiza": esquina derecha, igual en celular y escritorio.
+   La nav empuja al botón hacia la derecha (margin-left: auto). */
+.header__mobile-cta { display: inline-flex; margin-right: -20px; }
+.bar .nav { margin-left: auto; }
+@media (max-width: 860px) { .header__mobile-cta { margin-right: 0; } }
 
 @media (max-width: 860px) {
   .menu-btn { display: none; }   /* se sustituye por el CTA directo */
