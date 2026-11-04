@@ -1,6 +1,6 @@
 import { asset } from '../lib/asset';
 
-// Primera edición: texto a la izquierda; la mascota en un círculo verde a la derecha.
+// Primera edición: texto a la izquierda; la mascota a la derecha.
 // En el celular, una columna.
 export default function Presentacion() {
   return (
