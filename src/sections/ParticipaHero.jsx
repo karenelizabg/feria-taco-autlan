@@ -8,7 +8,8 @@ export default function ParticipaHero() {
       <div className="wrap hero__grid">
         <div className="hero__copy">
           <h1>Tu sazón<br /> merece llegar<br /> a <span className="hl">más personas</span></h1>
-          <p className="lead">Invitamos a taquerías y negocios gastronómicos de Autlán y la región a formar parte de la <strong>Feria del Taco Autlán</strong>: un día para presentar tu especialidad, darte a conocer y ganar nuevos clientes.</p>
+          <p className="lead">Lleva el sabor de tu taquería a nuevos clientes. Forma parte de la primera <strong>Feria del Taco Autlán</strong>, presenta tus especialidades y aprovecha esta oportunidad para dar a conocer tu negocio.</p>
+          <p className="lead">¡Cupo limitado! Asegura tu lugar y sé parte de esta primera edición.</p>
 
           <div className="hero-pill">
             <span className="hero-pill__item">
@@ -42,7 +43,6 @@ export default function ParticipaHero() {
           <div className="perk-wrap">
             <div className="perk">
               <div className="perk__head">
-                <p>Para tu taquería</p>
                 <h2>Tu lugar incluye</h2>
               </div>
               <ul className="perk__list">

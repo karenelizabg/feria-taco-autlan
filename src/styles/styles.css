@@ -195,8 +195,7 @@ h1 {
 }
 .hl {
   color: var(--red);
-  text-decoration: underline wavy var(--yellow); text-decoration-thickness: .08em;
-  text-underline-offset: .22em; text-decoration-skip-ink: none;
+  text-decoration: none;
 }
 .lead { font-size: var(--t-lead); line-height: 1.55; color: var(--ink-soft); max-width: 34em; }
 .place { display: flex; align-items: center; gap: 10px; margin: 1.6em 0 0; font-size: 1rem; }
@@ -404,7 +403,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 /* Qué habrá, compacta: la comida (foto) a la izquierda y música, danza y eventos a la derecha,
    todo a 400 px de alto en escritorio. Tablet: foto arriba y las tres en fila; celular: una columna. */
 .fiesta-grid { display: grid; gap: 24px; }
-.fiesta-side { display: grid; gap: 16px; }
+.fiesta-side { display: grid; gap: 16px; row-gap: 28px; }
 .fiesta-side .tile { padding: 20px; }
 /* Título y "próximamente" en la misma línea */
 .tile__head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-bottom: .3em; }
@@ -453,6 +452,15 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .tile__icon--red    { background: var(--red);    color: #fff; }
 .tile h3 { margin-bottom: .45em; }
 .tile p { margin: 0; color: var(--ink-soft); font-size: 1rem; line-height: 1.55; }
+/* Pestaña "Por anunciar" afuera de la tarjeta, arriba a la izquierda */
+.tile-wrap { position: relative; }
+.tile-wrap > .tile { height: 100%; position: relative; z-index: 1; }
+.tile__tab {
+  position: absolute; bottom: 100%; left: 22px; z-index: 0;
+  padding: 5px 10px 4px; border-radius: 8px 8px 0 0;
+  font: 700 .62rem/1.2 var(--f-body); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink); background: var(--yellow);
+}
 .tile__tag {
   display: inline-block; margin-top: 16px !important; padding: .35em .9em;
   font: 700 .75rem/1.2 var(--f-body) !important; letter-spacing: .1em; text-transform: uppercase;
@@ -488,7 +496,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 @media (max-width: 639px) {
   .services { padding: 0; }
   .services ul { grid-template-columns: 1fr; }
-  .services li { justify-content: flex-start; padding: 14px 0; }
+  .services li { justify-content: center; padding: 14px 0; }
   .services li + li { border-left: 0; border-top: 1px solid rgba(255, 255, 255, .25); }
 }
 
@@ -528,6 +536,13 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   gap: 18px;
   flex-shrink: 0;
   padding-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+/* Botón «Ver todas las taquerías» junto a los controles del carrusel */
+.taquerias-head__controls .btn--toggle-view {
+  min-width: 0;
+  white-space: nowrap;
 }
 
 /* Indicador de página discreto: 01 / 02 */
@@ -738,7 +753,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 .tcard__gallery--pending {
   background: rgba(242, 236, 216, .35);
-  border: 1px dashed #C8BF9F;
+  border: 1px solid #C8BF9F;
   flex-direction: column;
   gap: 8px;
   color: var(--ink-soft);
@@ -841,7 +856,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   height: 1.75rem;
   width: 86px;
   border-radius: 999px;
-  background: var(--sand);
+  background: var(--line);
 }
 
 .tcard__bar--pill-sm {
@@ -908,15 +923,67 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   gap: 16px;
 }
 
-.taquerias__cta-lead {
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: var(--ink-soft);
-  margin: 0;
-  max-width: 30em;
+/* Tarjeta con foto de fondo para la invitación */
+.taquerias__cta-card {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 1180px;
+  min-height: clamp(300px, 34vw, 420px);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 14px 34px rgba(40, 24, 10, .18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.taquerias__cta { margin-top: 0; }
+.taquerias__cta-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.taquerias__cta-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(12, 7, 3, .35), rgba(12, 7, 3, .72));
+  z-index: -1;
+}
+
+.taquerias__cta-content {
+  padding: clamp(36px, 5vw, 64px) clamp(20px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(22px, 3vw, 30px);
+}
+
+.taquerias__cta-lead {
+  font: 600 clamp(1.35rem, 1rem + 1.6vw, 2.1rem)/1.25 var(--f-body);
+  color: #fff;
+  margin: 0;
+  max-width: 22em;
+  text-wrap: balance;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .5);
+}
+
+.taquerias__cta.btn {
+  margin-top: 0;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(126, 18, 32, .45);
+}
+
+@media (max-width: 599px) {
+  .taquerias__cta-card { min-height: 0; border-radius: 18px; }
+  .taquerias__cta.btn { width: 100%; max-width: 360px; padding: 16px 28px; }
+}
 .taquerias-viewport:has(.empty) ~ .taquerias__cta-wrap,
 .taquerias-viewport:has(.empty) ~ .taquerias__toggle-wrap { display: none; }
 
@@ -956,11 +1023,11 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   border-block: 2px solid var(--green); container-type: inline-size;
 }
 @media (min-width: 900px) { .venue__facts { margin-top: 56px; } }
-.venue__facts > div { padding: 18px clamp(10px, 4cqi, 24px) 18px; }
+.venue__facts > div { padding: 18px clamp(10px, 4cqi, 24px) 18px; text-align: center; }
 .venue__facts > div:first-child { padding-left: 0; }
 .venue__facts > div:last-child { padding-right: 0; }
 .venue__facts > div + div { border-left: 2px dashed rgba(16, 67, 42, .3); }
-.venue__facts dt { display: flex; align-items: center; gap: 8px; font: 700 var(--t-eyebrow)/1.3 var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--red); }
+.venue__facts dt { display: flex; align-items: center; justify-content: center; gap: 8px; font: 700 var(--t-eyebrow)/1.3 var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--red); }
 .venue__facts dt .icon { width: 18px; height: 18px; }
 .venue__facts dd { margin: 0; }
 .venue__facts strong { display: block; margin: 10px 0 0; font: 700 clamp(1rem, 3.6cqi, 1.6rem)/1.1 var(--f-body); letter-spacing: .02em; text-transform: uppercase; color: var(--green); white-space: nowrap; }
@@ -984,7 +1051,16 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* Participa: hero ------------------------------------------------------------
    Velo crema para que los tacos queden de textura; beneficios como boleto horizontal. */
-.hero--join { background: rgba(251, 249, 238, .6); }
+.hero--join {
+  background: rgba(251, 249, 238, .6);
+  /* Ocupa lo que queda de la pantalla debajo del encabezado (~69px) */
+  min-height: calc(100vh - 69px);
+  min-height: calc(100svh - 69px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero--join > .wrap { width: 100%; }
 .hero--join .hero__copy { container-type: inline-size; }
 @media (min-width: 920px) {
   .hero--join .hero__grid {
@@ -996,7 +1072,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 /* Tres líneas fijas (<br>): "A MÁS PERSONAS", la más larga, mide ~9.8em */
 .hero--join h1 {
   font-size: min(3.6rem, 9.6cqi);
-  line-height: 1.08;
+  line-height: 1.2;
   margin-top: 0;
   margin-bottom: .26em;
 }
@@ -1396,7 +1472,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   /* Qué habrá: el sol más chico y los servicios con el icono a la izquierda */
   .section--fiesta .section__head::before { width: 340px; left: -170px; top: -130px; }
   .fiesta-grid { gap: 16px; }
-  .fiesta-side { gap: 12px; }
+  .fiesta-side { gap: 12px; row-gap: 28px; grid-auto-rows: 1fr; padding-top: 28px; }   /* aire para la pestaña de la primera card */   /* las tres cards miden lo mismo, la más alta manda */
   .food-card__photo { height: 230px; }
   .food-card__body { padding: 36px 20px 24px; }
   .food-card__icon { left: 20px; }
@@ -1405,7 +1481,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   /* Ubicación: datos más juntos; el marco de la foto cabe en el margen */
   .venue { gap: 48px; }
   .venue__facts > div { padding-block: 14px; padding-inline: clamp(6px, 2.5cqi, 12px); }
-  .venue__facts dt { flex-direction: column; align-items: flex-start; gap: 6px; letter-spacing: .12em; }
+  .venue__facts dt { flex-direction: column; align-items: center; gap: 6px; letter-spacing: .12em; }
   .venue__facts strong { font-size: clamp(0.9rem, 3.8cqi, 1.3rem); }
   .venue__media { gap: 26px; padding-inline: 8px; }
   .venue__tag { left: 22px; }

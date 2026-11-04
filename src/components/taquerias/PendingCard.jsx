@@ -10,7 +10,6 @@ export default function PendingCard() {
     >
       <div className="tcard__gallery tcard__gallery--pending" aria-hidden="true">
         <Icon name="utensils" className="tcard__placeholder-icon" />
-        <span className="tcard__gallery-placeholder-text">Próximamente</span>
       </div>
 
       <div className="tcard__content">

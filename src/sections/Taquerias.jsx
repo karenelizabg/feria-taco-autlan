@@ -5,6 +5,7 @@ import TaqueriaCard from '../components/taquerias/TaqueriaCard';
 import PendingCard from '../components/taquerias/PendingCard';
 import { taquerias } from '../data/taquerias';
 import { cx } from '../lib/cx';
+import { asset } from '../lib/asset';
 
 export default function Taquerias() {
   const items = taquerias.filter((t) => t && (t.nombre || t.pendiente));
@@ -96,8 +97,9 @@ export default function Taquerias() {
           </div>
 
           {/* Controles discretos del carrusel en escritorio */}
-          {!isExpanded && items.length > 3 && (
+          {items.length > 3 && (
             <div className="taquerias-head__controls" aria-label="Controles del carrusel">
+              {!isExpanded && (<>
               <span className="carousel-counter" aria-live="polite">
                 <span className="carousel-counter__current">{String(currentPage).padStart(2, '0')}</span>
                 <span className="carousel-counter__sep"> / </span>
@@ -121,6 +123,22 @@ export default function Taquerias() {
                   <Icon name="chevron-right" />
                 </button>
               </div>
+              </>)}
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="btn--toggle-view"
+                onClick={toggleExpand}
+                aria-expanded={isExpanded}
+                aria-controls="taquerias-collection"
+              >
+                <span>{isExpanded ? 'Ver menos' : 'Ver todas las taquerías'}</span>
+                <Icon
+                  name={isExpanded ? 'chevron-up' : 'chevron-down'}
+                  className="icon--toggle"
+                />
+              </Button>
             </div>
           )}
         </div>
@@ -162,33 +180,25 @@ export default function Taquerias() {
           )}
         </div>
 
-        {/* Botón «Ver todas las taquerías» / «Ver menos» */}
-        {items.length > 3 && (
-          <div className="taquerias__toggle-wrap">
-            <Button
-              type="button"
-              variant="ghost"
-              className="btn--toggle-view"
-              onClick={toggleExpand}
-              aria-expanded={isExpanded}
-              aria-controls="taquerias-collection"
-            >
-              <span>{isExpanded ? 'Ver menos' : 'Ver todas las taquerías'}</span>
-              <Icon
-                name={isExpanded ? 'chevron-up' : 'chevron-down'}
-                className="icon--toggle"
-              />
-            </Button>
-          </div>
-        )}
-
         {/* Invitación a taquerías */}
         <div className="taquerias__cta-wrap">
-          <p className="taquerias__cta-lead">¿Tienes una taquería y quieres ser parte del cartel oficial?</p>
-          <Button href="participa.html" variant="red" className="taquerias__cta">
-            Registrar mi taquería
-            <Icon name="arrow" className="icon--arrow" />
-          </Button>
+          <div className="taquerias__cta-card">
+            <img
+              className="taquerias__cta-bg"
+              src={asset('assets/img/taqueros-cta.jpg')}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+            />
+            <div className="taquerias__cta-content">
+              <p className="taquerias__cta-lead">¿Tienes una taquería y quieres ser parte del cartel oficial?</p>
+              <Button href="participa.html" variant="red" className="taquerias__cta">
+                Registrar mi taquería
+                <Icon name="arrow" className="icon--arrow" />
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

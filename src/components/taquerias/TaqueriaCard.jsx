@@ -31,6 +31,8 @@ export default function TaqueriaCard({ taqueria: t }) {
       <div className="tcard__content">
         <h3 className="tcard__title">{t.nombre}</h3>
 
+        {t.especialidad && <p className="tcard__desc">{t.especialidad}</p>}
+
         {vende.length > 0 && (
           <ul className="tcard__menu" aria-label="Vende">
             {vende.map((item) => (
@@ -39,7 +41,6 @@ export default function TaqueriaCard({ taqueria: t }) {
           </ul>
         )}
 
-        {t.especialidad && <p className="tcard__desc">{t.especialidad}</p>}
         {t.colonia && <p className="tcard__colonia">{t.colonia}</p>}
 
         {t.mapa && (

@@ -20,6 +20,7 @@ export const taquerias = [
   {
     nombre: 'Sutako',
     logo: 'assets/img/taquerias/sutako.webp',
+    especialidad: 'Sabor desde Puebla, tacos al Pastor en Autlán',
     vende: ['Tacos al pastor', 'Burritos', 'Tortas'],
     mapa: 'https://www.google.com/maps/dir/?api=1&destination=Sutako%20Autl%C3%A1n%2C%20C.%20Zaragoza%20132%2C%20Centro%2C%2048900%20Autl%C3%A1n%20de%20Navarro%2C%20Jal.',
   },

@@ -47,13 +47,13 @@ export default function Actividades() {
 
           <div className="fiesta-side">
             <Tile icon="music" title="Música en vivo" tag="Por anunciar">
-              Grupos musicales en vivo e invitados especiales.
+              Grupos musicales invitados para ambientar la feria.
             </Tile>
             <Tile icon="dance" title="Danza tradicional">
-              Tradición y color para acompañar cada taco.
+              Disfruta de bailes tradicionales
             </Tile>
-            <Tile icon="calendar" title="Eventos" tag="Por anunciar">
-              Actividades durante la feria.
+            <Tile icon="calendar" title="Eventos y actividades" tag="Por anunciar">
+              Dinámicas y actividades para disfrutar durante el evento.
             </Tile>
           </div>
         </div>
