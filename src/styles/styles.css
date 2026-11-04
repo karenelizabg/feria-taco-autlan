@@ -1055,7 +1055,6 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   flex-direction: column;
   justify-content: center;
 }
-.hero--join > .wrap { width: 100%; }
 .hero--join .hero__copy { container-type: inline-size; }
 @media (min-width: 920px) {
   .hero--join .hero__grid {
