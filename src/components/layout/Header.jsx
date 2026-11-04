@@ -7,8 +7,8 @@ import { useSite } from '../../context/SiteContext';
 import { cx } from '../../lib/cx';
 
 // Encabezado con logo y menú.
-// En escritorio: nav con links + botón "Soy taquero".
-// En celular: se oculta el hamburguesa y se muestra directamente el botón "Compartir la feria".
+// En todos los tamaños: botón "Invita a la taquiza" (compartir) en la barra.
+// En escritorio: nav con links + "Soy taquero" como link. En celular: se oculta el hamburguesa.
 export default function Header() {
   const { page, homeHref, sectionsHref } = useSite();
   const share = useShare();
@@ -73,14 +73,12 @@ export default function Header() {
           {SECTION_LINKS.map((s) => (
             <a key={s.id} href={`${sectionsHref}#${s.id}`}>{s.label}</a>
           ))}
-          <Button
+          <a
             href="participa.html"
-            variant="red"
-            size="sm"
             aria-current={page === 'participa' ? 'page' : undefined}
           >
             Soy taquero
-          </Button>
+          </a>
         </nav>
       </div>
     </header>

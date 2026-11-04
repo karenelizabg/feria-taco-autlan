@@ -17,7 +17,7 @@ export default function Actividades() {
       <div className="wrap">
         <SectionHead
           eyebrow="Qué habrá"
-          title={<>¡Aquí se arma<br /> <span>la fiesta!</span></>}
+          title={<>¡Aquí se arma <span>la fiesta!</span></>}
         />
 
         <div className="fiesta-grid">
