@@ -370,13 +370,8 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* Mascota sin círculo de fondo; abajo una sombra suave la asienta */
 .feria__art { position: relative; width: min(100%, 440px); aspect-ratio: 1; justify-self: center; display: grid; place-items: end center; }
-.feria__art::after {
-  content: ""; position: absolute; left: 50%; bottom: -2%; width: 54%; height: 8%; translate: -50% 0;
-  background: radial-gradient(closest-side, rgba(16, 67, 42, .3), rgba(16, 67, 42, 0));
-}
 .feria-mascot {
   position: relative; z-index: 1; width: auto; height: 100%; pointer-events: none;
-  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, .22));
 }
 
 /* Entrada: la mascota hace un zoom rápido y suave, poco notorio.
