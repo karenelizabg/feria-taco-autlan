@@ -478,7 +478,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* Servicios: solo texto e iconos blancos sobre el verde, sin contenedor.
    Tres columnas con divisores finos (verticales; en celular, horizontales) */
-.services { margin-top: 24px; padding: 0; background: none; color: #fff; }
+.services { margin-top: clamp(40px, 6vw, 72px); padding: 0; background: none; color: #fff; }
 .services ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); }
 .services li { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 4px 16px; font-weight: 500; font-size: 1rem; line-height: 1.3; }
 .services li + li { border-left: 1px solid rgba(255, 255, 255, .25); }
@@ -818,6 +818,18 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   margin-bottom: 14px;
 }
 
+/* Tarjetas "Próximamente": barras de carga con color fijo */
+.tcard__bar--loading {
+  background: var(--line);
+}
+
+.tcard__bar--sello {
+  height: 1.4rem;
+  width: 96px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
 .tcard__soon-pills {
   display: flex;
   flex-wrap: wrap;
@@ -916,6 +928,10 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .empty__title { font: 700 clamp(1.1rem, 1rem + .4vw, 1.3rem)/1.3 var(--f-body); letter-spacing: .04em; color: var(--green); margin-bottom: .5em; text-transform: uppercase; }
 .empty p:not(.empty__title) { color: var(--ink-soft); max-width: 30em; margin-inline: auto; }
 .empty .btn { margin-top: .6em; }
+
+/* Cierre "Te esperamos": la imagen casi a todo el ancho, con esquinas redondeadas y sombra suave */
+.section--espera { padding-block: clamp(32px, 5vw, 64px) clamp(56px, 8vw, 96px); }
+.espera__img { display: block; width: 100%; height: auto; border-radius: 18px; border: 4px solid var(--yellow); box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .45); }
 
 /* Ubicación ("Nuestra sede"): textos y datos a la izquierda, foto enmarcada a la derecha.
    Un velo crema encima del fondo deja los tacos como textura y no compiten con el texto. */
@@ -1434,7 +1450,3 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* Título de "Qué habrá" en una sola línea; en celular se reduce para que quepa */
 .section--fiesta .section__head h2 { white-space: nowrap; font-size: clamp(1.5rem, 6.8vw, 3.5rem); }
-
-/* Tarjeta "Próximamente": solo el texto, sin imagen ni barras */
-.pending-card { display: flex; align-items: center; justify-content: center; min-height: 220px; height: 100%; padding: 24px; background: #fff; border-radius: var(--r); }
-.pending-card p { margin: 0; font: 700 var(--t-small)/1 var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }

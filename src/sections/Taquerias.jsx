@@ -11,8 +11,6 @@ export default function Taquerias() {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const trackRef = useRef(null);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -20,8 +18,6 @@ export default function Taquerias() {
     const el = trackRef.current;
     if (!el || isExpanded) return;
     const { scrollLeft, scrollWidth, clientWidth } = el;
-    setCanPrev(scrollLeft > 15);
-    setCanNext(scrollLeft < scrollWidth - clientWidth - 15);
 
     const pages = Math.max(1, Math.round(scrollWidth / clientWidth));
     const current = Math.min(pages, Math.max(1, Math.round(scrollLeft / clientWidth) + 1));
@@ -44,16 +40,25 @@ export default function Taquerias() {
     };
   }, [isExpanded, updateScrollState, items.length]);
 
+  // Carrusel infinito: al pasar de la última página vuelve a la primera, y al retroceder desde la primera va a la última.
   const scrollPrev = () => {
     const el = trackRef.current;
     if (!el) return;
-    el.scrollBy({ left: -el.clientWidth, behavior: 'smooth' });
+    if (el.scrollLeft <= 15) {
+      el.scrollTo({ left: el.scrollWidth, behavior: 'smooth' });
+    } else {
+      el.scrollBy({ left: -el.clientWidth, behavior: 'smooth' });
+    }
   };
 
   const scrollNext = () => {
     const el = trackRef.current;
     if (!el) return;
-    el.scrollBy({ left: el.clientWidth, behavior: 'smooth' });
+    if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 15) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      el.scrollBy({ left: el.clientWidth, behavior: 'smooth' });
+    }
   };
 
   const toggleExpand = () => {
@@ -103,7 +108,6 @@ export default function Taquerias() {
                   type="button"
                   className="carousel-nav-btn carousel-nav-btn--prev"
                   onClick={scrollPrev}
-                  disabled={!canPrev}
                   aria-label="Ver taquerías anteriores"
                 >
                   <Icon name="chevron-left" />
@@ -112,7 +116,6 @@ export default function Taquerias() {
                   type="button"
                   className="carousel-nav-btn carousel-nav-btn--next"
                   onClick={scrollNext}
-                  disabled={!canNext}
                   aria-label="Ver taquerías siguientes"
                 >
                   <Icon name="chevron-right" />

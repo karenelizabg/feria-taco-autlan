@@ -36,7 +36,6 @@ export default function Footer() {
 
       <div className="wrap footer__legal">
         <p>© 2026 Feria del Taco Autlán</p>
-        <p>Una producción de Box Marketing · Gobierno Municipal de Autlán 2024–2027</p>
       </div>
     </footer>
   );

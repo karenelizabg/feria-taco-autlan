@@ -11,8 +11,7 @@ export default function Presentacion() {
             <p className="eyebrow reveal">La feria</p>
             <h2 className="reveal">Reúne a tu familia.<br /> Invita a tus amigos.</h2>
             <p className="feria__lead reveal">Este 29 de noviembre, Autlán tiene una cita con el sabor. Ven a disfrutar de una celebración donde los tacos, la salsa y la buena compañía serán los protagonistas.</p>
-            <p className="feria__lead reveal">Sé parte de esta primera edición y vive el inicio de una tradición.</p>
-            <p className="callout reveal">¡Nos vemos en la feria!</p>
+            <p className="feria__lead reveal">Sé parte de esta primera edición y vive el inicio de una tradición. <strong>¡Nos vemos en la feria!</strong></p>
           </div>
 
           <div className="feria__art reveal">

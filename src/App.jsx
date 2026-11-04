@@ -6,6 +6,7 @@ import Presentacion from './sections/Presentacion';
 import Actividades from './sections/Actividades';
 import Taquerias from './sections/Taquerias';
 import Sede from './sections/Sede';
+import Espera from './sections/Espera';
 
 // Página principal (visitantes): cada sección vive en su propio archivo dentro de src/sections.
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
       <Actividades />
       <Taquerias />
       <Sede />
+      <Espera />
     </SiteLayout>
   );
 }
