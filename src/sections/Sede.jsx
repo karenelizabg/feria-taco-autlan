@@ -31,17 +31,19 @@ export default function Sede() {
             loading="lazy"
             decoding="async"
           />
-
-          <Button
-            href="https://maps.app.goo.gl/1xTpajkpjDYfH3fy6"
-            variant="green"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Icon name="pin" />
-            Abrir en Google Maps
-          </Button>
         </div>
+
+        {/* Fuera de la tarjeta de foto: en celular va al final, centrado; en escritorio queda bajo la foto */}
+        <Button
+          href="https://maps.app.goo.gl/1xTpajkpjDYfH3fy6"
+          variant="green"
+          className="venue__cta"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="pin" />
+          Abrir en Google Maps
+        </Button>
       </div>
     </section>
   );

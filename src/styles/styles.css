@@ -1042,7 +1042,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* Cierre "Te esperamos": la imagen casi a todo el ancho, con esquinas redondeadas y sombra suave */
 .section--espera { padding-block: clamp(32px, 5vw, 64px) clamp(56px, 8vw, 96px); }
-.espera__img { display: block; width: 100%; height: auto; border-radius: 18px; border: 4px solid var(--yellow); box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .45); }
+.espera__img { display: block; width: 100%; height: auto; border-radius: 18px; box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .45); }
 
 /* Ubicación ("Nuestra sede"): textos y datos a la izquierda, foto enmarcada a la derecha.
    Un velo crema encima del fondo deja los tacos como textura y no compiten con el texto. */
@@ -1050,11 +1050,16 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .venue { display: grid; gap: 56px; align-items: center; }
 @media (min-width: 900px) { .venue { grid-template-columns: 1fr 1.1fr; gap: clamp(48px, 6vw, 80px); } }
 @media (max-width: 899px) {
-  /* En celular y pantallas de una columna: texto arriba, foto en medio, datos (fecha/horario/entrada) abajo */
+  /* En celular y pantallas de una columna: foto arriba, luego título y tira de datos, y el botón de Maps al final */
   .venue__info { display: contents; }
-  .venue__text { order: 1; }
-  .venue__media { order: 2; }
+  .venue__media { order: 1; }
+  .venue__text { order: 2; }
   .venue__facts { order: 3; margin-top: 0; }
+  .venue__cta { order: 4; }
+}
+/* Botón de Maps: bajo la foto en escritorio */
+@media (min-width: 900px) {
+  .venue__cta { grid-column: 2; grid-row: 2; justify-self: start; margin-top: 26px; }
 }
 .venue__info { container-type: inline-size; }
 /* "JARDÍN LAS" mide ~7.6em: el tamaño sale del ancho de la columna para no partirlo en tres */
@@ -1079,7 +1084,6 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* Foto de la sede: marco verde doble (como el sello del boleto) y "Abrir en Google Maps" justo debajo */
 .venue__media { position: relative; display: grid; gap: 30px; }
-.venue__media .btn { justify-self: start; }
 .venue__tag {
   position: absolute; z-index: 2; top: -16px; left: 22px; margin: 0;
   display: inline-flex; align-items: center; gap: 8px; padding: .6em 1.1em;
@@ -1516,6 +1520,8 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   .venue__facts strong { font-size: clamp(1rem, 3.8cqi, 1.3rem); }
   .venue__media { gap: 26px; padding-inline: 8px; }
   .venue__tag { left: 22px; }
+  /* Celular: botón de Maps centrado, a su ancho natural */
+  .venue .venue__cta { justify-self: center; width: auto; }
 
 
   /* Pie: secciones en dos columnas y botones lado a lado */
