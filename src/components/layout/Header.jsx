@@ -38,7 +38,7 @@ export default function Header() {
     <header className="site-header">
       <div className="wrap bar">
         <a className="brand" href={homeHref} aria-label="Feria del Taco Autlán, ir al inicio">
-          <img src={asset('assets/img/logo.png')} alt="Feria del Taco Autlán" width="247" height="176" />
+          <img src={asset('assets/img/logo.png')} alt="Feria del Taco Autlán" width="620" height="433" />
         </a>
 
         {/* Hamburguesa: solo visible en desktop-medio / tablet */}

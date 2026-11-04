@@ -2,13 +2,16 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import TaqueriaCard from '../components/taquerias/TaqueriaCard';
-import PendingCard from '../components/taquerias/PendingCard';
-import { taquerias } from '../data/taquerias';
+import TaqueriaSkeleton from '../components/taquerias/TaqueriaSkeleton';
+import useTaquerias from '../hooks/useTaquerias';
+import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { cx } from '../lib/cx';
 import { asset } from '../lib/asset';
 
 export default function Taquerias() {
-  const items = taquerias.filter((t) => t && (t.nombre || t.pendiente));
+  const { status, items, reintentar } = useTaquerias();
+  // Las tarjetas llegan después del primer render: hay que observarlas para que aparezcan al entrar en pantalla.
+  useRevealOnScroll([status, items.length]);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const trackRef = useRef(null);
@@ -145,7 +148,19 @@ export default function Taquerias() {
 
         {/* Contenedor persistente: no desmonta nodos para evitar pérdida de opacidad o estado */}
         <div className="taquerias-viewport">
-          {items.length > 0 ? (
+          {status === 'loading' ? (
+            <div
+              className="taquerias-track taquerias-track--carousel"
+              aria-busy="true"
+              aria-label="Cargando taquerías"
+            >
+              {[0, 1, 2].map((i) => (
+                <div className="taquerias-slide" key={`sk-${i}`}>
+                  <TaqueriaSkeleton />
+                </div>
+              ))}
+            </div>
+          ) : status === 'ok' ? (
             <div
               className={cx(
                 'taquerias-track',
@@ -162,18 +177,24 @@ export default function Taquerias() {
               {items.map((t, i) => (
                 <div
                   className="taquerias-slide"
-                  key={t.pendiente ? `slide-pendiente-${i}` : `slide-${t.nombre}-${i}`}
+                  key={`slide-${t.id}`}
                   role={isExpanded ? undefined : 'group'}
                   aria-roledescription={isExpanded ? undefined : 'diapositiva'}
-                  aria-label={t.nombre ? `${t.nombre} (${i + 1} de ${items.length})` : `Taquería por anunciar (${i + 1} de ${items.length})`}
+                  aria-label={`${t.nombre} (${i + 1} de ${items.length})`}
                 >
-                  {t.pendiente ? <PendingCard /> : <TaqueriaCard taqueria={t} />}
+                  <TaqueriaCard taqueria={t} />
                 </div>
               ))}
             </div>
+          ) : status === 'error' ? (
+            <div className="empty" role="status">
+              <p className="empty__title">No pudimos cargar las taquerías</p>
+              <p>Revisa tu conexión e intenta de nuevo en un momento.</p>
+              <Button variant="ghost" size="sm" onClick={reintentar}>Reintentar</Button>
+            </div>
           ) : (
             <div className="empty">
-              <p className="empty__title">Lista por anunciar</p>
+              <p className="empty__title">Muy pronto anunciaremos las taquerías</p>
               <p>Estamos confirmando a las taquerías participantes. Vuelve pronto para conocerlas.</p>
               <Button href="participa.html" variant="red" size="sm">Registrar mi taquería</Button>
             </div>

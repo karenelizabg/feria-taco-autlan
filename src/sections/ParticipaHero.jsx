@@ -7,7 +7,10 @@ export default function ParticipaHero() {
     <section className="hero hero--clean hero--join" id="inicio">
       <div className="wrap hero__grid">
         <div className="hero__copy">
-          <h1>Tu sazón<br /> merece llegar<br /> a <span className="hl">más personas</span></h1>
+          <h1>
+            <span className="eyebrow hero__name">Feria del Taco Autlán 2026</span>
+            Tu sazón<br /> merece llegar<br /> a <span className="hl">más personas</span>
+          </h1>
           <p className="lead">Lleva el sabor de tu taquería a nuevos clientes. Forma parte de la primera <strong>Feria del Taco Autlán</strong>, presenta tus especialidades y aprovecha esta oportunidad para dar a conocer tu negocio.</p>
           <p className="lead">¡Cupo limitado! Asegura tu lugar y sé parte de esta primera edición.</p>
 
@@ -30,7 +33,7 @@ export default function ParticipaHero() {
               size="lg"
               className="btn--hero-join"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
             >
               Reservar mi espacio
               <Icon name="arrow" className="icon--arrow" />
@@ -52,11 +55,11 @@ export default function ParticipaHero() {
                 </li>
                 <li>
                   <span className="perk__icon"><Icon name="tent" /></span>
-                  <span>Toldo incluido</span>
+                  <span>Toldo incluido <em className="tag-soon">Por confirmar</em></span>
                 </li>
                 <li>
                   <span className="perk__icon"><Icon name="zap" /></span>
-                  <span>Corriente eléctrica</span>
+                  <span>Corriente eléctrica <em className="tag-soon">Por confirmar</em></span>
                 </li>
                 <li>
                   <span className="perk__icon"><Icon name="megaphone" /></span>

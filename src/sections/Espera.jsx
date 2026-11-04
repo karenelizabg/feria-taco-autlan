@@ -7,7 +7,7 @@ export default function Espera() {
       <div className="wrap">
         <img
           className="espera__img reveal"
-          src={asset('assets/img/te-esperamos.jpg')}
+          src={asset('assets/img/te-esperamos.webp')}
           alt="Te esperamos en la Feria del Taco Autlán, con la mascota frente al letrero de Autlán"
           width="1600"
           height="608"

@@ -33,10 +33,10 @@ export default function Sede() {
           />
 
           <Button
-            href="https://www.google.com/maps/search/?api=1&query=Jard%C3%ADn%20Las%20Monta%C3%B1as%2C%20Autl%C3%A1n%20de%20Navarro%2C%20Jalisco"
+            href="https://maps.app.goo.gl/1xTpajkpjDYfH3fy6"
             variant="green"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
           >
             <Icon name="pin" />
             Abrir en Google Maps

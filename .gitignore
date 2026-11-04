@@ -2,3 +2,7 @@
 node_modules/
 dist/
 .claude/
+
+# Materiales de diseño (no se publican ni se versionan)
+vista-landing.pdf
+vista-soy-taquero.pdf

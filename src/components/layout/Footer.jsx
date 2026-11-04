@@ -14,7 +14,7 @@ export default function Footer() {
       <div className="wrap footer__grid">
         <div className="footer__brand">
           <a className="brand-plate" href={homeHref} aria-label="Volver al inicio">
-            <img src={asset('assets/img/logo.png')} alt="Feria del Taco Autlán" width="247" height="176" />
+            <img src={asset('assets/img/logo.png')} alt="Feria del Taco Autlán" width="620" height="433" />
           </a>
           <p>Domingo 29 de noviembre de 2026<br />Jardín Las Montañas, Autlán de Navarro, Jalisco</p>
         </div>
@@ -28,7 +28,7 @@ export default function Footer() {
 
         <div className="footer__share">
           <p>{shareLabel}</p>
-          <a className="btn btn--yellow btn--sm" href={whatsappShareHref(shareText)} target="_blank" rel="noopener">
+          <a className="btn btn--yellow btn--sm" href={whatsappShareHref(shareText)} target="_blank" rel="noopener noreferrer">
             Compartir por WhatsApp
           </a>
           <Button variant="ghost-light" size="sm" onClick={share}>Copiar enlace</Button>

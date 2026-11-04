@@ -44,6 +44,7 @@ export default function Hero() {
       <div className="wrap hero__grid">
         <div className="hero__copy">
           <h1>
+            <span className="eyebrow hero__name">Feria del Taco Autlán 2026</span>
             {/* Desktop: 3 líneas calibradas al ancho de la columna */}
             <span className="hero__line hero__line--lg">En Autlán,</span>
             <span className="hero__line hero__line--lg">el próximo plan</span>
@@ -57,10 +58,10 @@ export default function Hero() {
 
           <div className="cta">
             <Button
-              href="https://www.google.com/maps/dir/?api=1&destination=Jard%C3%ADn%20Las%20Monta%C3%B1as%2C%20Autl%C3%A1n%20de%20Navarro%2C%20Jalisco"
+              href="https://maps.app.goo.gl/1xTpajkpjDYfH3fy6"
               variant="red"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
             >
               Cómo llegar
               <Icon name="arrow" className="icon--arrow" />
@@ -75,7 +76,7 @@ export default function Hero() {
         <div ref={artRef} className={`hero__art scroll-reveal${artShown ? ' is-shown' : ''}`}>
           <div className="ticket-wrap">
             {/* Mascota asomándose: fuera de .ticket porque su máscara (muescas) la recortaría */}
-            <img className="mascot" src={asset('assets/img/mascota-asomandose.webp')} alt="" width="520" height="497" decoding="async" />
+            <img className="mascot" src={asset('assets/img/mascota-asomandose.webp')} alt="" width="520" height="497" decoding="async" fetchPriority="high" />
             <div className="ticket">
               <div className="ticket__top">
                 <p className="ticket__dow">Domingo</p>

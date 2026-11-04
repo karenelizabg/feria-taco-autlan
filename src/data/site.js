@@ -7,6 +7,12 @@ export const SITE = {
     shareText: 'Feria del Taco Autlán 2026 · Domingo 29 de noviembre · Jardín Las Montañas. ¡Entrada gratuita!',
     shareLabel: 'Invita a tu gente',
   },
+  404: {
+    homeHref: '/',
+    sectionsHref: '/',
+    shareText: 'Feria del Taco Autlán 2026 · Domingo 29 de noviembre · Jardín Las Montañas. ¡Entrada gratuita!',
+    shareLabel: 'Invita a tu gente',
+  },
   participa: {
     homeHref: 'index.html',
     sectionsHref: 'index.html',

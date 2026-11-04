@@ -18,13 +18,17 @@ Abrir <http://localhost:4173>. Para revisar la versión de producción: `npm run
 ```
 index.html                  Entrada de la página principal (<head>, metas, JSON-LD)
 participa.html              Entrada de la página para taquerías
+404.html                    Página de error 404 (entrada propia de Vite)
 vite.config.js              Configuración de Vite (las dos páginas)
-public/assets/img/          Imágenes, logo, favicons, og.jpg, fondo de tacos y decorativos (rutas sin cambios)
+public/assets/img/          Imágenes, logo, favicons, og.jpg, fondo de tacos y decorativos
+public/                     favicon.ico, robots.txt, sitemap.xml y .htaccess (se copian tal cual a dist/)
 src/
 ├── main.jsx                Monta la página principal
+├── not-found-main.jsx      Monta la página 404
 ├── App.jsx                 Orden de las secciones de la página principal
 ├── participa-main.jsx      Monta la página para taquerías
 ├── pages/Participa.jsx     Página para taquerías
+├── pages/NotFound.jsx      Página 404
 ├── sections/               Una sección por archivo: Hero, Presentacion (la feria), Actividades (qué habrá),
 │                           Taquerias, Sede (ubicación e información del evento), ParticipaHero
 ├── components/
@@ -78,21 +82,28 @@ Estados de carga (sección 12 de styles.css): las tarjetas de carga del director
 
 **Celular primero:** la mayoría de las visitas serán desde el celular. Los ajustes para pantallas de hasta 599 px viven juntos en la sección 13 de styles.css (boleto compacto, botones a todo el ancho, tarjetas con icono a la izquierda, datos apilados, pie en dos columnas); hay un ajuste extra para 320–359 px. Los `:hover` solo se aplican en dispositivos con cursor para que no se queden "pegados" al tocar. Revisar cualquier cambio a 320, 375 y 414 px antes que en escritorio.
 
-## Publicar
+## Publicar (Hostinger)
 
-Ejecuta `npm run build`: genera la carpeta `dist/` con las dos páginas y sus recursos. Se puede subir a Netlify, Cloudflare Pages, Vercel o GitHub Pages (gratis) como sitio estático. Al tener dominio:
+El sitio va en la raíz de `https://feriadeltacoautlan.com/` (Apache / LiteSpeed, hosting compartido).
 
-1. Poner `og:image` como URL absoluta y agregar `og:url` y `canonical` en el `<head>` de ambas páginas (hay un `TODO(dominio)` marcado).
-2. Agregar `image` y `url` al JSON-LD del evento.
+1. `npm run build`: genera `dist/` (index.html, participa.html, 404.html y `assets/`).
+2. En hPanel → Archivos → Administrador de archivos → `public_html`, sube **el contenido** de `dist/` (no la carpeta `dist` en sí). Incluye `.htaccess`, que es un archivo oculto: activa "Mostrar archivos ocultos" si no aparece.
+3. hPanel → Sitios web → Administrar → SSL: instalar el certificado gratuito y activar la redirección a HTTPS.
+4. Verificar encabezados: `curl -sI https://feriadeltacoautlan.com/` debe mostrar `Content-Security-Policy`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` y `X-Content-Type-Options`. `curl -sI http://www.feriadeltacoautlan.com/` debe responder 301 a `https://feriadeltacoautlan.com/`.
+
+El `.htaccess` incluye la CSP con el hash del script inline de `<head>`. Si cambias ese script, hay que recalcular el hash (sha256 en base64) y actualizarlo en `public/.htaccess`.
 
 ## Pendientes y decisiones abiertas
 
-- **Logo:** se usa un recorte del flyer (247 × 176 px), suficiente para encabezado y pie. Falta el archivo original (SVG o PNG grande con fondo transparente). Además hay **dos versiones del logo** (flyers: wordmark plano; PDF: letras de brocha con mascota) — confirmar cuál es la oficial. El SVG que se recibió (`Diseño sin título.svg`) es un trazo de un solo color y le faltan letras (R, C y O), así que no sirve como logo.
-- **Mascota:** la imagen actual se generó con IA (Gemini) y llegó como JPG con un cuadriculado falso en lugar de transparencia; se le quitó el fondo en local. Confirmar con el cliente si será la mascota oficial; para eso conviene que un ilustrador haga la versión final (vector) y las demás poses.
-- **Tipografías:** aproximadas con Google Fonts (Chonburi, Lexend, Anton). Reemplazar por las de la marca cuando lleguen los archivos.
-- **Fotos:** no hay material propio. Las imágenes del PDF traen marcas de agua (Unsplash+, Dreamstime), por eso no se usaron. La **galería** quedó fuera hasta tener fotos.
-- **Ubicación:** la sección "Nuestra sede" muestra una foto del jardín (`assets/img/sede.webp`, de la fuente de talavera) en lugar del mapa; el botón "Abrir en Google Maps" sigue abajo. Confirmar el punto exacto. La búsqueda "Jardín Las Montañas, Autlán de Navarro" en Google Maps cae en la colonia Las Montañas, junto a un negocio llamado "Montañas Garden" (Antonio Borbón 175). Ideal: enlace de Google Maps del lugar real para fijar el pin.
-- **Contenido por completar:** lista de taquerías confirmadas, grupos musicales invitados y programa por horas.
-- **Registro de asistentes:** se marcó en el brief, pero la entrada es gratuita y no se definió cómo gestionarlo. No está implementado.
-- **A confirmar antes de publicar:** número de WhatsApp (`32 23 78 54 79`) y los créditos del pie ("Box Marketing · Gobierno Municipal de Autlán 2024–2027"). El precio por espacio estaba en blanco en la propuesta, así que no aparece.
+- **Logo:** se usa `logoo.jpg` (1296 × 831) limpiado del fondo de cuadrícula falsa, en `public/assets/img/logo.png` (620 × 433). El favicon sale del mismo logo: a 16–32 px el texto no se lee, conviene un icono solo con el taco. Falta el archivo vectorial (SVG) oficial.
+- **Mascota:** la imagen se generó con IA y se mantiene como mascota oficial. Un ilustrador puede entregar la versión vectorial y las demás poses.
+- **Tipografías:** Anton (títulos) y Lexend (cuerpo), desde Google Fonts. Reemplazar por las de la marca cuando lleguen los archivos.
+- **Fotos:** las cuatro fotos del sitio están confirmadas. `te-esperamos.webp` trae horneado el logo y la mascota del flyer.
+- **Ubicación:** "Cómo llegar" y "Abrir en Google Maps" apuntan al mismo enlace de Google Maps del jardín. `sede.webp` es el jardín.
+- **Contenido por completar:** lista de taquerías confirmadas, artistas de la música en vivo (en la página figuran como "Por anunciar"), programa por horas.
+- **Por confirmar:** danza tradicional, toldo incluido y corriente eléctrica (marcados en la página como "Por confirmar" y fuera de las metas y del JSON-LD).
+- **Registro de asistentes:** la entrada es gratuita y no se definió cómo gestionarlo. No está implementado.
+- **A confirmar antes de publicar:** número de WhatsApp (`32 23 78 54 79`). El sitio no muestra créditos de pie; si se requieren (por ejemplo, de Box Marketing o del gobierno municipal), agregarlos en `Footer.jsx`.
 - **Redes sociales:** el brief no incluyó cuentas; no hay enlaces a redes.
+- **HSTS:** pendiente. Activar `Strict-Transport-Security` en `.htaccess` cuando el SSL esté verificado.
+- **Pre-renderizado:** no se hizo. Requeriría un build de servidor y hidratación de la cuenta regresiva y del carrusel; conviene evaluarlo si el SEO por texto resulta insuficiente.
