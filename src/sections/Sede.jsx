@@ -11,7 +11,7 @@ export default function Sede() {
           <div className="venue__text reveal">
             <p className="eyebrow">Ubicación</p>
             <h2>Jardín Las Montañas</h2>
-            <p className="venue__tagline">Donde comienza la primera Feria del Taco de Autlán.</p>
+            <p className="venue__tagline">Donde comienza la primera Feria del Taco Autlán.</p>
           </div>
 
           {/* Tres bloques separados por líneas punteadas, como el talón del boleto del hero */}
