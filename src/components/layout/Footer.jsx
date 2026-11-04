@@ -3,6 +3,7 @@ import useShare from '../../hooks/useShare';
 import { SECTION_LINKS } from '../../data/site';
 import { useSite } from '../../context/SiteContext';
 import { whatsappShareHref } from '../../lib/share';
+import { asset } from '../../lib/asset';
 
 export default function Footer() {
   const { page, homeHref, sectionsHref, shareLabel, shareText } = useSite();
@@ -13,7 +14,7 @@ export default function Footer() {
       <div className="wrap footer__grid">
         <div className="footer__brand">
           <a className="brand-plate" href={homeHref} aria-label="Volver al inicio">
-            <img src="/assets/img/logo.png" alt="Feria del Taco Autlán" width="247" height="176" />
+            <img src={asset('assets/img/logo.png')} alt="Feria del Taco Autlán" width="247" height="176" />
           </a>
           <p>Domingo 29 de noviembre de 2026<br />Jardín Las Montañas, Autlán de Navarro, Jalisco</p>
         </div>

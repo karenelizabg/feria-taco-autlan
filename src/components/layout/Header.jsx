@@ -3,6 +3,7 @@ import Button from '../ui/Button';
 import Icon from '../ui/Icon';
 import useShare from '../../hooks/useShare';
 import { SECTION_LINKS } from '../../data/site';
+import { asset } from '../../lib/asset';
 import { useSite } from '../../context/SiteContext';
 import { cx } from '../../lib/cx';
 
@@ -37,7 +38,7 @@ export default function Header() {
     <header className="site-header">
       <div className="wrap bar">
         <a className="brand" href={homeHref} aria-label="Feria del Taco Autlán, ir al inicio">
-          <img src="/assets/img/logo.png" alt="Feria del Taco Autlán" width="247" height="176" />
+          <img src={asset('assets/img/logo.png')} alt="Feria del Taco Autlán" width="247" height="176" />
         </a>
 
         {/* Hamburguesa: solo visible en desktop-medio / tablet */}
