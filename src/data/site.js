@@ -23,8 +23,8 @@ export const SITE = {
 
 // Enlaces a las secciones de la página principal (menú y pie).
 export const SECTION_LINKS = [
-  { id: 'la-feria', label: 'La feria' },
-  { id: 'que-habra', label: 'Qué habrá' },
+  { id: 'la-feria', label: 'Sobre la feria' },
+  { id: 'que-habra', label: 'Actividades' },
   { id: 'taquerias', label: 'Taquerías' },
-  { id: 'ubicacion', label: 'Ubicación' },
+  { id: 'ubicacion', label: 'Cómo llegar' },
 ];

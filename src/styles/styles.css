@@ -970,8 +970,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 /* Invitación a taquerías participantes */
 .taquerias__cta-wrap {
   margin-top: clamp(40px, 6vw, 64px);
-  padding-top: 36px;
-  border-top: 1px solid var(--line);
+  padding-top: 0;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -1298,9 +1297,13 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .js .reveal.is-in { opacity: 1; animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; animation-delay: var(--d, 0s); }
 .taquerias .reveal:nth-child(3n+2) { --d: .08s; }
 .taquerias .reveal:nth-child(3n+3) { --d: .16s; }
-.fiesta-side .reveal:nth-child(1) { --d: .08s; }
-.fiesta-side .reveal:nth-child(2) { --d: .16s; }
-.fiesta-side .reveal:nth-child(3) { --d: .24s; }
+/* Qué habrá: aparecen uno por uno, con una subida corta y suave (más lenta y más espaciada que el resto) */
+.js .fiesta-grid .reveal.is-in { animation-duration: 1.1s; animation-timing-function: cubic-bezier(.25, .6, .3, 1); }
+.fiesta-grid .food-card.reveal { --d: 0s; }
+.fiesta-side .reveal:nth-child(1) { --d: .25s; }
+.fiesta-side .reveal:nth-child(2) { --d: .5s; }
+.fiesta-side .reveal:nth-child(3) { --d: .75s; }
+.services.reveal { --d: 1s; }
 .feria__copy .reveal:nth-child(2) { --d: .06s; }
 .feria__copy .reveal:nth-child(3) { --d: .12s; }
 .feria__copy .reveal:nth-child(4) { --d: .18s; }
