@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-300 -300 600 600">
+  <!-- Sol de rayos redondeados (fondo de "Qué habrá"). La opacidad va en el grupo para que
+       las piezas no se sumen donde se tocan. -->
+  <defs>
+    <rect id="l" x="-24" y="-296" width="48" height="140" rx="24"/>
+    <rect id="s" x="-18" y="-236" width="36" height="80" rx="18"/>
+  </defs>
+  <g fill="#FBF9EE" opacity=".06">
+    <circle r="124"/>
+    <use href="#l"/>
+    <use href="#s" transform="rotate(22.5)"/>
+    <use href="#l" transform="rotate(45)"/>
+    <use href="#s" transform="rotate(67.5)"/>
+    <use href="#l" transform="rotate(90)"/>
+    <use href="#s" transform="rotate(112.5)"/>
+    <use href="#l" transform="rotate(135)"/>
+    <use href="#s" transform="rotate(157.5)"/>
+    <use href="#l" transform="rotate(180)"/>
+    <use href="#s" transform="rotate(202.5)"/>
+    <use href="#l" transform="rotate(225)"/>
+    <use href="#s" transform="rotate(247.5)"/>
+    <use href="#l" transform="rotate(270)"/>
+    <use href="#s" transform="rotate(292.5)"/>
+    <use href="#l" transform="rotate(315)"/>
+    <use href="#s" transform="rotate(337.5)"/>
+  </g>
+</svg>

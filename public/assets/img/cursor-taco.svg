@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Cursor sobre el boleto del hero: el taco del fondo (tacos.svg) a color, 32 × 32 -->
+  <g transform="translate(16 19) scale(.39)" stroke="#10432A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path fill="#3E9B4F" d="M-30 17A4.2 4.2 0 0 1-37.9 12.1A9.8 9.8 0 0 1-32.2-5.6A10.5 10.5 0 0 1-19.6-17.7A8.4 8.4 0 0 1-4-22.8A11.2 11.2 0 0 1 15.5-19.8A9.5 9.5 0 0 1 29.9-8.8A13.8 13.8 0 0 1 37.9 12.1A4.2 4.2 0 0 1 30 17Z"/>
+    <path fill="#F6BC43" d="M-30 14A30 26 0 0 1 30 14Q30 17 27 17H-27Q-30 17-30 14Z"/>
+    <g fill="#B98418" stroke="none">
+      <circle cx="-16" cy="7" r="2.6"/>
+      <circle cx="-4" cy="-2" r="2.6"/>
+      <circle cx="0" cy="9" r="3"/>
+      <circle cx="12" cy="1" r="2.6"/>
+      <circle cx="19" cy="10" r="2.2"/>
+    </g>
+  </g>
+</svg>

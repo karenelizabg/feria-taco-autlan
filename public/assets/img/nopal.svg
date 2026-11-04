@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <!-- Nopal con tuna (fondo de "Qué habrá"), mismo tono que sol.svg -->
+  <g fill="#FBF9EE" opacity=".06">
+    <ellipse cx="150" cy="300" rx="80" ry="100"/>
+    <ellipse cx="86" cy="150" rx="52" ry="72" transform="rotate(-24 86 150)"/>
+    <ellipse cx="214" cy="138" rx="56" ry="78" transform="rotate(20 214 138)"/>
+    <ellipse cx="246" cy="36" rx="22" ry="28" transform="rotate(20 246 36)"/>
+    <ellipse cx="60" cy="60" rx="18" ry="24" transform="rotate(-24 60 60)"/>
+  </g>
+</svg>

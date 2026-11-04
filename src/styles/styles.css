@@ -1,0 +1,1430 @@
+/* ==========================================================================
+   Feria del Taco Autlán — estilos
+   Paleta tomada del logo: verde #10432A · rojo #AD1A2C · amarillo #F6BC43
+   ========================================================================== */
+
+/* 1. Tokens ---------------------------------------------------------------- */
+:root {
+  --green: #10432A;
+  --green-700: #0C3421;
+  --green-600: #1B6B43;
+  --red: #AD1A2C;
+  --red-700: #7E1220;
+  --yellow: #F6BC43;
+  --yellow-700: #B98418;
+  --yellow-800: #84590A;   /* dorado para texto chico sobre crema (contraste AA) */
+  --cream: #FBF9EE;
+  --sand: #F2ECD8;
+  --line: #DDD5BC;
+  --ink: #1D1B16;
+  --ink-soft: #4B473B;
+
+  --f-display: "Anton", "Arial Narrow", Impact, sans-serif;
+  --f-body: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num: "Anton", "Arial Narrow", Impact, sans-serif;
+
+  --gutter: clamp(16px, 4.5vw, 40px);
+  --wrap: 1160px;
+  --r: 22px;
+  --header-h: 68px;
+
+  /* Escala tipográfica: Anton como tipografía principal en todos los títulos (hero, H1, H2, H3),
+     dígitos y contador; Lexend en cuerpo, botones y etiquetas. */
+  --t-h2: clamp(2.25rem, 5vw, 3.5rem);
+  --t-h3: 1.35rem;
+  --t-lead: 1.1875rem;
+  --t-eyebrow: .8125rem;
+  --t-small: .875rem;
+}
+
+/* 2. Base ------------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 12px);
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  font: 400 1rem/1.6 var(--f-body);
+  color: var(--ink);
+  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
+  /* Tacos de línea muy tenues (tacos.svg, opacidad dentro del SVG) sobre la textura de papel.
+     Empiezan debajo del encabezado para que la primera fila no quede cortada por su borde. */
+  background: url("/assets/img/tacos.svg") 0 var(--header-h) / 340px 340px, var(--cream) url("/assets/img/paper.svg");
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { display: block; max-width: 100%; }
+p { margin: 0 0 1em; }
+a { color: inherit; }
+
+h1, h2, h3 { margin: 0; font-weight: 400; overflow-wrap: break-word; }
+
+.wrap { width: min(var(--wrap), 100% - 2 * var(--gutter)); margin-inline: auto; }
+
+.icon {
+  width: 1.25em; height: 1.25em; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 4px; }
+.section--green :focus-visible, .section--red :focus-visible, .site-footer :focus-visible { outline-color: var(--yellow); }
+
+.skip {
+  position: absolute; left: 12px; top: -60px; z-index: 100;
+  background: var(--ink); color: var(--cream); padding: .7em 1.1em; border-radius: 10px;
+}
+.skip:focus { top: 12px; }
+
+/* 3. Botones --------------------------------------------------------------- */
+.btn {
+  --bg: var(--ink); --fg: var(--cream); --sh: #000;
+  display: inline-flex; align-items: center; justify-content: center; gap: .6em;
+  padding: .95em 1.6em;
+  font: 700 1rem/1 var(--f-body);
+  color: var(--fg); background: var(--bg);
+  border: 2px solid var(--bg); border-radius: 999px;
+  box-shadow: 0 4px 0 var(--sh);
+  text-decoration: none; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;   /* en el celular la respuesta al toque la da :active */
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--sh); }
+
+.btn--red    { --bg: var(--red);    --fg: #fff;         --sh: var(--red-700); }
+.btn--green  { --bg: var(--green);  --fg: var(--cream); --sh: #06180e; }
+.btn--yellow { --bg: var(--yellow); --fg: var(--ink);   --sh: var(--yellow-700); }
+.btn--ghost, .btn--ghost-light {
+  background: transparent; box-shadow: none;
+}
+.btn--ghost              { --fg: var(--green); border-color: var(--green); }
+.btn--ghost:active       { background: var(--green); color: var(--cream); transform: none; box-shadow: none; }
+.btn--ghost-light        { --fg: var(--cream); border-color: rgba(251, 249, 238, .55); }
+.btn--ghost-light:active { background: var(--cream); color: var(--green); transform: none; box-shadow: none; }
+/* Los :hover de botones, menú y enlaces viven en la sección 11, dentro de (hover: hover):
+   así en pantallas táctiles no se quedan "pegados" después de tocar. */
+/* Dos variantes de tamaño: principal y secundario, ambos a 16 px (la fuente del .btn base).
+   .btn--sm solo da más aire; el compacto de 14 px vive en los enlaces de las tarjetas (.tcard__links). */
+.btn--sm { padding: .72em 1.15em; }
+.btn--lg { padding: 1.08em 1.9em; }
+
+/* 4. Header ---------------------------------------------------------------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 249, 238, .92);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: var(--header-h); }
+.brand { display: block; line-height: 0; }
+.brand img { height: 52px; width: auto; }
+
+.nav { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px); }
+.nav a:not(.btn) {
+  font-weight: 500; font-size: 1rem; text-decoration: none; padding: .4em 0;
+  background: linear-gradient(var(--red), var(--red)) left bottom / 0 3px no-repeat;
+  transition: background-size .2s ease;
+}
+
+.menu-btn {
+  display: none; align-items: center; gap: 10px;
+  font: 700 .9rem var(--f-body); color: var(--green);
+  background: none; border: 2px solid var(--green); border-radius: 999px; padding: .55em 1em; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.menu-btn__bars, .menu-btn__bars::before {
+  display: block; width: 18px; height: 2px; background: currentColor; border-radius: 2px; position: relative;
+  transition: transform .2s ease, top .2s ease;
+}
+.menu-btn__bars::before { content: ""; position: absolute; top: 6px; left: 0; }
+.menu-btn__bars { margin-bottom: 6px; }
+/* Abierto: las dos rayas forman una X */
+.menu-btn[aria-expanded="true"] .menu-btn__bars { transform: translateY(3px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] .menu-btn__bars::before { top: 0; transform: rotate(-90deg); }
+
+/* Botón móvil del header: solo visible en celular/tablet; oculto en desktop */
+.header__mobile-cta { display: none; }
+
+@media (max-width: 860px) {
+  .header__mobile-cta { display: inline-flex; }
+  .menu-btn { display: none; }   /* se sustituye por el CTA directo */
+  .nav {
+    display: none; position: absolute; left: 0; right: 0; top: 100%;
+    flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--cream); border-bottom: 1px solid var(--line);
+    padding: 8px var(--gutter) 20px;
+    box-shadow: 0 22px 30px -22px rgba(16, 67, 42, .45);
+  }
+  .nav.is-open { display: flex; }
+  .nav a:not(.btn) { padding: 1em 0; border-bottom: 1px solid var(--line); background: none; }
+  .nav .btn { margin-top: 16px; }
+}
+
+/* 5. Hero ------------------------------------------------------------------ */
+.hero { position: relative; overflow: hidden; padding: 96px 0 clamp(56px, 8vw, 96px); }
+.hero__grid { display: grid; gap: 56px; align-items: center; }
+@media (min-width: 920px) { .hero__grid { grid-template-columns: 1.2fr .8fr; } }
+
+.kicker {
+  font: 700 .8rem/1.5 var(--f-body); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 1.2em;
+}
+/* Fecha y horario: en el celular, una línea cada uno; desde 600 px, en la misma línea */
+.kicker span { display: block; }
+@media (min-width: 600px) {
+  .kicker span { display: inline; }
+  .kicker span + span::before { content: " · "; }
+}
+h1 {
+  font-family: var(--f-display);
+  font-size: clamp(2.05rem, 1.1rem + 3.7vw, 4rem);
+  line-height: 1.1; text-transform: uppercase; color: var(--green);
+  margin-bottom: .5em;
+}
+.hl {
+  color: var(--red);
+  text-decoration: underline wavy var(--yellow); text-decoration-thickness: .08em;
+  text-underline-offset: .22em; text-decoration-skip-ink: none;
+}
+.lead { font-size: var(--t-lead); line-height: 1.55; color: var(--ink-soft); max-width: 34em; }
+.place { display: flex; align-items: center; gap: 10px; margin: 1.6em 0 0; font-size: 1rem; }
+.place .icon { color: var(--red); width: 1.5em; height: 1.5em; }
+.cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+
+.hero__art { display: grid; place-items: center; padding: 20px 28px 28px 20px; }
+.ticket-wrap, .perk-wrap {
+  position: relative; width: min(100%, 340px);
+  transform: rotate(-2.5deg);
+  filter: drop-shadow(0 24px 26px rgba(16, 67, 42, .26));   /* sombra suave */
+}
+.ticket {
+  --notch: 16px; --perf: 66%;
+  position: relative; display: flex; flex-direction: column; height: 440px;   /* alto fijo: las dos partes se miden en % */
+  padding: 0 22px; text-align: center;
+  background: var(--green); color: var(--cream); border-radius: 28px;
+}
+/* Muescas a los lados a la altura de --perf (boleto del inicio y beneficios de participa) */
+.ticket, .perk {
+  -webkit-mask:
+    radial-gradient(circle at 0 var(--perf), #0000 var(--notch), #000 calc(var(--notch) + .5px)) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% var(--perf), #0000 var(--notch), #000 calc(var(--notch) + .5px)) right / 51% 100% no-repeat;
+          mask:
+    radial-gradient(circle at 0 var(--perf), #0000 var(--notch), #000 calc(var(--notch) + .5px)) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% var(--perf), #0000 var(--notch), #000 calc(var(--notch) + .5px)) right / 51% 100% no-repeat;
+}
+.ticket::after {
+  content: ""; position: absolute; left: var(--notch); right: var(--notch); top: var(--perf);
+  border-top: 2px dashed rgba(251, 249, 238, .4);
+}
+.ticket p { margin: 0; }
+.ticket__dow { font: 700 .85rem var(--f-body); letter-spacing: .34em; text-transform: uppercase; color: var(--yellow); }
+.ticket__day { font: 400 9.5rem/.95 var(--f-num); color: var(--yellow); margin: .02em 0 .04em; }
+.ticket__mon { font: 700 1.25rem/1.1 var(--f-body); letter-spacing: .08em; text-transform: uppercase; }
+/* Fecha centrada entre el borde de arriba y la línea punteada; el padding compensa
+   las manos de la mascota, que tapan un poco el borde */
+.ticket__top { height: var(--perf); display: flex; flex-direction: column; justify-content: center; padding-top: 12px; }
+.ticket__bottom { height: calc(100% - var(--perf)); display: grid; place-items: center; padding-bottom: 8px; }
+
+.count__label { font: 700 var(--t-eyebrow)/1.4 var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--yellow); margin-bottom: 10px !important; }
+.count__grid { display: none; grid-template-columns: repeat(4, 1fr); gap: 6px; min-width: 240px; }
+.js .count__grid { display: grid; }
+.count__grid b { display: block; font: 400 2.1rem/1 var(--f-num); font-variant-numeric: tabular-nums; }
+.count__grid span { font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+.count.is-live .count__label { font-size: .85rem; letter-spacing: .08em; text-transform: none; color: var(--cream); }
+
+.sticker {
+  position: absolute; margin: 0; display: grid; place-items: center; text-align: center;
+  border-radius: 50%; font: 700 .95rem/1.1 var(--f-body); letter-spacing: .06em; text-transform: uppercase;
+  transform: rotate(var(--rot)); animation: pop .6s .6s cubic-bezier(.3, 1.6, .5, 1) both;
+}
+.sticker--red { width: 112px; height: 112px; right: -28px; top: -30px; background: var(--red); color: #fff; --rot: 10deg; box-shadow: inset 0 0 0 4px var(--cream), inset 0 0 0 6px var(--red); }
+@keyframes pop { from { opacity: 0; transform: rotate(var(--rot)) scale(.4); } }
+
+/* Mascota asomándose sobre el boleto. La imagen mide 520 × 497 y la línea de abajo
+   del taco está al 92.8 % de su alto: se baja 7.2 % para que esa línea quede justo
+   en el borde del boleto y las manos lo sujeten por delante. El margen de arriba
+   reserva lo que sobresale: ancho × (497 / 520) × .928 = ancho × .887. */
+.ticket-wrap { --mascot-w: .56; margin-top: calc(min(100%, 340px) * var(--mascot-w) * .887); }
+.mascot {
+  position: absolute; z-index: 2; left: 50%; bottom: 100%;
+  width: calc(var(--mascot-w) * 100%); height: auto;
+  translate: -50% 7.2%;
+  animation: peek .7s .55s cubic-bezier(.3, 1.35, .5, 1) backwards;
+}
+@keyframes peek { from { opacity: 0; translate: -50% 34%; } }
+.ticket-wrap .sticker { z-index: 3; }
+.ticket-wrap .sticker--red { top: 18px; right: -38px; }
+
+@media (max-width: 919px) {
+  .hero { padding-top: 88px; }
+  .hero__art { padding: 24px 0 20px; }
+  .ticket-wrap { width: min(100%, 320px); margin-top: calc(min(100%, 320px) * var(--mascot-w) * .887); }
+  .sticker--red { right: -10px; }
+  .ticket-wrap .sticker--red { right: -14px; }
+}
+
+/* Hero sin guirnalda (inicio y participa): menos aire arriba */
+.hero--clean { padding-top: 64px; }
+@media (max-width: 919px) { .hero--clean { padding-top: 40px; } }
+/* Inicio: titular en Anton, las tres líneas al mismo tamaño y con el mismo interlineado.
+   El tamaño hace que "SE PIDE CON TODO" mida exactamente --w: 6.4478 es el ancho de su trazo en em
+   (medido en Anton, sin espacio entre letras). "EL PRÓXIMO PLAN" mide casi lo mismo (6.4326), así
+   que las dos líneas largas cierran parejas y "EN AUTLÁN," queda corta arriba. El interlineado 1.13
+   es el mínimo para que el acento de PRÓXIMO no toque la T de AUTLÁN. --lsb es el hueco antes de la
+   primera letra, que se compensa para que los bordes izquierdos coincidan.
+   Si cambia el texto, hay que volver a medir. "con todo" va en rojo, sin la onda. */
+.hero--home .hero__copy { container-type: inline-size; }
+.hero--home h1 { --w: 100cqi; font: 400 calc(var(--w) / 6.4478)/1.13 var(--f-num); letter-spacing: 0; margin-bottom: .4em; }
+.hero__line { width: max-content; white-space: nowrap; margin-left: calc(var(--lsb, .0381) * -1em); }
+.hero__line:nth-child(3) { --lsb: .0205; }
+/* Variantes de líneas del titular: --lg para desktop, --sm solo en móvil */
+.hero__line--lg { display: block; }
+.hero__line--sm { display: none; }
+.hero--home .hl { text-decoration: none; }
+
+/* Compu: el hero del inicio + la tira verde caben justos en la primera pantalla (sin scroll).
+   El hero mide el alto de la ventana menos el encabezado y la tira, con el contenido centrado;
+   el boleto con la mascota (~657 px a tamaño completo) se reduce por escalones según la altura
+   para caber en lo que queda: zoom ≤ (0.94 × alto − 145) / 657. Probar a 566–900 px de alto. */
+:root { --marquee-h: 80px; }
+@media (min-width: 920px) {
+  .hero.hero--home {
+    display: flex; flex-direction: column; justify-content: center;
+    min-height: calc(100svh - var(--header-h) - 1px - var(--marquee-h));
+    padding-block: max(12px, 3vh);
+  }
+  .hero--home h1 { --w: min(100cqi, 92vh); }   /* en ventanas bajas el bloque se angosta para caber */
+}
+@media (min-width: 920px) and (max-height: 899px) { .hero--home .hero__art { zoom: .95; } }
+/* participa.html: en ventanas bajas, menos aire para que los botones queden a la vista */
+@media (min-width: 920px) and (max-height: 899px) { .hero--join { padding-top: 40px; padding-bottom: 56px; } }
+@media (min-width: 920px) and (max-height: 830px) { .hero--home .hero__art { zoom: .85; } }
+@media (min-width: 920px) and (max-height: 750px) { .hero--home .hero__art { zoom: .73; } }
+@media (min-width: 920px) and (max-height: 670px) { .hero--home .hero__art { zoom: .62; } }
+@media (min-width: 920px) and (max-height: 590px) { .hero--home .hero__art { zoom: .5; } }
+
+/* Entrada del hero: escalonada y breve */
+.hero__copy > *, .hero__art { animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; }
+.hero__copy > :nth-child(2) { animation-delay: .08s; }
+.hero__copy > :nth-child(3) { animation-delay: .16s; }
+.hero__copy > :nth-child(4) { animation-delay: .24s; }
+.hero__copy > :nth-child(5) { animation-delay: .32s; }
+.hero__art { animation-delay: .2s; }
+@keyframes rise { from { opacity: 0; translate: 0 16px; } }
+
+/* 6. Marquee --------------------------------------------------------------- */
+.marquee { background: var(--green); color: var(--cream); overflow: hidden; white-space: nowrap; padding: 16px 0; border-block: 4px solid var(--red); }
+.marquee__track { display: inline-flex; align-items: center; gap: 28px; padding-right: 28px; animation: marquee 32s linear infinite; }
+.marquee span { font: 700 clamp(1.1rem, .9rem + 1vw, 1.5rem)/1 var(--f-body); letter-spacing: .08em; text-transform: uppercase; }
+.marquee i { width: 14px; height: 14px; border-radius: 50%; background: var(--yellow); flex: none; }
+.marquee i:nth-of-type(3n+2) { background: var(--cream); }
+.marquee i:nth-of-type(3n+3) { background: var(--red); }
+@keyframes marquee { to { transform: translateX(-25%); } }
+
+/* 7. Secciones ------------------------------------------------------------- */
+.section { padding: clamp(64px, 9vw, 112px) 0; overflow-x: clip; }
+.section--green { background: var(--green); color: var(--cream); }
+.section--sand  { background: var(--sand); }
+.section--red   { background: var(--red); color: var(--cream); }
+
+.section__head { max-width: 46rem; margin-bottom: clamp(32px, 5vw, 56px); }
+.section__lead { font-size: var(--t-lead); color: var(--ink-soft); }
+
+.eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  font: 700 var(--t-eyebrow)/1.3 var(--f-body); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 1em;
+}
+.eyebrow::before { content: ""; width: 28px; height: 3px; background: currentColor; border-radius: 2px; }
+.section--green .eyebrow, .eyebrow--light { color: var(--yellow); }
+
+/* H2: un solo tamaño, interlineado y mayúsculas en todo el sitio (Anton) */
+h2 {
+  font: 400 var(--t-h2)/1.1 var(--f-display);
+  text-transform: uppercase; color: var(--green); margin-bottom: .6em;
+  letter-spacing: .02em;
+}
+.section--green h2, .section--red h2 { color: var(--cream); }
+h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
+
+/* La feria (primera edición): texto a la izquierda y la mascota en un círculo verde a la
+   derecha. Fondo crema sólido: tapa los tacos y el papel de body. */
+.section--feria { padding-block: clamp(52px, 4.5vw, 64px); background: var(--cream); }
+.feria { display: grid; gap: clamp(36px, 5vw, 56px); align-items: center; }
+@media (min-width: 900px) { .feria { grid-template-columns: 1.15fr .85fr; } }
+.feria__copy { container-type: inline-size; }
+/* Una frase por línea (<br>); el tamaño de H2 es el del sitio */
+.feria h2 { margin-bottom: .5em; }
+.feria__lead { max-width: 32em; font-size: var(--t-lead); line-height: 1.6; color: var(--ink-soft); }
+.feria .callout { max-width: 18em; font: 700 clamp(1.2rem, 1rem + .8vw, 1.6rem)/1.3 var(--f-body); color: var(--red); margin: .9em 0 0; text-wrap: balance; }
+
+/* Mascota: un círculo verde detrás (con anillo punteado, como el sello del boleto); el sombrero
+   y los pies salen del círculo, y abajo una sombra suave la asienta */
+.feria__art { position: relative; width: min(100%, 440px); aspect-ratio: 1; justify-self: center; display: grid; place-items: end center; }
+.feria__art::before {
+  content: ""; position: absolute; left: 50%; top: 5%; width: 84%; aspect-ratio: 1; translate: -50% 0;
+  border-radius: 50%; background: var(--green);
+  outline: 2px dashed rgba(251, 249, 238, .4); outline-offset: -14px;
+}
+.feria__art::after {
+  content: ""; position: absolute; left: 50%; bottom: -2%; width: 54%; height: 8%; translate: -50% 0;
+  background: radial-gradient(closest-side, rgba(16, 67, 42, .3), rgba(16, 67, 42, 0));
+}
+.feria-mascot {
+  position: relative; z-index: 1; width: auto; height: 100%; pointer-events: none;
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, .22));
+}
+
+/* Entrada: el círculo crece y la mascota cae con un rebote corto.
+   El contenedor solo aparece (sin subir) para no sumar movimientos. */
+.js .feria__art.reveal.is-in { animation: appear .3s both; }
+.js .feria__art.is-in::before { animation: grow .7s cubic-bezier(.3, 1.3, .5, 1) both; }
+.js .feria__art.is-in .feria-mascot { animation: hop .9s .15s both; }
+@keyframes grow { from { opacity: 0; scale: .6; } }
+@keyframes hop {
+  0%   { opacity: 0; translate: 0 -26%; animation-timing-function: cubic-bezier(.5, 0, .9, .5); }
+  40%  { opacity: 1; translate: 0 0; animation-timing-function: cubic-bezier(.1, .5, .5, 1); }
+  62%  { translate: 0 -7%; animation-timing-function: cubic-bezier(.5, 0, .9, .5); }
+  82%  { translate: 0 0; animation-timing-function: cubic-bezier(.1, .5, .5, 1); }
+  91%  { translate: 0 -2%; animation-timing-function: ease-in; }
+}
+
+/* Qué habrá, compacta: la comida (foto) a la izquierda y música, danza y eventos a la derecha,
+   todo a 400 px de alto en escritorio. Tablet: foto arriba y las tres en fila; celular: una columna. */
+.fiesta-grid { display: grid; gap: 24px; }
+.fiesta-side { display: grid; gap: 16px; }
+.fiesta-side .tile { padding: 20px; }
+/* Título y "próximamente" en la misma línea */
+.tile__head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-bottom: .3em; }
+.tile .tile__head h3 { margin: 0; }
+.tile__head .tile__tag { margin: 0 !important; }
+@media (min-width: 640px) and (max-width: 1023px) {
+  .fiesta-side { grid-template-columns: repeat(3, 1fr); }
+  .fiesta-side .tile__tag { font-size: .68rem !important; letter-spacing: .04em; }   /* que quepa en una línea */
+}
+@media (min-width: 1024px) {
+  .fiesta-grid { grid-template-columns: 1.4fr 1fr; height: 400px; }
+  .fiesta-side { grid-template-rows: repeat(3, 1fr); }
+  .tile--row { display: grid; grid-template-columns: 44px 1fr; column-gap: 16px; align-content: center; }
+  .tile--row > * { grid-column: 2; }
+  .tile--row .tile__icon { grid-column: 1; grid-row: 1 / span 2; align-self: center; width: 44px; height: 44px; margin: 0; }
+  .tile--row .tile__icon .icon { width: 22px; height: 22px; }
+  .tile--row p:not(.tile__tag) { font-size: 1rem; line-height: 1.45; }
+}
+
+.food-card { position: relative; isolation: isolate; display: flex; flex-direction: column; overflow: hidden; background: var(--cream); color: var(--ink); border-radius: var(--r); }
+.food-card__photo { width: 100%; height: 320px; object-fit: cover; background: var(--sand); }
+.food-card__body { position: relative; padding: 36px 28px 28px; }
+.food-card__icon { position: absolute; top: -28px; left: 28px; width: 56px; height: 56px; margin: 0; box-shadow: 0 0 0 5px var(--cream); }
+.food-card__icon .icon { width: 26px; height: 26px; }
+/* Eyebrow dorado de las tarjetas crema ("Lo principal") */
+.card-eyebrow { margin: 0 0 .5em; font: 700 var(--t-eyebrow)/1.3 var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--yellow-800); }
+/* Tarjeta destacada: su H3 mantiene la coherencia tipográfica de los títulos */
+.food-card h3 { margin-bottom: .3em; font: 400 clamp(1.5rem, 1.2rem + 1vw, 2rem)/1.2 var(--f-display); letter-spacing: .02em; color: var(--green); }
+.food-card p:not([class]) { max-width: 30em; margin: 0 0 20px; font-size: 1rem; line-height: 1.5; color: var(--ink-soft); }
+.food-card :focus-visible { outline-color: var(--green); }
+/* Escritorio: el texto va sobre la foto, con un degradado oscuro abajo para leerlo bien */
+@media (min-width: 1024px) {
+  .food-card { justify-content: flex-end; color: var(--cream); background: var(--green-700); }
+  .food-card__photo { position: absolute; z-index: -1; inset: 0; height: 100%; }
+  .food-card__body { position: static; padding: 120px 32px 28px; background: linear-gradient(to top, rgba(8, 28, 18, .94), rgba(8, 28, 18, .8) 55%, rgba(8, 28, 18, 0)); }
+  .food-card__icon { top: 24px; left: 24px; box-shadow: none; }
+  .food-card .card-eyebrow { color: var(--yellow); }
+  .food-card h3 { color: var(--cream); }
+  .food-card p:not([class]) { color: rgba(251, 249, 238, .92); }
+  .food-card .btn--ghost { --fg: var(--cream); border-color: rgba(251, 249, 238, .75); }
+  .food-card :focus-visible { outline-color: var(--yellow); }
+}
+.tile { background: var(--cream); color: var(--ink); border-radius: var(--r); padding: 28px 26px 30px; }
+.tile__icon { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; margin-bottom: 20px; }
+.tile__icon .icon { width: 26px; height: 26px; }
+.tile__icon--red    { background: var(--red);    color: #fff; }
+.tile h3 { margin-bottom: .45em; }
+.tile p { margin: 0; color: var(--ink-soft); font-size: 1rem; line-height: 1.55; }
+.tile__tag {
+  display: inline-block; margin-top: 16px !important; padding: .35em .9em;
+  font: 700 .75rem/1.2 var(--f-body) !important; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink) !important; background: var(--yellow); border-radius: 999px;
+}
+
+/* Encabezado de fiesta (estilo cantina): titular a la izquierda, sin subtítulo;
+   sol y nopal tenues detrás, en pseudo-elementos. */
+.section--fiesta { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(48px, 5vw, 64px); }
+.section--fiesta::after {
+  content: ""; position: absolute; z-index: -1; right: -40px; bottom: -30px;
+  width: clamp(140px, 16vw, 220px); aspect-ratio: 3 / 4; opacity: .7;
+  background: url("/assets/img/nopal.svg") center / contain no-repeat;
+}
+.section--fiesta .section__head { position: relative; max-width: none; margin-bottom: 36px; }
+.section--fiesta .section__head::before {
+  content: ""; position: absolute; z-index: -1; left: -220px; top: -170px;
+  width: 440px; aspect-ratio: 1; opacity: .6;
+  background: url("/assets/img/sol.svg") center / contain no-repeat;
+}
+.section--fiesta h2 { margin: 0; }
+.section--fiesta h2 span { color: var(--yellow); }
+
+/* Servicios: solo texto e iconos blancos sobre el verde, sin contenedor.
+   Tres columnas con divisores finos (verticales; en celular, horizontales) */
+.services { margin-top: 24px; padding: 0; background: none; color: #fff; }
+.services ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); }
+.services li { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 4px 16px; font-weight: 500; font-size: 1rem; line-height: 1.3; }
+.services li + li { border-left: 1px solid rgba(255, 255, 255, .25); }
+.services .tile__icon { flex: none; width: 40px; height: 40px; margin: 0; }
+.services .tile__icon.tile__icon--red { background: none; color: #fff; }
+.services .tile__icon .icon { width: 20px; height: 20px; }
+@media (max-width: 639px) {
+  .services { padding: 0; }
+  .services ul { grid-template-columns: 1fr; }
+  .services li { justify-content: flex-start; padding: 14px 0; }
+  .services li + li { border-left: 0; border-top: 1px solid rgba(255, 255, 255, .25); }
+}
+
+/* ==========================================================================
+   Taquerías Participantes — Estilo Editorial "Signature Favorites"
+   ========================================================================== */
+
+/* Encabezado con jerarquía editorial y controles discretos */
+.taquerias-head {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: clamp(32px, 5vw, 52px);
+}
+
+@media (min-width: 800px) {
+  .taquerias-head {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.taquerias-head__copy {
+  max-width: 44rem;
+}
+
+.taquerias-head__title {
+  margin: .25em 0 .4em;
+  font-size: var(--t-h2);
+  line-height: 1.15;
+}
+
+.taquerias-head__controls {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+  padding-bottom: 6px;
+}
+
+/* Indicador de página discreto: 01 / 02 */
+.carousel-counter {
+  font: 600 .85rem/1 var(--f-body);
+  letter-spacing: .12em;
+  color: var(--ink-soft);
+}
+
+.carousel-counter__current {
+  font-family: var(--f-num);
+  font-size: 1.15rem;
+  color: var(--green);
+  letter-spacing: .06em;
+}
+
+.carousel-counter__sep {
+  opacity: .5;
+  margin: 0 2px;
+}
+
+.carousel-counter__total {
+  opacity: .75;
+}
+
+.carousel-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botones discretos de navegación */
+.carousel-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: #ffffff;
+  color: var(--green);
+  cursor: pointer;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+  box-shadow: 0 2px 6px rgba(29, 27, 22, .04);
+}
+
+.carousel-nav-btn .icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.5;
+}
+
+@media (hover: hover) {
+  .carousel-nav-btn:hover:not(:disabled) {
+    border-color: var(--green);
+    background: var(--green);
+    color: var(--cream);
+    box-shadow: 0 4px 12px rgba(16, 67, 42, .18);
+  }
+}
+
+.carousel-nav-btn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+/* Contenedor del carrusel / grilla */
+.taquerias-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.taquerias-track {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Modo Carrusel: deslizamiento horizontal con snap táctil */
+.taquerias-track--carousel {
+  display: flex;
+  gap: 28px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 0 20px;
+  margin: -8px 0 -20px;
+  scrollbar-width: none;
+}
+
+.taquerias-track--carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.taquerias-track--carousel:focus-visible {
+  outline: 2px dashed var(--green);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+.taquerias-track--carousel .taquerias-slide {
+  scroll-snap-align: start;
+  flex: 0 0 100%; /* Móvil: 1 tarjeta por vista */
+  min-width: 0;
+  display: flex;
+}
+
+@media (min-width: 640px) {
+  .taquerias-track--carousel .taquerias-slide {
+    flex: 0 0 calc((100% - 24px) / 2); /* Tablet: 2 tarjetas por vista */
+  }
+}
+
+@media (min-width: 1024px) {
+  .taquerias-track--carousel .taquerias-slide {
+    flex: 0 0 calc((100% - 56px) / 3); /* Escritorio: 3 tarjetas por vista */
+  }
+}
+
+/* Modo Grilla expandida: 3 columnas en escritorio, apiladas en móvil */
+.taquerias-track--grid {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 1fr;
+  overflow-x: visible;
+  padding: 4px 0 12px;
+}
+
+@media (min-width: 640px) {
+  .taquerias-track--grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .taquerias-track--grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+}
+
+.taquerias-track--grid .taquerias-slide {
+  flex: none;
+  width: 100%;
+  display: flex;
+  scroll-snap-align: none;
+}
+
+.taquerias-slide > .tcard {
+  width: 100%;
+}
+
+/* ==========================================================================
+   Tarjeta Editorial Gastronómica: "Signature Favorites"
+   ========================================================================== */
+.tcard--editorial {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+  box-sizing: border-box;
+  box-shadow: 0 3px 12px rgba(29, 27, 22, .03);
+  transition: box-shadow .25s ease, border-color .25s ease;
+  min-height: 440px;
+  position: relative;
+}
+
+@media (hover: hover) {
+  .tcard--editorial:hover {
+    transform: none;
+    box-shadow: 0 12px 30px -6px rgba(16, 67, 42, .12);
+    border-color: #C8BF9F;
+  }
+}
+
+/* Marco fotográfico / galería de la marca */
+.tcard__gallery {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin-bottom: 22px;
+}
+
+.tcard__gallery-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.tcard__gallery--pending {
+  background: rgba(242, 236, 216, .35);
+  border: 1px dashed #C8BF9F;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--ink-soft);
+}
+
+.tcard__placeholder-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--ink-soft);
+  opacity: .5;
+}
+
+.tcard__gallery-placeholder-text {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  opacity: .8;
+}
+
+/* Contenido gastronómico */
+.tcard__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.tcard__title {
+  font: 400 1.55rem/1.2 var(--f-display);
+  color: var(--green);
+  margin: 0 0 14px;
+}
+
+.tcard__menu {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+
+.tcard__menu li {
+  padding: .35em .8em;
+  font-size: var(--t-small);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--green);
+  background: var(--sand);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.tcard__sello {
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 14px;
+  padding: .35em .9em;
+  font: 700 .75rem/1.2 var(--f-body);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: var(--sand);
+  border-radius: 999px;
+}
+
+.tcard__bar {
+  display: block;
+  border-radius: 6px;
+  background: var(--line);
+}
+
+.tcard__bar--title {
+  height: 1.2rem;
+  width: 65%;
+  margin-bottom: 14px;
+}
+
+.tcard__soon-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  margin-bottom: 20px;
+}
+
+.tcard__bar--pill {
+  height: 1.75rem;
+  width: 86px;
+  border-radius: 999px;
+  background: var(--sand);
+}
+
+.tcard__bar--pill-sm {
+  width: 68px;
+}
+
+/* Acción al pie de la tarjeta */
+.tcard__action-wrap {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(221, 213, 188, .6);
+}
+
+.tcard__action-wrap .btn {
+  width: 100%;
+}
+
+.tcard__status-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: .75em 1.2em;
+  font: 700 var(--t-small)/1 var(--f-body);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: var(--sand);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: default;
+  opacity: .9;
+}
+
+/* Botón «Ver todas las taquerías» / «Ver menos» */
+.taquerias__toggle-wrap {
+  margin-top: clamp(28px, 4vw, 44px);
+  display: flex;
+  justify-content: center;
+}
+
+.btn--toggle-view {
+  min-width: 240px;
+  gap: .75em;
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.icon--toggle {
+  width: 1em;
+  height: 1em;
+  transition: transform .2s ease;
+}
+
+/* Invitación a taquerías participantes */
+.taquerias__cta-wrap {
+  margin-top: clamp(40px, 6vw, 64px);
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.taquerias__cta-lead {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 30em;
+}
+
+.taquerias__cta { margin-top: 0; }
+.taquerias-viewport:has(.empty) ~ .taquerias__cta-wrap,
+.taquerias-viewport:has(.empty) ~ .taquerias__toggle-wrap { display: none; }
+
+.empty {
+  text-align: center;
+  padding: clamp(32px, 6vw, 56px) 24px;
+  border: 2px dashed #C9BF9F; border-radius: var(--r); background: rgba(255, 255, 255, .45);
+}
+.empty__title { font: 700 clamp(1.1rem, 1rem + .4vw, 1.3rem)/1.3 var(--f-body); letter-spacing: .04em; color: var(--green); margin-bottom: .5em; text-transform: uppercase; }
+.empty p:not(.empty__title) { color: var(--ink-soft); max-width: 30em; margin-inline: auto; }
+.empty .btn { margin-top: .6em; }
+
+/* Ubicación ("Nuestra sede"): textos y datos a la izquierda, foto enmarcada a la derecha.
+   Un velo crema encima del fondo deja los tacos como textura y no compiten con el texto. */
+.section--venue { background: rgba(251, 249, 238, .6); }
+.venue { display: grid; gap: 56px; align-items: center; }
+@media (min-width: 900px) { .venue { grid-template-columns: 1fr 1.1fr; gap: clamp(48px, 6vw, 80px); } }
+@media (max-width: 899px) {
+  /* En celular y pantallas de una columna: texto arriba, foto en medio, datos (fecha/horario/entrada) abajo */
+  .venue__info { display: contents; }
+  .venue__text { order: 1; }
+  .venue__media { order: 2; }
+  .venue__facts { order: 3; margin-top: 0; }
+}
+.venue__info { container-type: inline-size; }
+/* "JARDÍN LAS" mide ~7.6em: el tamaño sale del ancho de la columna para no partirlo en tres */
+.venue h2 { margin-bottom: .35em; }
+.venue__tagline { font: 500 clamp(1.1rem, 1rem + .5vw, 1.3rem)/1.4 var(--f-body); color: var(--red); margin-bottom: .6em; text-wrap: balance; }
+
+/* Fecha, horario y entrada: un talón con líneas arriba y abajo, y punteado entre bloques */
+.venue__facts {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 34px 0 0;
+  border-block: 2px solid var(--green); container-type: inline-size;
+}
+.venue__facts > div { padding: 18px clamp(10px, 4cqi, 24px) 18px; }
+.venue__facts > div:first-child { padding-left: 0; }
+.venue__facts > div:last-child { padding-right: 0; }
+.venue__facts > div + div { border-left: 2px dashed rgba(16, 67, 42, .3); }
+.venue__facts dt { display: flex; align-items: center; gap: 8px; font: 700 var(--t-eyebrow)/1.3 var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--red); }
+.venue__facts dt .icon { width: 18px; height: 18px; }
+.venue__facts dd { margin: 0; }
+.venue__facts strong { display: block; margin: 10px 0 0; font: 700 clamp(1.15rem, 6.2cqi, 2rem)/1.1 var(--f-body); letter-spacing: .02em; text-transform: uppercase; color: var(--green); white-space: nowrap; }
+.venue__facts dd span { display: block; font-size: var(--t-small); line-height: 1.4; color: var(--ink-soft); }
+
+/* Foto de la sede: marco verde doble (como el sello del boleto) y "Abrir en Google Maps" justo debajo */
+.venue__media { position: relative; display: grid; gap: 30px; }
+.venue__media .btn { justify-self: start; }
+.venue__tag {
+  position: absolute; z-index: 2; top: -16px; left: 22px; margin: 0;
+  display: inline-flex; align-items: center; gap: 8px; padding: .6em 1.1em;
+  font: 700 .75rem/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase;
+  color: #fff; background: var(--red); border-radius: 999px;
+  box-shadow: 0 0 0 3px var(--cream); transform: rotate(-2.5deg);
+}
+.venue__tag .icon { width: 16px; height: 16px; }
+.venue__photo {
+  width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 16px; background: var(--sand);
+  border: 3px solid var(--green); box-shadow: 0 0 0 6px var(--cream), 0 0 0 8px var(--green);
+}
+
+/* Participa: hero ------------------------------------------------------------
+   Velo crema para que los tacos queden de textura; beneficios como boleto horizontal. */
+.hero--join { background: rgba(251, 249, 238, .6); }
+.hero--join .hero__copy { container-type: inline-size; }
+@media (min-width: 920px) {
+  .hero--join .hero__grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+    align-items: center;
+  }
+}
+/* Tres líneas fijas (<br>): "A MÁS PERSONAS", la más larga, mide ~9.8em */
+.hero--join h1 {
+  font-size: min(3.6rem, 9.6cqi);
+  line-height: 1.08;
+  margin-top: 0;
+  margin-bottom: .26em;
+}
+.hero--join .lead {
+  max-width: 31em;
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+/* Pastilla destacada para fecha y sede */
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 8px 18px;
+  margin-bottom: 22px;
+  background: #ffffff;
+  border: 1.5px solid rgba(16, 67, 42, .16);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(16, 67, 42, .06);
+  color: var(--ink);
+  font: 600 .92rem/1.3 var(--f-body);
+}
+.hero-pill__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.hero-pill__item .icon {
+  color: var(--red);
+  width: 1.15em;
+  height: 1.15em;
+  stroke-width: 2.2;
+}
+.hero-pill__sep {
+  color: var(--line);
+  font-weight: 700;
+  user-select: none;
+}
+
+/* CTA principal con más aire y presencia */
+.hero--join .cta {
+  display: flex;
+  align-items: center;
+  gap: 14px 22px;
+  margin-top: 4px;
+}
+.hero--join .btn--hero-join {
+  font-size: 1.06rem;
+  padding: 1.12em 2.1em;
+}
+
+/* Tarjeta de beneficios: proporción más horizontal, alto contenido y alto contraste */
+.hero--join .hero__art {
+  padding: 10px 0;
+}
+.perk-wrap {
+  width: min(100%, 460px);
+  transform: none;
+  filter: drop-shadow(0 18px 26px rgba(16, 67, 42, .24));
+}
+.perk {
+  --notch: 13px;
+  --perf: 78px;
+  background: var(--green);
+  color: #ffffff;
+  border-radius: 24px;
+}
+.perk__head {
+  position: relative;
+  height: var(--perf);
+  padding: 0 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.perk__head::after {
+  content: "";
+  position: absolute;
+  left: var(--notch);
+  right: var(--notch);
+  bottom: 0;
+  border-top: 2px dashed rgba(251, 249, 238, .35);
+}
+.perk__head p {
+  margin: 0 0 .22em;
+  font: 700 var(--t-eyebrow)/1.2 var(--f-body);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(251, 249, 238, .82);
+}
+.perk h2 {
+  margin: 0;
+  font: 400 1.85rem/1 var(--f-display);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+.perk__list {
+  list-style: none;
+  margin: 0;
+  padding: 14px 28px 18px;
+}
+.perk__list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 0;
+  font-weight: 500;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  color: #ffffff;
+}
+.perk__list li + li {
+  border-top: 1px solid rgba(251, 249, 238, .12);
+}
+.perk__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(246, 188, 67, .2);
+  border: 1.5px solid rgba(246, 188, 67, .45);
+  color: var(--yellow);
+}
+.perk__icon .icon {
+  width: 19px;
+  height: 19px;
+  stroke-width: 2.2;
+}
+
+/* 8. Footer ---------------------------------------------------------------- */
+.site-footer {
+  background: var(--green-700); color: var(--cream); padding: 72px 0 28px;
+  overflow-x: clip;
+  border-top: 10px solid; border-image: linear-gradient(90deg, var(--green-600) 33.33%, var(--cream) 33.33% 66.66%, var(--red) 66.66%) 1;
+}
+.footer__grid { display: grid; gap: 40px; }
+@media (min-width: 800px) { .footer__grid { grid-template-columns: 1.3fr 1fr 1fr; gap: 56px; } }
+.brand-plate { display: inline-block; line-height: 0; background: var(--cream); padding: 12px 18px; border-radius: 18px; margin-bottom: 20px; }
+.brand-plate img { height: 64px; width: auto; }
+.footer__brand p { color: rgba(251, 249, 238, .85); font-size: 1rem; margin: 0; }
+.footer__nav { display: grid; gap: 10px; align-content: start; }
+.footer__nav a { text-decoration: none; font-weight: 500; opacity: .9; justify-self: start; }
+.footer__share { display: flex; flex-wrap: wrap; gap: 12px; align-content: start; align-items: center; }
+.footer__share p { flex-basis: 100%; margin: 0; font: 700 var(--t-eyebrow) var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--yellow); }
+.footer__legal {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
+  margin-top: 48px; padding-top: 22px; border-top: 1px solid rgba(251, 249, 238, .2);
+  font-size: var(--t-small); color: rgba(251, 249, 238, .75);
+}
+.footer__legal p { margin: 0; }
+
+/* 9. Toast ----------------------------------------------------------------- */
+.toast {
+  position: fixed; left: 50%; bottom: 24px; z-index: 90;
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  background: var(--ink); color: var(--cream); font-weight: 500; font-size: 1rem;
+  padding: .8em 1.4em; border-radius: 999px; transition: opacity .25s ease, transform .25s ease;
+}
+.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+/* 10. Aparición al hacer scroll -------------------------------------------- */
+.js .reveal { opacity: 0; }
+.js .reveal.is-in { opacity: 1; animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; animation-delay: var(--d, 0s); }
+.taquerias .reveal:nth-child(3n+2) { --d: .08s; }
+.taquerias .reveal:nth-child(3n+3) { --d: .16s; }
+.fiesta-side .reveal:nth-child(1) { --d: .08s; }
+.fiesta-side .reveal:nth-child(2) { --d: .16s; }
+.fiesta-side .reveal:nth-child(3) { --d: .24s; }
+.feria__copy .reveal:nth-child(2) { --d: .06s; }
+.feria__copy .reveal:nth-child(3) { --d: .12s; }
+.feria__copy .reveal:nth-child(4) { --d: .18s; }
+.feria__copy .reveal:nth-child(5) { --d: .24s; }
+
+/* 11. Interacción ---------------------------------------------------------- */
+.tile { transition: transform .35s cubic-bezier(.2, .7, .2, 1), box-shadow .35s ease; }
+.tcard { transition: box-shadow .25s ease; }
+.tile__icon { transition: transform .35s cubic-bezier(.3, 1.4, .5, 1); }
+.ticket-wrap { transition: translate .4s cubic-bezier(.3, 1.4, .5, 1), filter .4s ease; }
+.btn .icon--arrow { transition: transform .2s ease; }
+
+@media (hover: hover) {
+  .btn:hover { transform: translateY(2px); box-shadow: 0 2px 0 var(--sh); }
+  .btn--ghost:hover { background: var(--green); color: var(--cream); transform: none; box-shadow: none; }
+  .btn--ghost-light:hover { background: var(--cream); color: var(--green); transform: none; box-shadow: none; }
+  .nav a:not(.btn):hover { background-size: 100% 3px; }
+  .footer__nav a:hover { opacity: 1; text-decoration: underline; text-decoration-color: var(--yellow); text-underline-offset: 5px; }
+  .tile:hover { transform: translateY(-6px); box-shadow: 0 18px 30px -16px rgba(16, 67, 42, .45); }
+  .tcard:hover {
+    transform: none;
+    box-shadow: 0 8px 24px -4px rgba(16, 67, 42, .12);
+  }
+  .section--green .tile:hover { box-shadow: 0 22px 36px -14px rgba(0, 0, 0, .55); }
+  .tile:hover .tile__icon { transform: scale(1.1) rotate(-8deg); }
+  /* Qué habrá: las tarjetas solo informan, no se levantan (la acción es el botón) */
+  .fiesta-grid .tile:hover { transform: none; box-shadow: none; }
+  .fiesta-grid .tile:hover .tile__icon { transform: none; }
+  /* Mascota, boleto y sello suben juntos, como una sola pieza */
+  .ticket-wrap:hover { translate: 0 -12px; filter: drop-shadow(0 34px 30px rgba(16, 67, 42, .3)); }
+  .btn:hover .icon--arrow { transform: translateX(4px); }
+  .marquee:hover .marquee__track { animation-play-state: paused; }
+}
+
+/* Cursor de taco en toda la página (solo con mouse). En los campos de texto se queda
+   la barrita para escribir; en lo que se puede tocar, si el SVG falla, sale la manita. */
+@media (hover: hover) {
+  html { cursor: url("/assets/img/cursor-taco.svg") 16 16, auto; }
+  a, button, label, .btn, .menu-btn, .ticket-wrap { cursor: url("/assets/img/cursor-taco.svg") 16 16, pointer; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .sticker, .marquee__track, .hero__copy > *, .hero__art, .mascot { animation: none; }
+  .js .reveal { opacity: 1; }
+  .js .reveal.is-in, .js .feria__art.reveal.is-in, .js .feria__art.is-in::before,
+  .js .feria__art.is-in .feria-mascot { animation: none; }
+  .tile, .tcard, .tile__icon, .btn, .btn .icon--arrow, .toast, .menu-btn__bars, .menu-btn__bars::before, .ticket-wrap { transition: none; }
+  .tile:hover, .tcard:hover, .tile:hover .tile__icon, .btn:hover .icon--arrow { transform: none; }
+  .ticket-wrap:hover { translate: none; }
+}
+
+/* 12. Estados de carga ----------------------------------------------------- */
+/* Solo aparecen si la carga tarda: el indicador se desvanece hacia adentro tras .4 s,
+   así una carga rápida no deja ningún parpadeo. Requieren JS (clase .js). */
+@keyframes appear { from { opacity: 0; } }
+@keyframes pulse { 50% { opacity: .45; } }
+
+/* Directorio: tarjetas de carga mientras aria-busy sea "true" (ya no se usa en React; la lista se pinta al montar) */
+.tcard--skeleton, .js .taquerias[aria-busy="true"] .empty { display: none; }
+.js .taquerias[aria-busy="true"] .tcard--skeleton { display: block; pointer-events: none; animation: appear .3s .4s both; }
+.tcard--skeleton span { display: block; height: .85rem; width: 80%; margin-top: 12px; border-radius: 6px; background: var(--line); animation: pulse 1.4s ease-in-out infinite; }
+.tcard--skeleton span:first-child { height: 1.4rem; width: 62%; margin: 0 0 18px; }
+.tcard--skeleton span:last-child { width: 45%; }
+
+/* Cuenta regresiva: los dígitos esperan a la primera lectura del reloj (clase is-ready) en vez de mostrar "00" */
+.js .count:not(.is-ready) .count__grid b {
+  color: transparent; border-radius: 6px;
+  background: rgba(251, 249, 238, .16); animation: pulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tcard--skeleton span, .js .count:not(.is-ready) .count__grid b { animation: none; }
+}
+
+/* 13. Celular (hasta 599 px) ----------------------------------------------- */
+/* La mayoría de las visitas llegan desde el celular: aquí se compacta todo para que
+   la información clave (fecha, lugar, cuenta regresiva, cómo llegar) quede a la mano,
+   los botones ocupen el ancho y sean fáciles de tocar con el pulgar. */
+@media (max-width: 599px) {
+  /* Taquerías editoriales en celular: 1 por vista en carrusel, proporciones generosas */
+  .tcard--editorial {
+    padding: 20px 18px;
+    min-height: 440px;
+    border-radius: 16px;
+  }
+  .tcard__gallery {
+    aspect-ratio: 16 / 10;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+  }
+  .tcard__title {
+    font-size: 1.4rem;
+  }
+
+  :root { --header-h: 62px; }
+  .brand img { height: 46px; }
+
+  .section { padding: 56px 0; }
+  .section--feria { padding-block: 40px; }   /* ~30 % menos que el resto de las secciones */
+
+  /* La feria: mascota debajo del texto, grande */
+  .feria__art { width: min(100%, 320px); }
+  .section__head { margin-bottom: 28px; }
+
+  /* Botones de acción a todo el ancho */
+  .cta { gap: 12px; margin-top: 26px; }
+  .cta .btn, .venue .btn, .taquerias__cta { width: 100%; }
+
+  /* ── Hero móvil: orden Encabezado → Ilustración → Botones ──────────────────
+     .hero__copy usa display:contents para que h1 y .cta sean hijos directos
+     del grid y se puedan reordenar con order independientemente de .hero__art.
+     La técnica no afecta semántica ni accesibilidad (solo presentación). */
+
+  .hero { padding-bottom: 40px; }
+  /* hero--clean en participa.html: mantiene su padding-top propio; hero--home lo anula con su layout */
+  .hero--clean:not(.hero--home) { padding-top: 32px; }
+
+  /* Primera pantalla completa: espacio beige arriba y abajo, contenido centrado.
+     La sección ocupa toda la ventana menos el header; el .wrap crece para llenar
+     ese espacio y centra el contenido verticalmente (igual que en desktop). */
+  .hero.hero--home {
+    min-height: calc(100svh - var(--header-h) - 1px);
+    padding-top: max(20px, 4vh);
+    padding-bottom: max(20px, 4vh);
+    display: flex;
+    flex-direction: column;
+  }
+  .hero.hero--home > .wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* La sección ya no tiene min-height propio: es el h1 quien ocupa la primera pantalla */
+  .hero.hero--home {
+    padding-block: 0;
+    display: block;
+    overflow: hidden;
+  }
+
+  /* Grid de una sola columna centrada */
+  .hero--home .hero__grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    justify-items: center;
+    container-type: inline-size;
+    min-width: 0;
+  }
+
+  /* Disolver el wrapper para exponer h1 y .cta al grid */
+  .hero--home .hero__copy {
+    display: contents;
+  }
+
+  /* ── Titular: ocupa la primera pantalla completa, contenido centrado ─────── */
+  .hero--home h1 {
+    order: 1;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    /* Primera pantalla: el texto queda centrado con beige arriba y abajo */
+    min-height: calc(100svh - var(--header-h) - 1px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-block: max(32px, 6vh);
+  }
+  /* Móvil: mostrar las 4 líneas, ocultar las 3 de desktop */
+  .hero__line--lg { display: none; }
+  .hero__line--sm { display: block; }
+  /* Las líneas sm: sin el offset lateral LSB */
+  .hero--home .hero__line--sm {
+    margin-left: 0;
+    width: auto;
+    white-space: nowrap;
+  }
+
+  /* Ilustración y botones: fluyen debajo del titular (scroll natural) */
+  .hero--home .hero__art {
+    order: 2;
+    width: 100%;
+    padding: 0 0 76px;   /* el espacio va abajo, no arriba (antes: 48 px arriba + 28 px abajo) */
+    margin-top: -150px;  /* sube la mascota hacia el texto; el hueco de arriba era ~255 px */
+  }
+  /* En celular la ilustración aparece al hacer scroll (ver useRevealOnScroll / Hero.jsx) */
+  .hero--home .hero__art.scroll-reveal:not(.is-shown) { opacity: 0; animation: none; }
+  .hero--home .hero__art.scroll-reveal.is-shown { animation: zoom-in .8s cubic-bezier(.2, .8, .3, 1) both; }
+  @keyframes zoom-in { from { opacity: 0; scale: .5; } }
+  .hero--home .cta {
+    order: 3;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 0;
+    padding-bottom: 48px;
+  }
+  /* Botones a ancho cómodo y consistente */
+  .hero--home .cta .btn {
+    width: 100%;
+    max-width: 340px;
+    align-self: center;
+  }
+  .kicker { letter-spacing: .1em; }
+  .place { margin-top: 1.3em; line-height: 1.45; }
+  .place strong { display: block; }   /* lugar arriba, ciudad abajo, sin "·" colgando */
+  .place .sep { display: none; }
+  .ticket { height: 360px; --perf: 63%; }
+  .ticket__day { font-size: 7.25rem; }
+  .ticket__mon { font-size: 1.35rem; }
+  .sticker--red { width: 88px; height: 88px; top: -24px; right: -8px; font-size: .85rem; }
+
+  /* Tarjetas de "Qué habrá": icono a la izquierda */
+  .tile { display: grid; grid-template-columns: 48px 1fr; column-gap: 16px; padding: 20px 18px 22px; }
+  .tile > * { grid-column: 2; }
+  .tile__icon { grid-column: 1; grid-row: 1 / span 3; width: 48px; height: 48px; margin: 0; }
+  .tile__icon .icon { width: 22px; height: 22px; }
+  .tile h3 { margin: .55em 0 .3em; }
+  .tile__tag { justify-self: start; margin-top: 12px !important; }
+
+  /* Qué habrá: el sol más chico y los servicios con el icono a la izquierda */
+  .section--fiesta .section__head::before { width: 340px; left: -170px; top: -130px; }
+  .fiesta-grid { gap: 16px; }
+  .fiesta-side { gap: 12px; }
+  .food-card__photo { height: 230px; }
+  .food-card__body { padding: 36px 20px 24px; }
+  .food-card__icon { left: 20px; }
+  .food-card .btn { width: 100%; padding-inline: 1.1em; }
+
+  /* Ubicación: datos más juntos; el marco de la foto cabe en el margen */
+  .venue { gap: 48px; }
+  .venue__facts > div { padding-block: 14px; padding-inline: clamp(6px, 2.5cqi, 12px); }
+  .venue__facts dt { flex-direction: column; align-items: flex-start; gap: 6px; letter-spacing: .12em; }
+  .venue__facts strong { font-size: clamp(0.95rem, 5.2cqi, 1.4rem); }
+  .venue__media { gap: 26px; padding-inline: 8px; }
+  .venue__tag { left: 22px; }
+
+  /* Participa: beneficios más compactos */
+  .hero-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: .86rem;
+    margin-bottom: 18px;
+  }
+  .hero-pill__sep { display: none; }
+  .perk-wrap { width: 100%; }
+  .perk { --perf: 72px; border-radius: 20px; }
+  .perk__head { padding: 0 18px; }
+  .perk h2 { font-size: 1.6rem; }
+  .perk__list { padding: 10px 18px 14px; }
+  .perk__list li { gap: 10px; font-size: .95rem; padding: 7px 0; }
+  .perk__icon { width: 34px; height: 34px; }
+  .perk__icon .icon { width: 17px; height: 17px; }
+
+  /* Pie: secciones en dos columnas y botones lado a lado */
+  .site-footer { padding-top: 56px; }
+  .footer__grid { gap: 32px; }
+  .footer__nav { grid-template-columns: 1fr 1fr; gap: 0 16px; }
+  .footer__nav a { padding: .5em 0; }
+  .footer__share .btn { flex: 1 1 auto; }
+  .footer__legal { margin-top: 36px; }
+}
+
+/* Celulares angostos (320–359 px): que el kicker y la etiqueta "Line-up por anunciar" quepan en una línea */
+@media (max-width: 359px) {
+  .kicker { font-size: .75rem; letter-spacing: .05em; }
+  .tile__tag { letter-spacing: .03em; }
+}
+
+
