@@ -589,6 +589,44 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   box-shadow: none;
 }
 
+/* Flechas del carrusel en las orillas, a la altura de las tarjetas */
+.taquerias-stage {
+  position: relative;
+}
+
+.carousel-nav-btn--edge {
+  position: absolute;
+  /* Celular: una tarjeta ocupa todo el ancho, así que las flechas van a la altura de la foto
+     (centro de su recuadro 16/10) para no tapar el texto de la tarjeta. */
+  top: calc(20px + (100vw - 2 * var(--gutter) - 36px) / 3.2);
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(29, 27, 22, .22);
+}
+
+.carousel-nav-btn--edge.carousel-nav-btn--prev { left: 8px; }
+.carousel-nav-btn--edge.carousel-nav-btn--next { right: 8px; }
+
+/* Con espacio a los lados, la flecha queda mitad dentro y mitad fuera de la tarjeta */
+@media (min-width: 640px) {
+  .carousel-nav-btn--edge {
+    top: 50%;
+    width: 44px;
+    height: 44px;
+    border-color: var(--line);
+  }
+  .carousel-nav-btn--edge.carousel-nav-btn--prev { left: -22px; }
+  .carousel-nav-btn--edge.carousel-nav-btn--next { right: -22px; }
+}
+
+.carousel-nav-btn--edge:focus-visible {
+  outline: 2px dashed var(--green);
+  outline-offset: 3px;
+}
+
 /* Contenedor del carrusel / grilla */
 .taquerias-viewport {
   position: relative;
@@ -649,6 +687,11 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 .taquerias-slide > .tcard {
   width: 100%;
+}
+
+/* Hueco invisible que completa la última página del carrusel */
+.taquerias-slide--relleno {
+  visibility: hidden;
 }
 
 /* ==========================================================================
@@ -995,8 +1038,8 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   .taquerias__cta-card { min-height: 0; border-radius: 18px; }
   .taquerias__cta.btn { width: 100%; max-width: 360px; padding: 16px 28px; }
 }
-.taquerias-viewport:has(.empty) ~ .taquerias__cta-wrap,
-.taquerias-viewport:has(.empty) ~ .taquerias__toggle-wrap { display: none; }
+.taquerias-stage:has(.empty) ~ .taquerias__cta-wrap,
+.taquerias-stage:has(.empty) ~ .taquerias__toggle-wrap { display: none; }
 
 .empty {
   text-align: center;
