@@ -9,32 +9,46 @@ import { asset } from '../lib/asset';
 
 const pad = (n) => String(n).padStart(2, '0');
 
+// Mide el carrusel: `paso` es lo que mide una tarjeta más su separación y `porVista` cuántas caben a la vez
+// (3 en escritorio, 2 en tablet, 1 en celular). Se mide en vez de fijarse para respetar los cortes del CSS.
+function medir(el, total) {
+  const slides = el.children;
+  const ancho = slides[0].offsetWidth;
+  const paso = total > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : ancho;
+  const porVista = Math.max(1, Math.round((el.clientWidth + (paso - ancho)) / paso));
+  return { paso, porVista };
+}
+
 export default function Taquerias() {
   const { status, items, reintentar } = useTaquerias();
   // Las tarjetas llegan después del primer render: hay que observarlas para que aparezcan al entrar en pantalla.
   useRevealOnScroll([status, items.length]);
   const trackRef = useRef(null);
   // Rango de taquerías visibles en el carrusel (base 1), p. ej. 04–06 en escritorio o 02 en celular.
-  const [rango, setRango] = useState({ primera: 1, ultima: 1 });
+  const [rango, setRango] = useState({ primera: 1, ultima: 1, porVista: 1 });
+  const total = items.length;
+  // Huecos al final para que la última página avance igual que las demás (con 5 taquerías: 1–3 y luego 4–5),
+  // en lugar de recorrerse hacia atrás y repetir tarjetas ya vistas (3–5).
+  const relleno = (rango.porVista - (total % rango.porVista)) % rango.porVista;
+  // Solo hay flechas y contador cuando las taquerías no caben todas en pantalla.
+  const hayNavegacion = status === 'ok' && total > rango.porVista;
 
   // Calcula el rango visible solo una vez por frame y solo actualiza el estado si cambió,
   // para no re-renderizar la sección en cada evento de scroll mientras se desliza.
   const updateScrollState = useCallback(() => {
     const el = trackRef.current;
-    const slides = el?.children;
-    if (!el || !slides || slides.length === 0) return;
+    if (!el || total === 0 || el.children.length === 0) return;
 
-    const total = slides.length;
-    const ancho = slides[0].offsetWidth;
-    const paso = total > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : ancho;
-    const separacion = paso - ancho;
-    const porVista = Math.max(1, Math.round((el.clientWidth + separacion) / paso));
-
-    const indice = Math.min(Math.round(el.scrollLeft / paso), Math.max(0, total - porVista));
+    const { paso, porVista } = medir(el, total);
+    const indice = Math.min(Math.round(el.scrollLeft / paso), total - 1);
     const primera = indice + 1;
     const ultima = Math.min(total, primera + porVista - 1);
-    setRango((prev) => (prev.primera === primera && prev.ultima === ultima ? prev : { primera, ultima }));
-  }, []);
+    setRango((prev) => (
+      prev.primera === primera && prev.ultima === ultima && prev.porVista === porVista
+        ? prev
+        : { primera, ultima, porVista }
+    ));
+  }, [total]);
 
   useEffect(() => {
     const el = trackRef.current;
@@ -58,28 +72,29 @@ export default function Taquerias() {
       window.removeEventListener('resize', onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [updateScrollState, items.length]);
+  }, [updateScrollState, total]);
 
-  // Carrusel infinito: al pasar de la última página vuelve a la primera, y al retroceder desde la primera va a la última.
-  const scrollPrev = () => {
+  // Avanza o retrocede una página completa (3 tarjetas en escritorio: 1–3, 4–6, 7–9…) y salta a la tarjeta exacta
+  // donde empieza esa página. Es infinito: pasando de la última vuelve a la primera y viceversa.
+  const irAPagina = (direccion) => {
     const el = trackRef.current;
-    if (!el) return;
-    if (el.scrollLeft <= 15) {
-      el.scrollTo({ left: el.scrollWidth, behavior: 'smooth' });
+    if (!el || total === 0) return;
+
+    const { paso, porVista } = medir(el, total);
+    const indice = Math.round(el.scrollLeft / paso);
+    let destino;
+    if (direccion > 0) {
+      destino = (Math.floor(indice / porVista) + 1) * porVista;
+      if (destino >= total) destino = 0;
     } else {
-      el.scrollBy({ left: -el.clientWidth, behavior: 'smooth' });
+      destino = (Math.ceil(indice / porVista) - 1) * porVista;
+      if (destino < 0) destino = Math.floor((total - 1) / porVista) * porVista;
     }
+    el.scrollTo({ left: destino * paso, behavior: 'smooth' });
   };
 
-  const scrollNext = () => {
-    const el = trackRef.current;
-    if (!el) return;
-    if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 15) {
-      el.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-      el.scrollBy({ left: el.clientWidth, behavior: 'smooth' });
-    }
-  };
+  const scrollPrev = () => irAPagina(-1);
+  const scrollNext = () => irAPagina(1);
 
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowLeft') {
@@ -104,10 +119,9 @@ export default function Taquerias() {
             </p>
           </div>
 
-          {/* Controles discretos del carrusel en escritorio */}
-          {items.length > 3 && (
-            <div className="taquerias-head__controls" aria-label="Controles del carrusel">
-              <>
+          {/* Contador del carrusel; las flechas van en las orillas, junto a las tarjetas */}
+          {hayNavegacion && (
+            <div className="taquerias-head__controls">
               <span className="carousel-counter" aria-live="polite">
                 <span className="carousel-counter__current">
                   {rango.primera === rango.ultima
@@ -115,30 +129,35 @@ export default function Taquerias() {
                     : `${pad(rango.primera)}–${pad(rango.ultima)}`}
                 </span>
                 <span className="carousel-counter__sep"> de </span>
-                <span className="carousel-counter__total">{pad(items.length)}</span>
+                <span className="carousel-counter__total">{pad(total)}</span>
               </span>
-              <div className="carousel-nav-group">
-                <button
-                  type="button"
-                  className="carousel-nav-btn carousel-nav-btn--prev"
-                  onClick={scrollPrev}
-                  aria-label="Ver taquerías anteriores"
-                >
-                  <Icon name="chevron-left" />
-                </button>
-                <button
-                  type="button"
-                  className="carousel-nav-btn carousel-nav-btn--next"
-                  onClick={scrollNext}
-                  aria-label="Ver taquerías siguientes"
-                >
-                  <Icon name="chevron-right" />
-                </button>
-              </div>
-              </>
             </div>
           )}
         </div>
+
+        <div className="taquerias-stage">
+        {hayNavegacion && (
+          <>
+            <button
+              type="button"
+              className="carousel-nav-btn carousel-nav-btn--edge carousel-nav-btn--prev"
+              onClick={scrollPrev}
+              aria-label="Ver taquerías anteriores"
+              aria-controls="taquerias-collection"
+            >
+              <Icon name="chevron-left" />
+            </button>
+            <button
+              type="button"
+              className="carousel-nav-btn carousel-nav-btn--edge carousel-nav-btn--next"
+              onClick={scrollNext}
+              aria-label="Ver taquerías siguientes"
+              aria-controls="taquerias-collection"
+            >
+              <Icon name="chevron-right" />
+            </button>
+          </>
+        )}
 
         {/* Contenedor persistente: no desmonta nodos para evitar pérdida de opacidad o estado */}
         {/* La animación de entrada va en el contenedor, no en cada tarjeta: así las tarjetas
@@ -178,6 +197,9 @@ export default function Taquerias() {
                   <TaqueriaCard taqueria={t} />
                 </div>
               ))}
+              {Array.from({ length: relleno }, (_, i) => (
+                <div className="taquerias-slide taquerias-slide--relleno" key={`relleno-${i}`} aria-hidden="true" />
+              ))}
             </div>
           ) : status === 'error' ? (
             <div className="empty" role="status">
@@ -192,6 +214,7 @@ export default function Taquerias() {
               <Button href="participa.html" variant="red" size="sm">Registrar mi taquería</Button>
             </div>
           )}
+        </div>
         </div>
 
         {/* Invitación a taquerías */}
