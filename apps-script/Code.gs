@@ -302,6 +302,10 @@ function onFormSubmit(e) {
       if (fila > 1) {
         const encabezados = hoja.getRange(1, 1, 1, hoja.getLastColumn()).getValues()[0];
         const mapa = mapearColumnas_(encabezados);
+        // Aprobación automática: solo si la casilla está vacía. Así, si después
+        // desmarcas una taquería y alguien edita su respuesta, no vuelve a salir.
+        const celdaAprobado = hoja.getRange(fila, mapa.aprobado + 1);
+        if (celdaAprobado.getValue() === '') celdaAprobado.setValue(true);
         const id = extraerIdDrive_(hoja.getRange(fila, mapa.foto + 1).getValue());
         if (id) hacerPublicoArchivo_(id);
       }
