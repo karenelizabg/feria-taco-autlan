@@ -519,12 +519,6 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   flex-wrap: wrap;
 }
 
-/* Botón «Ver todas las taquerías» junto a los controles del carrusel */
-.taquerias-head__controls .btn--toggle-view {
-  min-width: 0;
-  white-space: nowrap;
-}
-
 /* Indicador de página discreto: 01 / 02 */
 .carousel-counter {
   font: 600 1rem/1 var(--f-body);
@@ -648,84 +642,6 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   .taquerias-track--carousel .taquerias-slide {
     flex: 0 0 calc((100% - 56px) / 3); /* Escritorio: 3 tarjetas por vista */
   }
-}
-
-/* Listado completo: diálogo nativo con una lista compacta de todas las taquerías */
-.listado-dialog {
-  width: min(560px, calc(100% - 32px));
-  max-height: min(80svh, 720px);
-  padding: 0;
-  display: none;
-  flex-direction: column;
-  border: 1.5px solid var(--line);
-  border-radius: 18px;
-  background: var(--cream);
-  color: var(--ink);
-  box-shadow: 0 24px 60px -20px rgba(16, 67, 42, .35);
-}
-
-.listado-dialog[open] {
-  display: flex;
-}
-
-.listado-dialog::backdrop {
-  background: rgba(29, 27, 22, .45);
-}
-
-.listado-dialog__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--line);
-}
-
-.listado-dialog__title {
-  margin: 0;
-  font: 700 1rem/1.2 var(--f-body);
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--green);
-}
-
-.listado-dialog__list {
-  flex: 1;
-  min-height: 0;
-  margin: 0;
-  padding: 6px 0;
-  list-style: none;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
-.listado-dialog__item {
-  display: grid;
-  grid-template-columns: 2.5rem 1fr;
-  column-gap: 8px;
-  padding: 10px 20px;
-  border-bottom: 1px dashed var(--line);
-}
-
-.listado-dialog__item:last-child {
-  border-bottom: 0;
-}
-
-.listado-dialog__num {
-  font: 1rem/1.4 var(--f-num);
-  color: var(--green);
-}
-
-.listado-dialog__name {
-  display: block;
-  font: 600 .98rem/1.3 var(--f-body);
-}
-
-.listado-dialog__tags {
-  display: block;
-  margin-top: 2px;
-  font: 400 .85rem/1.4 var(--f-body);
-  color: var(--ink-soft);
 }
 
 .taquerias-slide > .tcard {
@@ -996,19 +912,6 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   margin-top: clamp(28px, 4vw, 44px);
   display: flex;
   justify-content: center;
-}
-
-.btn--toggle-view {
-  min-width: 240px;
-  gap: .75em;
-  border-color: var(--green);
-  color: var(--green);
-}
-
-.icon--toggle {
-  width: 1em;
-  height: 1em;
-  transition: transform .2s ease;
 }
 
 /* Invitación a taquerías participantes */

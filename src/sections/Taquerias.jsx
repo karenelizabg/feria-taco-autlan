@@ -13,7 +13,6 @@ export default function Taquerias() {
   const { status, items, reintentar } = useTaquerias();
   // Las tarjetas llegan después del primer render: hay que observarlas para que aparezcan al entrar en pantalla.
   useRevealOnScroll([status, items.length]);
-  const listadoRef = useRef(null);
   const trackRef = useRef(null);
   // Rango de taquerías visibles en el carrusel (base 1), p. ej. 04–06 en escritorio o 02 en celular.
   const [rango, setRango] = useState({ primera: 1, ultima: 1 });
@@ -82,8 +81,6 @@ export default function Taquerias() {
     }
   };
 
-  const abrirListado = () => listadoRef.current?.showModal();
-
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
@@ -139,46 +136,6 @@ export default function Taquerias() {
                 </button>
               </div>
               </>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="btn--toggle-view"
-                onClick={abrirListado}
-                aria-haspopup="dialog"
-                aria-controls="taquerias-listado"
-              >
-                <span>Ver listado completo</span>
-              </Button>
-
-              {/* Listado compacto de todas las taquerías, en un diálogo nativo (Esc y clic fuera lo cierran) */}
-              <dialog
-                id="taquerias-listado"
-                ref={listadoRef}
-                className="listado-dialog"
-                aria-labelledby="listado-titulo"
-                onClick={(e) => { if (e.target === e.currentTarget) e.currentTarget.close(); }}
-              >
-                <div className="listado-dialog__head">
-                  <h3 id="listado-titulo" className="listado-dialog__title">Taquerías participantes</h3>
-                  <Button type="button" variant="ghost" size="sm" onClick={() => listadoRef.current?.close()}>
-                    Cerrar
-                  </Button>
-                </div>
-                <ol className="listado-dialog__list">
-                  {items.map((t, i) => (
-                    <li className="listado-dialog__item" key={`listado-${t.id}`}>
-                      <span className="listado-dialog__num">{pad(i + 1)}</span>
-                      <div>
-                        <span className="listado-dialog__name">{t.nombre}</span>
-                        {t.etiquetas.length > 0 && (
-                          <span className="listado-dialog__tags">{t.etiquetas.join(' · ')}</span>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </dialog>
             </div>
           )}
         </div>
