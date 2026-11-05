@@ -1017,10 +1017,11 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .venue { display: grid; gap: 56px; align-items: center; }
 @media (min-width: 900px) { .venue { grid-template-columns: 1fr 1.1fr; gap: clamp(48px, 6vw, 80px); } }
 @media (max-width: 899px) {
-  /* En celular y pantallas de una columna: foto arriba, luego título y tira de datos, y el botón de Maps al final */
+  /* En celular y pantallas de una columna: Ubicación + título + descripción, luego la foto,
+     después la tira de tres datos y, al final, el botón de Maps */
   .venue__info { display: contents; }
-  .venue__media { order: 1; }
-  .venue__text { order: 2; }
+  .venue__text { order: 1; }
+  .venue__media { order: 2; }
   .venue__facts { order: 3; margin-top: 0; }
   .venue__cta { order: 4; }
 }
@@ -1314,7 +1315,13 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .fiesta-side .reveal:nth-child(1) { --d: .08s; }
 .fiesta-side .reveal:nth-child(2) { --d: .16s; }
 .fiesta-side .reveal:nth-child(3) { --d: .24s; }
-.services.reveal { --d: .3s; }
+/* Servicios: cada uno aparece al entrar en pantalla. Solo en escritorio (tres en fila) se escalonan;
+   en celular van uno bajo otro y cada quien entra cuando le toca, sin retraso. */
+@media (min-width: 640px) {
+  .services li.reveal:nth-child(1) { --d: .2s; }
+  .services li.reveal:nth-child(2) { --d: .3s; }
+  .services li.reveal:nth-child(3) { --d: .4s; }
+}
 .feria__copy .reveal:nth-child(2) { --d: .06s; }
 .feria__copy .reveal:nth-child(3) { --d: .12s; }
 .feria__copy .reveal:nth-child(4) { --d: .18s; }
@@ -1583,12 +1590,44 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .section--fiesta .section__head h2 { white-space: nowrap; font-size: clamp(1.5rem, 6.8vw, 3.5rem); }
 
 /* 14. Ajustes de prelanzamiento ------------------------------------------- */
-/* Titular con el nombre de la feria: va dentro del h1 como eyebrow, con la misma línea roja. */
-.hero__name { margin: 0 0 .9em; font-size: .875rem; color: var(--red); }
+/* Nombre de la feria dentro del h1: solo para buscadores y lectores de pantalla. No se ve en pantalla
+   (oculto de forma accesible, no con display:none, para que siga contando como parte del título). */
+.hero__name {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; border: 0;
+}
 
 /* Etiqueta de algo aún no confirmado (se usa en la página, no en los datos del JSON-LD). */
 .tag-soon {
   display: inline-block; margin-left: .4em; padding: .2em .65em .15em; border-radius: 999px;
   font-style: normal; font-weight: 700; font-size: .75rem; line-height: 1.2; letter-spacing: .08em;
   text-transform: uppercase; vertical-align: middle; color: var(--ink); background: var(--yellow);
+}
+
+/* 15. Participa en celular y tablet (una columna) ---------------------------
+   Orden: título → párrafos → tarjeta "Tu lugar incluye" → botón de reservar → dudas.
+   El título es la primera pantalla (grande, centrado, con beige arriba y abajo, igual que el inicio).
+   .hero__copy se disuelve (display: contents) para poder intercalar la tarjeta entre el texto y los botones;
+   en escritorio (≥ 920 px) se queda como siempre: texto y botones a la izquierda, tarjeta a la derecha. */
+@media (max-width: 919px) {
+  .hero.hero--join { display: block; min-height: 0; padding: 0 0 56px; }
+  .hero--join .hero__grid { grid-template-columns: 1fr; gap: 0; justify-items: center; container-type: inline-size; }
+  .hero--join .hero__copy { display: contents; }
+
+  .hero--join h1 {
+    order: 1; width: 100%; box-sizing: border-box; margin: 0;
+    min-height: calc(100svh - var(--header-h) - 1px);
+    padding-block: max(32px, 6vh);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; text-wrap: balance;
+    font-size: clamp(3rem, 15cqi, 4.75rem);
+  }
+  .hero--join .lead { order: 2; max-width: 26em; margin: 0 0 18px; text-align: center; }
+  .hero--join .lead:nth-of-type(2) { margin-bottom: 0; }
+
+  /* Espacio beige arriba de la tarjeta: la mascota (111 px sobre el borde) no debe tapar el texto.
+     Abajo, aire para que el sello "Lugares limitados" no choque con el botón. */
+  .hero--join .hero__art { order: 3; width: 100%; margin-top: 140px; padding: 0 0 68px; }
+  .hero--join .cta { order: 4; width: 100%; justify-content: center; margin-top: 0; }
+  .hero--join .join__help { order: 5; margin: 18px 0 0; text-align: center; }
 }

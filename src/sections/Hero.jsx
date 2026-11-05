@@ -44,7 +44,8 @@ export default function Hero() {
       <div className="wrap hero__grid">
         <div className="hero__copy">
           <h1>
-            <span className="eyebrow hero__name">Feria del Taco Autlán 2026</span>
+            {/* Solo para buscadores y lectores de pantalla: no se ve (ver .hero__name en styles.css) */}
+            <span className="hero__name">Feria del Taco Autlán 2026</span>
             {/* Desktop: 3 líneas calibradas al ancho de la columna */}
             <span className="hero__line hero__line--lg">En Autlán,</span>
             <span className="hero__line hero__line--lg">el próximo plan</span>

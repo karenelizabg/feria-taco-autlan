@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useSite } from '../context/SiteContext';
 import { pageUrl } from '../lib/share';
+import { launchConfetti } from '../lib/confetti';
 
 // Devuelve la función de compartir: usa el menú nativo si existe; si no, copia el enlace.
 export default function useShare() {
@@ -16,6 +17,9 @@ export default function useShare() {
   }, [toast]);
 
   return useCallback(async () => {
+    // Confeti al tocar "Invita a la taquiza", "Compartir la feria" o "Copiar enlace".
+    // Se lanza antes de abrir el menú nativo de compartir, que en celular tapa la pantalla.
+    launchConfetti();
     if (!navigator.share) {
       copyLink();
       return;
