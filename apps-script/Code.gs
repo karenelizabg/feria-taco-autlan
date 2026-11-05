@@ -77,7 +77,7 @@ const CACHE_KEY = 'taquerias_aprobadas_v1';
 const CACHE_SEGUNDOS = 5 * 60;      // 5 minutos
 const CACHE_MAX_CARACTERES = 95000; // CacheService acepta ~100 KB por valor
 const MAX_DESCRIPCION = 80;
-const MAX_ETIQUETAS = 5;
+const MAX_ETIQUETAS = 6;
 
 // Texto que se busca en el encabezado (ya normalizado: minúsculas, sin acentos).
 // "exacto": true → el encabezado debe ser igual; si no, basta con que lo contenga.
