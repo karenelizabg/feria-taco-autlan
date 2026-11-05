@@ -20,7 +20,7 @@ index.html                  Entrada de la página principal (<head>, metas, JSON
 participa.html              Entrada de la página para taquerías
 404.html                    Página de error 404 (entrada propia de Vite)
 vite.config.js              Configuración de Vite (las dos páginas)
-public/assets/img/          Imágenes, logo, favicons, og.jpg, fondo de tacos y decorativos
+public/assets/img/          Imágenes, logo, favicons, og-2.jpg, fondo de tacos y decorativos
 public/                     favicon.ico, robots.txt, sitemap.xml y .htaccess (se copian tal cual a dist/)
 src/
 ├── main.jsx                Monta la página principal
