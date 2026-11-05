@@ -6,7 +6,7 @@
 export const TAQUERIAS_API_URL = 'https://script.google.com/macros/s/AKfycbz2mvWKvMIcxzIuezFbm2fZbuFCnVtBFtsY4prlct__zyN8VvHc7svdKsSWuy67x_3V/exec';
 
 const CONFIGURADA = /^https:\/\/script\.google\.com\//.test(TAQUERIAS_API_URL);
-const MAX_ETIQUETAS = 5;
+const MAX_ETIQUETAS = 6;
 
 // Solo se aceptan enlaces http(s); cualquier otra cosa se descarta.
 function enlaceSeguro(url) {
