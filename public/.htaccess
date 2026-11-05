@@ -21,7 +21,7 @@ ErrorDocument 404 /404.html
   Header always set X-Frame-Options "DENY"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
   # El script inline de <head> está permitido por hash (sha256 de: document.documentElement.classList.add('js'))
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://drive.google.com https://*.googleusercontent.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'none'"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://drive.google.com https://*.googleusercontent.com https://*.usercontent.google.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'none'"
   # HSTS: activar solo cuando el SSL esté verificado (ver checklist)
   # Header always set Strict-Transport-Security "max-age=31536000"
 </IfModule>
