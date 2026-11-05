@@ -16,7 +16,7 @@ export default function TaqueriaCard({ taqueria: t }) {
   ].filter(Boolean);
 
   return (
-    <article className="tcard tcard--editorial reveal" aria-label={`Taquería ${t.nombre}`}>
+    <article className="tcard tcard--editorial" aria-label={`Taquería ${t.nombre}`}>
       <div
         className={tieneFoto ? 'tcard__gallery tcard__gallery--photo' : 'tcard__gallery tcard__gallery--pending'}
         aria-hidden={!tieneFoto}
