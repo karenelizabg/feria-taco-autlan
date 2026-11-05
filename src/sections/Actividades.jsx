@@ -58,10 +58,11 @@ export default function Actividades() {
           </div>
         </div>
 
-        <div className="services reveal">
+        {/* Cada servicio aparece por su cuenta (en celular van apilados: no deben entrar los tres juntos) */}
+        <div className="services">
           <ul aria-label="Servicios">
             {SERVICIOS.map((s) => (
-              <li key={s.icon}>
+              <li className="reveal" key={s.icon}>
                 <span className="tile__icon tile__icon--red"><Icon name={s.icon} /></span>
                 {s.label}
               </li>
