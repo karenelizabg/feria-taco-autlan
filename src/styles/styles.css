@@ -809,6 +809,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   padding: 0;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 6px 8px;
 }
 
@@ -819,7 +820,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  flex-shrink: 0;
+  flex: 1 1 auto;
   max-width: 100%;
   padding: .35em .8em;
   font-size: var(--t-small);
