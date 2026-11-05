@@ -50,7 +50,7 @@ export default function Actividades() {
               Grupos musicales invitados para ambientar la feria.
             </Tile>
             <Tile icon="dance" title="Danza tradicional">
-              Disfruta de bailes tradicionales
+              Disfruta de bailes tradicionales.
             </Tile>
             <Tile icon="calendar" title="Eventos y actividades" tag="Por anunciar">
               Dinámicas y actividades para disfrutar durante el evento.

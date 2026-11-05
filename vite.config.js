@@ -7,8 +7,8 @@ const page = (name) => fileURLToPath(new URL(name, import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
-  // GitHub Pages sirve el sitio en /feria-taco-autlan/ (project page).
-  base: '/feria-taco-autlan/',
+  // Hostinger: el sitio va en la raíz del dominio (https://feriadeltacoautlan.com/).
+  base: '/',
   server: { port: 4173 },
   preview: { port: 4173 },
   build: {
@@ -16,6 +16,7 @@ export default defineConfig({
       input: {
         main: page('./index.html'),
         participa: page('./participa.html'),
+        notFound: page('./404.html'),
       },
     },
   },

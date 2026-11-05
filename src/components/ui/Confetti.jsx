@@ -7,6 +7,8 @@ const COLORS = ['#10432a', '#c0392b', '#f5c842', '#fbf9ee'];
 // Lanza confeti al abrir la página: dos ráfagas desde las esquinas inferiores.
 export default function Confetti() {
   useEffect(() => {
+    // Sin confeti si el sistema pide menos movimiento.
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined;
     // Pequeño delay para que el navegador haya pintado la página antes de disparar
     const timer = setTimeout(() => {
       const shared = {

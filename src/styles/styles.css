@@ -34,7 +34,7 @@
   --t-h3: 1.35rem;
   --t-lead: 1.1875rem;
   --t-eyebrow: .8125rem;
-  --t-small: .875rem;
+  --t-small: 1rem;            /* mínimo 16 px para texto que no va en mayúsculas */
 }
 
 /* 2. Base ------------------------------------------------------------------ */
@@ -90,7 +90,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; overflow-wrap: break-word; }
 .btn {
   --bg: var(--ink); --fg: var(--cream); --sh: #000;
   display: inline-flex; align-items: center; justify-content: center; gap: .6em;
-  padding: .95em 1.6em;
+  padding: .95em 1.6em; min-height: 44px;
   font: 700 1rem/1 var(--f-body);
   color: var(--fg); background: var(--bg);
   border: 2px solid var(--bg); border-radius: 999px;
@@ -131,6 +131,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; overflow-wrap: break-word; }
 
 .nav { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px); }
 .nav a:not(.btn) {
+  display: inline-flex; align-items: center; min-height: 44px;
   font-weight: 500; font-size: 1rem; text-decoration: none; padding: .4em 0;
   background: linear-gradient(var(--red), var(--red)) left bottom / 0 3px no-repeat;
   transition: background-size .2s ease;
@@ -138,7 +139,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; overflow-wrap: break-word; }
 
 .menu-btn {
   display: none; align-items: center; gap: 10px;
-  font: 700 .9rem var(--f-body); color: var(--green);
+  font: 700 1rem var(--f-body); color: var(--green); min-height: 44px;
   background: none; border: 2px solid var(--green); border-radius: 999px; padding: .55em 1em; cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -241,7 +242,7 @@ h1 {
 .js .count__grid { display: grid; }
 .count__grid b { display: block; font: 400 2.1rem/1 var(--f-num); font-variant-numeric: tabular-nums; }
 .count__grid span { font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
-.count.is-live .count__label { font-size: .85rem; letter-spacing: .08em; text-transform: none; color: var(--cream); }
+.count.is-live .count__label { font-size: 1rem; letter-spacing: .08em; text-transform: none; color: var(--cream); }
 
 .sticker {
   position: absolute; margin: 0; display: grid; place-items: center; text-align: center;
@@ -359,40 +360,27 @@ h2 {
 .section--green h2, .section--red h2 { color: var(--cream); }
 h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
-/* La feria (primera edición): texto a la izquierda y la mascota en un círculo verde a la
-   derecha. Fondo crema sólido: tapa los tacos y el papel de body. */
+/* La feria (primera edición): texto a la izquierda y la mascota a la derecha. Fondo crema sólido: tapa los tacos y el papel de body. */
 .section--feria { padding-block: clamp(52px, 4.5vw, 64px); background: var(--cream); }
 .feria { display: grid; gap: clamp(36px, 5vw, 56px); align-items: center; }
-@media (min-width: 900px) { .feria { grid-template-columns: 1.15fr .85fr; } }
+/* Escritorio: mascota a la izquierda, texto a la derecha */
+@media (min-width: 900px) { .feria { grid-template-columns: .85fr 1.15fr; } .feria__art { order: -1; } .feria-mascot { transform: scaleX(-1); } }
 .feria__copy { container-type: inline-size; }
 /* Una frase por línea (<br>); el tamaño de H2 es el del sitio */
 .feria h2 { margin-bottom: .5em; }
 .feria__lead { max-width: 32em; font-size: var(--t-lead); line-height: 1.6; color: var(--ink-soft); }
 .feria .callout { max-width: 18em; font: 700 clamp(1.2rem, 1rem + .8vw, 1.6rem)/1.3 var(--f-body); color: var(--red); margin: .9em 0 0; text-wrap: balance; }
 
-/* Mascota: un círculo verde detrás (con anillo punteado, como el sello del boleto); el sombrero
-   y los pies salen del círculo, y abajo una sombra suave la asienta */
+/* Mascota sin círculo de fondo; abajo una sombra suave la asienta */
 .feria__art { position: relative; width: min(100%, 440px); aspect-ratio: 1; justify-self: center; display: grid; place-items: end center; }
-.feria__art::before {
-  content: ""; position: absolute; left: 50%; top: 5%; width: 84%; aspect-ratio: 1; translate: -50% 0;
-  border-radius: 50%; background: var(--green);
-  outline: 2px dashed rgba(251, 249, 238, .4); outline-offset: -14px;
-}
-.feria__art::after {
-  content: ""; position: absolute; left: 50%; bottom: -2%; width: 54%; height: 8%; translate: -50% 0;
-  background: radial-gradient(closest-side, rgba(16, 67, 42, .3), rgba(16, 67, 42, 0));
-}
 .feria-mascot {
   position: relative; z-index: 1; width: auto; height: 100%; pointer-events: none;
-  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, .22));
 }
 
-/* Entrada: el círculo crece y la mascota hace un zoom rápido y suave, poco notorio.
+/* Entrada: la mascota hace un zoom rápido y suave, poco notorio.
    El contenedor solo aparece (sin subir) para no sumar movimientos. */
 .js .feria__art.reveal.is-in { animation: appear .3s both; }
-.js .feria__art.is-in::before { animation: grow .7s cubic-bezier(.3, 1.3, .5, 1) both; }
 .js .feria__art.is-in .feria-mascot { animation: zoom-soft .45s .15s cubic-bezier(.2, .7, .3, 1) both; }
-@keyframes grow { from { opacity: 0; scale: .6; } }
 @keyframes zoom-soft { from { opacity: 0; scale: .92; } }
 
 /* Qué habrá, compacta: la comida (foto) a la izquierda y música, danza y eventos a la derecha,
@@ -406,7 +394,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .tile__head .tile__tag { margin: 0 !important; }
 @media (min-width: 640px) and (max-width: 1023px) {
   .fiesta-side { grid-template-columns: repeat(3, 1fr); }
-  .fiesta-side .tile__tag { font-size: .68rem !important; letter-spacing: .04em; }   /* que quepa en una línea */
+  .fiesta-side .tile__tag { font-size: .75rem !important; letter-spacing: .04em; }   /* que quepa en una línea */
 }
 @media (min-width: 1024px) {
   .fiesta-grid { grid-template-columns: 1.4fr 1fr; height: 400px; }
@@ -453,7 +441,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .tile__tab {
   position: absolute; bottom: 100%; left: 22px; z-index: 0;
   padding: 5px 10px 4px; border-radius: 8px 8px 0 0;
-  font: 700 .62rem/1.2 var(--f-body); letter-spacing: .1em; text-transform: uppercase;
+  font: 700 .75rem/1.2 var(--f-body); letter-spacing: .1em; text-transform: uppercase;
   color: var(--ink); background: var(--yellow);
 }
 .tile__tag {
@@ -534,15 +522,9 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   flex-wrap: wrap;
 }
 
-/* Botón «Ver todas las taquerías» junto a los controles del carrusel */
-.taquerias-head__controls .btn--toggle-view {
-  min-width: 0;
-  white-space: nowrap;
-}
-
 /* Indicador de página discreto: 01 / 02 */
 .carousel-counter {
-  font: 600 .85rem/1 var(--f-body);
+  font: 600 1rem/1 var(--f-body);
   letter-spacing: .12em;
   color: var(--ink-soft);
 }
@@ -624,12 +606,16 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   display: flex;
   gap: 28px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  /* proximity: el snap solo se aplica al soltar, sin frenar el momentum del dedo (mandatory se traba en celular) */
+  scroll-snap-type: x proximity;
   scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
   padding: 8px 0 20px;
   margin: -8px 0 -20px;
   scrollbar-width: none;
+  /* Capa propia para que el deslizamiento lo haga el compositor, no el hilo principal */
+  will-change: scroll-position;
 }
 
 .taquerias-track--carousel::-webkit-scrollbar {
@@ -659,36 +645,6 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   .taquerias-track--carousel .taquerias-slide {
     flex: 0 0 calc((100% - 56px) / 3); /* Escritorio: 3 tarjetas por vista */
   }
-}
-
-/* Modo Grilla expandida: 3 columnas en escritorio, apiladas en móvil */
-.taquerias-track--grid {
-  display: grid;
-  gap: 28px;
-  grid-template-columns: 1fr;
-  overflow-x: visible;
-  padding: 4px 0 12px;
-}
-
-@media (min-width: 640px) {
-  .taquerias-track--grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .taquerias-track--grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
-  }
-}
-
-.taquerias-track--grid .taquerias-slide {
-  flex: none;
-  width: 100%;
-  display: flex;
-  scroll-snap-align: none;
 }
 
 .taquerias-slide > .tcard {
@@ -746,6 +702,70 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   background: #ffffff;
 }
 
+/* Foto de la taquería: llena el marco con proporción fija (16:10) y recorte centrado */
+.tcard__gallery.tcard__gallery--photo {
+  padding: 12px;
+  background: #ffffff;
+}
+
+.tcard__gallery--photo .tcard__gallery-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+}
+
+.tcard__desc {
+  margin: 0 0 18px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* Íconos de Facebook, Instagram y ubicación (solo los que tienen link) */
+.tcard__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.tcard__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--green);
+  background: transparent;
+  border: 0;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.tcard__link .icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tcard__link:hover,
+.tcard__link:focus-visible {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--cream);
+  outline: none;
+}
+
 .tcard__gallery--pending {
   background: rgba(242, 236, 216, .35);
   border: 1px solid #C8BF9F;
@@ -792,15 +812,24 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   gap: 6px 8px;
 }
 
+/* Etiquetas centradas y contenidas: no se encogen (no se cortan las letras) y, si una
+   palabra es muy larga, se parte solo cuando no cabe en la tarjeta completa. */
 .tcard__menu li {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  max-width: 100%;
   padding: .35em .8em;
   font-size: var(--t-small);
   font-weight: 500;
   line-height: 1.2;
+  text-align: center;
   color: var(--green);
   background: var(--sand);
   border-radius: 999px;
-  white-space: nowrap;
+  overflow-wrap: break-word;
 }
 
 .tcard__sello {
@@ -893,24 +922,10 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   justify-content: center;
 }
 
-.btn--toggle-view {
-  min-width: 240px;
-  gap: .75em;
-  border-color: var(--green);
-  color: var(--green);
-}
-
-.icon--toggle {
-  width: 1em;
-  height: 1em;
-  transition: transform .2s ease;
-}
-
 /* Invitación a taquerías participantes */
 .taquerias__cta-wrap {
   margin-top: clamp(40px, 6vw, 64px);
-  padding-top: 36px;
-  border-top: 1px solid var(--line);
+  padding-top: 0;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -993,7 +1008,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* Cierre "Te esperamos": la imagen casi a todo el ancho, con esquinas redondeadas y sombra suave */
 .section--espera { padding-block: clamp(32px, 5vw, 64px) clamp(56px, 8vw, 96px); }
-.espera__img { display: block; width: 100%; height: auto; border-radius: 18px; border: 4px solid var(--yellow); box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .45); }
+.espera__img { display: block; width: 100%; height: auto; border-radius: 18px; box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .45); }
 
 /* Ubicación ("Nuestra sede"): textos y datos a la izquierda, foto enmarcada a la derecha.
    Un velo crema encima del fondo deja los tacos como textura y no compiten con el texto. */
@@ -1001,11 +1016,16 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .venue { display: grid; gap: 56px; align-items: center; }
 @media (min-width: 900px) { .venue { grid-template-columns: 1fr 1.1fr; gap: clamp(48px, 6vw, 80px); } }
 @media (max-width: 899px) {
-  /* En celular y pantallas de una columna: texto arriba, foto en medio, datos (fecha/horario/entrada) abajo */
+  /* En celular y pantallas de una columna: foto arriba, luego título y tira de datos, y el botón de Maps al final */
   .venue__info { display: contents; }
-  .venue__text { order: 1; }
-  .venue__media { order: 2; }
+  .venue__media { order: 1; }
+  .venue__text { order: 2; }
   .venue__facts { order: 3; margin-top: 0; }
+  .venue__cta { order: 4; }
+}
+/* Botón de Maps: bajo la tira de datos en escritorio */
+@media (min-width: 900px) {
+  .venue__cta { justify-self: start; margin-top: 32px; }
 }
 .venue__info { container-type: inline-size; }
 /* "JARDÍN LAS" mide ~7.6em: el tamaño sale del ancho de la columna para no partirlo en tres */
@@ -1030,7 +1050,6 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* Foto de la sede: marco verde doble (como el sello del boleto) y "Abrir en Google Maps" justo debajo */
 .venue__media { position: relative; display: grid; gap: 30px; }
-.venue__media .btn { justify-self: start; }
 .venue__tag {
   position: absolute; z-index: 2; top: -16px; left: 22px; margin: 0;
   display: inline-flex; align-items: center; gap: 8px; padding: .6em 1.1em;
@@ -1047,7 +1066,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 /* Participa: hero ------------------------------------------------------------
    Velo crema para que los tacos queden de textura; beneficios como boleto horizontal. */
 .hero--join {
-  background: rgba(251, 249, 238, .6);
+  background: transparent;
   /* Ocupa lo que queda de la pantalla debajo del encabezado (~69px) */
   min-height: calc(100vh - 69px);
   min-height: calc(100svh - 69px);
@@ -1063,10 +1082,11 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
     align-items: center;
   }
 }
-/* Tres líneas fijas (<br>): "A MÁS PERSONAS", la más larga, mide ~9.8em */
+/* Título largo: el tamaño sale del ancho de la columna y el texto se acomoda solo */
 .hero--join h1 {
-  font-size: min(3.6rem, 9.6cqi);
-  line-height: 1.2;
+  font-size: clamp(2.6rem, 11cqi, 5.6rem);
+  line-height: 1.08;
+  text-wrap: balance;
   margin-top: 0;
   margin-bottom: .26em;
 }
@@ -1119,15 +1139,39 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   font-size: 1.06rem;
   padding: 1.12em 2.1em;
 }
+.join__help { margin: 18px 0 0; font-size: 1rem; color: var(--ink-soft); }
+.join__help a {
+  color: var(--green); font-weight: 700;
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px;
+}
 
 /* Tarjeta de beneficios: proporción más horizontal, alto contenido y alto contraste */
 .hero--join .hero__art {
   padding: 10px 0;
 }
 .perk-wrap {
+  position: relative;
   width: min(100%, 460px);
   transform: none;
   filter: drop-shadow(0 18px 26px rgba(16, 67, 42, .24));
+}
+/* Sello "Lugares limitados" sobre la esquina inferior derecha de la tarjeta */
+.perk-wrap > .sticker {
+  right: -26px; left: auto; top: auto; bottom: -44px;
+  width: 136px; height: 136px; z-index: 3;
+  font-size: 1.05rem; line-height: 1.05; letter-spacing: .02em;
+  background: var(--red); color: #fff;
+  --rot: -8deg;
+  box-shadow: inset 0 0 0 4px var(--cream), inset 0 0 0 7px var(--red), 0 12px 24px -8px rgba(0, 0, 0, .35);
+}
+@media (max-width: 919px) {
+  .perk-wrap > .sticker { right: -12px; bottom: -36px; width: 118px; height: 118px; font-size: .92rem; }
+}
+
+/* La mascota asomándose desde arriba de la tarjeta */
+.perk__mascot {
+  position: absolute; z-index: 2; right: 18px; top: -111px;
+  width: 128px; height: auto; pointer-events: none;
 }
 .perk {
   --notch: 13px;
@@ -1143,6 +1187,8 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 .perk__head::after {
   content: "";
@@ -1201,6 +1247,30 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   stroke-width: 2.2;
 }
 
+@media (max-width: 599px) {
+  /* Participa: beneficios más compactos */
+  .hero-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 1rem;
+    margin-bottom: 18px;
+  }
+  .hero-pill__sep { display: none; }
+  .perk-wrap { width: 100%; }
+  .perk { --perf: 72px; border-radius: 20px; }
+  .perk__head { padding: 0 18px; }
+  .perk h2 { font-size: 1.6rem; }
+  .perk__list { padding: 10px 18px 14px; }
+  .perk__list li { gap: 10px; font-size: 1rem; padding: 7px 0; }
+  .perk__icon { width: 34px; height: 34px; }
+  .perk__icon .icon { width: 17px; height: 17px; }
+
+}
+
 /* 8. Footer ---------------------------------------------------------------- */
 .site-footer {
   background: var(--green-700); color: var(--cream); padding: 72px 0 28px;
@@ -1213,7 +1283,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .brand-plate img { height: 64px; width: auto; }
 .footer__brand p { color: rgba(251, 249, 238, .85); font-size: 1rem; margin: 0; }
 .footer__nav { display: grid; gap: 10px; align-content: start; }
-.footer__nav a { text-decoration: none; font-weight: 500; opacity: .9; justify-self: start; }
+.footer__nav a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-weight: 500; opacity: .9; justify-self: start; }
 .footer__share { display: flex; flex-wrap: wrap; gap: 12px; align-content: start; align-items: center; }
 .footer__share p { flex-basis: 100%; margin: 0; font: 700 var(--t-eyebrow) var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--yellow); }
 .footer__legal {
@@ -1237,9 +1307,13 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 .js .reveal.is-in { opacity: 1; animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; animation-delay: var(--d, 0s); }
 .taquerias .reveal:nth-child(3n+2) { --d: .08s; }
 .taquerias .reveal:nth-child(3n+3) { --d: .16s; }
+/* Qué habrá: aparecen en cascada rápida (cada tarjeta ~80 ms después de la anterior) */
+.js .fiesta-grid .reveal.is-in { animation-duration: .5s; animation-timing-function: cubic-bezier(.2, .7, .2, 1); }
+.fiesta-grid .food-card.reveal { --d: 0s; }
 .fiesta-side .reveal:nth-child(1) { --d: .08s; }
 .fiesta-side .reveal:nth-child(2) { --d: .16s; }
 .fiesta-side .reveal:nth-child(3) { --d: .24s; }
+.services.reveal { --d: .3s; }
 .feria__copy .reveal:nth-child(2) { --d: .06s; }
 .feria__copy .reveal:nth-child(3) { --d: .12s; }
 .feria__copy .reveal:nth-child(4) { --d: .18s; }
@@ -1299,11 +1373,13 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 @keyframes pulse { 50% { opacity: .45; } }
 
 /* Directorio: tarjetas de carga mientras aria-busy sea "true" (ya no se usa en React; la lista se pinta al montar) */
-.tcard--skeleton, .js .taquerias[aria-busy="true"] .empty { display: none; }
-.js .taquerias[aria-busy="true"] .tcard--skeleton { display: block; pointer-events: none; animation: appear .3s .4s both; }
-.tcard--skeleton span { display: block; height: .85rem; width: 80%; margin-top: 12px; border-radius: 6px; background: var(--line); animation: pulse 1.4s ease-in-out infinite; }
-.tcard--skeleton span:first-child { height: 1.4rem; width: 62%; margin: 0 0 18px; }
-.tcard--skeleton span:last-child { width: 45%; }
+/* Tarjetas de carga de las taquerías (mientras llega el Sheet): misma forma que una tarjeta real */
+.tcard--skeleton { pointer-events: none; animation: appear .3s .2s both; }
+.tcard__gallery--skeleton { background: rgba(242, 236, 216, .6); border-color: transparent; }
+.tcard--skeleton .sk-line { height: .85rem; width: 90%; margin-bottom: 10px; border-radius: 6px; }
+.tcard--skeleton .sk-line--short { width: 60%; margin-bottom: 22px; }
+.tcard--skeleton .sk-btn { height: 2.6rem; width: 100%; border-radius: 999px; }
+.skeleton-pulse { animation: pulse 1.4s ease-in-out infinite; }
 
 /* Cuenta regresiva: los dígitos esperan a la primera lectura del reloj (clase is-ready) en vez de mostrar "00" */
 .js .count:not(.is-ready) .count__grid b {
@@ -1312,7 +1388,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tcard--skeleton span, .js .count:not(.is-ready) .count__grid b { animation: none; }
+  .skeleton-pulse, .js .count:not(.is-ready) .count__grid b { animation: none; }
 }
 
 /* 13. Celular (hasta 599 px) ----------------------------------------------- */
@@ -1446,6 +1522,8 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
     max-width: 340px;
     align-self: center;
   }
+  /* En celular no se muestran «Cómo llegar» ni «Compartir la feria» (siguen en escritorio) */
+  .hero--home .cta { display: none; }
   .kicker { letter-spacing: .1em; }
   .place { margin-top: 1.3em; line-height: 1.45; }
   .place strong { display: block; }   /* lugar arriba, ciudad abajo, sin "·" colgando */
@@ -1476,30 +1554,12 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   .venue { gap: 48px; }
   .venue__facts > div { padding-block: 14px; padding-inline: clamp(6px, 2.5cqi, 12px); }
   .venue__facts dt { flex-direction: column; align-items: center; gap: 6px; letter-spacing: .12em; }
-  .venue__facts strong { font-size: clamp(0.9rem, 3.8cqi, 1.3rem); }
+  .venue__facts strong { font-size: clamp(1rem, 3.8cqi, 1.3rem); }
   .venue__media { gap: 26px; padding-inline: 8px; }
   .venue__tag { left: 22px; }
+  /* Celular: botón de Maps centrado, a su ancho natural */
+  .venue .venue__cta { justify-self: center; width: auto; }
 
-  /* Participa: beneficios más compactos */
-  .hero-pill {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    padding: 10px 14px;
-    border-radius: 14px;
-    font-size: .86rem;
-    margin-bottom: 18px;
-  }
-  .hero-pill__sep { display: none; }
-  .perk-wrap { width: 100%; }
-  .perk { --perf: 72px; border-radius: 20px; }
-  .perk__head { padding: 0 18px; }
-  .perk h2 { font-size: 1.6rem; }
-  .perk__list { padding: 10px 18px 14px; }
-  .perk__list li { gap: 10px; font-size: .95rem; padding: 7px 0; }
-  .perk__icon { width: 34px; height: 34px; }
-  .perk__icon .icon { width: 17px; height: 17px; }
 
   /* Pie: secciones en dos columnas y botones lado a lado */
   .site-footer { padding-top: 56px; }
@@ -1520,3 +1580,14 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* Título de "Qué habrá" en una sola línea; en celular se reduce para que quepa */
 .section--fiesta .section__head h2 { white-space: nowrap; font-size: clamp(1.5rem, 6.8vw, 3.5rem); }
+
+/* 14. Ajustes de prelanzamiento ------------------------------------------- */
+/* Titular con el nombre de la feria: va dentro del h1 como eyebrow, con la misma línea roja. */
+.hero__name { margin: 0 0 .9em; font-size: .875rem; color: var(--red); }
+
+/* Etiqueta de algo aún no confirmado (se usa en la página, no en los datos del JSON-LD). */
+.tag-soon {
+  display: inline-block; margin-left: .4em; padding: .2em .65em .15em; border-radius: 999px;
+  font-style: normal; font-weight: 700; font-size: .75rem; line-height: 1.2; letter-spacing: .08em;
+  text-transform: uppercase; vertical-align: middle; color: var(--ink); background: var(--yellow);
+}

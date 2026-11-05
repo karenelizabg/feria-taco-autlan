@@ -16,6 +16,18 @@ export default function Sede() {
 
           {/* Tres bloques separados por líneas punteadas, como el talón del boleto del hero */}
           <EventFacts className="reveal" />
+
+          {/* En escritorio queda bajo la tira de datos; en celular va al final, centrado */}
+          <Button
+            href="https://maps.app.goo.gl/1xTpajkpjDYfH3fy6"
+            variant="green"
+            className="venue__cta"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="pin" />
+            Abrir en Google Maps
+          </Button>
         </div>
 
         <div className="venue__media reveal">
@@ -31,16 +43,6 @@ export default function Sede() {
             loading="lazy"
             decoding="async"
           />
-
-          <Button
-            href="https://www.google.com/maps/search/?api=1&query=Jard%C3%ADn%20Las%20Monta%C3%B1as%2C%20Autl%C3%A1n%20de%20Navarro%2C%20Jalisco"
-            variant="green"
-            target="_blank"
-            rel="noopener"
-          >
-            <Icon name="pin" />
-            Abrir en Google Maps
-          </Button>
         </div>
       </div>
     </section>

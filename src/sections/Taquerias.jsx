@@ -2,44 +2,63 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import TaqueriaCard from '../components/taquerias/TaqueriaCard';
-import PendingCard from '../components/taquerias/PendingCard';
-import { taquerias } from '../data/taquerias';
-import { cx } from '../lib/cx';
+import TaqueriaSkeleton from '../components/taquerias/TaqueriaSkeleton';
+import useTaquerias from '../hooks/useTaquerias';
+import useRevealOnScroll from '../hooks/useRevealOnScroll';
 import { asset } from '../lib/asset';
 
+const pad = (n) => String(n).padStart(2, '0');
+
 export default function Taquerias() {
-  const items = taquerias.filter((t) => t && (t.nombre || t.pendiente));
-  const [isExpanded, setIsExpanded] = useState(false);
-
+  const { status, items, reintentar } = useTaquerias();
+  // Las tarjetas llegan después del primer render: hay que observarlas para que aparezcan al entrar en pantalla.
+  useRevealOnScroll([status, items.length]);
   const trackRef = useRef(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  // Rango de taquerías visibles en el carrusel (base 1), p. ej. 04–06 en escritorio o 02 en celular.
+  const [rango, setRango] = useState({ primera: 1, ultima: 1 });
 
+  // Calcula el rango visible solo una vez por frame y solo actualiza el estado si cambió,
+  // para no re-renderizar la sección en cada evento de scroll mientras se desliza.
   const updateScrollState = useCallback(() => {
     const el = trackRef.current;
-    if (!el || isExpanded) return;
-    const { scrollLeft, scrollWidth, clientWidth } = el;
+    const slides = el?.children;
+    if (!el || !slides || slides.length === 0) return;
 
-    const pages = Math.max(1, Math.round(scrollWidth / clientWidth));
-    const current = Math.min(pages, Math.max(1, Math.round(scrollLeft / clientWidth) + 1));
-    setTotalPages(pages);
-    setCurrentPage(current);
-  }, [isExpanded]);
+    const total = slides.length;
+    const ancho = slides[0].offsetWidth;
+    const paso = total > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : ancho;
+    const separacion = paso - ancho;
+    const porVista = Math.max(1, Math.round((el.clientWidth + separacion) / paso));
+
+    const indice = Math.min(Math.round(el.scrollLeft / paso), Math.max(0, total - porVista));
+    const primera = indice + 1;
+    const ultima = Math.min(total, primera + porVista - 1);
+    setRango((prev) => (prev.primera === primera && prev.ultima === ultima ? prev : { primera, ultima }));
+  }, []);
 
   useEffect(() => {
-    if (isExpanded) return;
     const el = trackRef.current;
     if (!el) return;
 
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        updateScrollState();
+      });
+    };
+
     updateScrollState();
-    el.addEventListener('scroll', updateScrollState, { passive: true });
-    window.addEventListener('resize', updateScrollState);
+    el.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
 
     return () => {
-      el.removeEventListener('scroll', updateScrollState);
-      window.removeEventListener('resize', updateScrollState);
+      el.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (frame) cancelAnimationFrame(frame);
     };
-  }, [isExpanded, updateScrollState, items.length]);
+  }, [updateScrollState, items.length]);
 
   // Carrusel infinito: al pasar de la última página vuelve a la primera, y al retroceder desde la primera va a la última.
   const scrollPrev = () => {
@@ -62,18 +81,7 @@ export default function Taquerias() {
     }
   };
 
-  const toggleExpand = () => {
-    setIsExpanded((prev) => {
-      const next = !prev;
-      if (!next && trackRef.current) {
-        trackRef.current.scrollLeft = 0;
-      }
-      return next;
-    });
-  };
-
   const handleKeyDown = (e) => {
-    if (isExpanded) return;
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
       scrollPrev();
@@ -99,11 +107,15 @@ export default function Taquerias() {
           {/* Controles discretos del carrusel en escritorio */}
           {items.length > 3 && (
             <div className="taquerias-head__controls" aria-label="Controles del carrusel">
-              {!isExpanded && (<>
+              <>
               <span className="carousel-counter" aria-live="polite">
-                <span className="carousel-counter__current">{String(currentPage).padStart(2, '0')}</span>
-                <span className="carousel-counter__sep"> / </span>
-                <span className="carousel-counter__total">{String(totalPages).padStart(2, '0')}</span>
+                <span className="carousel-counter__current">
+                  {rango.primera === rango.ultima
+                    ? pad(rango.primera)
+                    : `${pad(rango.primera)}–${pad(rango.ultima)}`}
+                </span>
+                <span className="carousel-counter__sep"> de </span>
+                <span className="carousel-counter__total">{pad(items.length)}</span>
               </span>
               <div className="carousel-nav-group">
                 <button
@@ -123,57 +135,59 @@ export default function Taquerias() {
                   <Icon name="chevron-right" />
                 </button>
               </div>
-              </>)}
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="btn--toggle-view"
-                onClick={toggleExpand}
-                aria-expanded={isExpanded}
-                aria-controls="taquerias-collection"
-              >
-                <span>{isExpanded ? 'Ver menos' : 'Ver todas las taquerías'}</span>
-                <Icon
-                  name={isExpanded ? 'chevron-up' : 'chevron-down'}
-                  className="icon--toggle"
-                />
-              </Button>
+              </>
             </div>
           )}
         </div>
 
         {/* Contenedor persistente: no desmonta nodos para evitar pérdida de opacidad o estado */}
-        <div className="taquerias-viewport">
-          {items.length > 0 ? (
+        {/* La animación de entrada va en el contenedor, no en cada tarjeta: así las tarjetas
+            que llegan al deslizar el carrusel no se animan a mitad del movimiento. */}
+        <div className="taquerias-viewport reveal">
+          {status === 'loading' ? (
             <div
-              className={cx(
-                'taquerias-track',
-                isExpanded ? 'taquerias-track--grid' : 'taquerias-track--carousel'
-              )}
+              className="taquerias-track taquerias-track--carousel"
+              aria-busy="true"
+              aria-label="Cargando taquerías"
+            >
+              {[0, 1, 2].map((i) => (
+                <div className="taquerias-slide" key={`sk-${i}`}>
+                  <TaqueriaSkeleton />
+                </div>
+              ))}
+            </div>
+          ) : status === 'ok' ? (
+            <div
+              className="taquerias-track taquerias-track--carousel"
               id="taquerias-collection"
               ref={trackRef}
-              tabIndex={isExpanded ? -1 : 0}
+              tabIndex={0}
               onKeyDown={handleKeyDown}
-              role={isExpanded ? undefined : 'region'}
-              aria-roledescription={isExpanded ? undefined : 'carrusel'}
+              role="region"
+              aria-roledescription="carrusel"
               aria-label="Taquerías participantes"
             >
               {items.map((t, i) => (
                 <div
                   className="taquerias-slide"
-                  key={t.pendiente ? `slide-pendiente-${i}` : `slide-${t.nombre}-${i}`}
-                  role={isExpanded ? undefined : 'group'}
-                  aria-roledescription={isExpanded ? undefined : 'diapositiva'}
-                  aria-label={t.nombre ? `${t.nombre} (${i + 1} de ${items.length})` : `Taquería por anunciar (${i + 1} de ${items.length})`}
+                  key={`slide-${t.id}`}
+                  role="group"
+                  aria-roledescription="diapositiva"
+                  aria-label={`${t.nombre} (${i + 1} de ${items.length})`}
                 >
-                  {t.pendiente ? <PendingCard /> : <TaqueriaCard taqueria={t} />}
+                  <TaqueriaCard taqueria={t} />
                 </div>
               ))}
             </div>
+          ) : status === 'error' ? (
+            <div className="empty" role="status">
+              <p className="empty__title">No pudimos cargar las taquerías</p>
+              <p>Revisa tu conexión e intenta de nuevo en un momento.</p>
+              <Button variant="ghost" size="sm" onClick={reintentar}>Reintentar</Button>
+            </div>
           ) : (
             <div className="empty">
-              <p className="empty__title">Lista por anunciar</p>
+              <p className="empty__title">Muy pronto anunciaremos las taquerías</p>
               <p>Estamos confirmando a las taquerías participantes. Vuelve pronto para conocerlas.</p>
               <Button href="participa.html" variant="red" size="sm">Registrar mi taquería</Button>
             </div>

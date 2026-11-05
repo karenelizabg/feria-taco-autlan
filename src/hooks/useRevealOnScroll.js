@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 
 // Anima cada `.reveal` la primera vez que entra en pantalla (agrega la clase `is-in`).
 // Se llama una vez al montar la página: todas las secciones y tarjetas ya existen en ese momento.
-export default function useRevealOnScroll() {
+// Las tarjetas que llegan después (p. ej. desde el Sheet) se observan pasando `deps` que cambien.
+export default function useRevealOnScroll(deps = []) {
   useEffect(() => {
     const nodes = document.querySelectorAll('.reveal');
     if (!('IntersectionObserver' in window)) {
@@ -21,5 +22,5 @@ export default function useRevealOnScroll() {
 
     nodes.forEach((node) => io.observe(node));
     return () => io.disconnect();
-  }, []);
+  }, deps);
 }

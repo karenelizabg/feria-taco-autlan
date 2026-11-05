@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://feriadeltacoautlan.com/sitemap.xml

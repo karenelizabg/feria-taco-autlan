@@ -1,7 +1,7 @@
 import { asset } from '../lib/asset';
 
-// Primera edición: texto a la izquierda; la mascota en un círculo verde a la derecha.
-// En el celular, una columna.
+// Primera edición: la mascota a la izquierda; el texto a la derecha.
+// En el celular, una columna (texto arriba, mascota abajo).
 export default function Presentacion() {
   return (
     <section className="section section--feria" id="la-feria">
