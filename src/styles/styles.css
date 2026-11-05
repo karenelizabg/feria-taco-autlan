@@ -1606,7 +1606,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* 15. Participa en celular y tablet (una columna) ---------------------------
    Orden: título → párrafos → tarjeta "Tu lugar incluye" → botón de reservar → dudas.
-   El título es la primera pantalla (grande, centrado, con beige arriba y abajo, igual que el inicio).
+   El título va grande y centrado, con poco relleno arriba y abajo (28 px): los párrafos siguen justo después.
    .hero__copy se disuelve (display: contents) para poder intercalar la tarjeta entre el texto y los botones;
    en escritorio (≥ 920 px) se queda como siempre: texto y botones a la izquierda, tarjeta a la derecha. */
 @media (max-width: 919px) {
@@ -1615,10 +1615,8 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   .hero--join .hero__copy { display: contents; }
 
   .hero--join h1 {
-    order: 1; width: 100%; box-sizing: border-box; margin: 0;
-    min-height: calc(100svh - var(--header-h) - 1px);
-    padding-block: max(32px, 6vh);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    order: 1; width: 100%; box-sizing: border-box; margin: 0; padding-block: 28px;
+    display: flex; flex-direction: column; align-items: center;
     text-align: center; text-wrap: balance;
     font-size: clamp(3rem, 15cqi, 4.75rem);
   }
