@@ -309,6 +309,8 @@ h1 {
   .hero--home h1 { --w: min(100cqi, 92vh); }   /* en ventanas bajas el bloque se angosta para caber */
 }
 @media (min-width: 920px) and (max-height: 899px) { .hero--home .hero__art { zoom: .95; } }
+/* participa.html: en ventanas bajas, menos aire para que los botones queden a la vista */
+@media (min-width: 920px) and (max-height: 899px) { .hero--join { padding-top: 40px; padding-bottom: 56px; } }
 @media (min-width: 920px) and (max-height: 830px) { .hero--home .hero__art { zoom: .85; } }
 @media (min-width: 920px) and (max-height: 750px) { .hero--home .hero__art { zoom: .73; } }
 @media (min-width: 920px) and (max-height: 670px) { .hero--home .hero__art { zoom: .62; } }
@@ -361,7 +363,8 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 /* La feria (primera edición): texto a la izquierda y la mascota a la derecha. Fondo crema sólido: tapa los tacos y el papel de body. */
 .section--feria { padding-block: clamp(52px, 4.5vw, 64px); background: var(--cream); }
 .feria { display: grid; gap: clamp(36px, 5vw, 56px); align-items: center; }
-@media (min-width: 900px) { .feria { grid-template-columns: 1.15fr .85fr; } }
+/* Escritorio: mascota a la izquierda, texto a la derecha */
+@media (min-width: 900px) { .feria { grid-template-columns: .85fr 1.15fr; } .feria__art { order: -1; } .feria-mascot { transform: scaleX(-1); } }
 .feria__copy { container-type: inline-size; }
 /* Una frase por línea (<br>); el tamaño de H2 es el del sitio */
 .feria h2 { margin-bottom: .5em; }
@@ -701,8 +704,8 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
 
 /* Foto de la taquería: llena el marco con proporción fija (16:10) y recorte centrado */
 .tcard__gallery.tcard__gallery--photo {
-  padding: 0;
-  background: var(--sand);
+  padding: 12px;
+  background: #ffffff;
 }
 
 .tcard__gallery--photo .tcard__gallery-img {
@@ -711,7 +714,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   height: 100%;
   max-width: none;
   max-height: none;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .tcard__desc {
@@ -736,18 +739,23 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   color: var(--green);
-  background: var(--sand);
-  border: 1px solid var(--line);
-  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+  background: transparent;
+  border: 0;
+  transition: background-color .2s ease, color .2s ease;
 }
 
 .tcard__link .icon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .tcard__link:hover,
@@ -1015,9 +1023,9 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   .venue__facts { order: 3; margin-top: 0; }
   .venue__cta { order: 4; }
 }
-/* Botón de Maps: bajo la foto en escritorio */
+/* Botón de Maps: bajo la tira de datos en escritorio */
 @media (min-width: 900px) {
-  .venue__cta { grid-column: 2; grid-row: 2; justify-self: start; margin-top: 26px; }
+  .venue__cta { justify-self: start; margin-top: 32px; }
 }
 .venue__info { container-type: inline-size; }
 /* "JARDÍN LAS" mide ~7.6em: el tamaño sale del ancho de la columna para no partirlo en tres */
@@ -1055,143 +1063,212 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   border: 3px solid var(--green); box-shadow: 0 0 0 6px var(--cream), 0 0 0 8px var(--green);
 }
 
-/* Participa: convocatoria ----------------------------------------------------
-   Escritorio: convocatoria a la izquierda y beneficios a la derecha.
-   Celular: el orden del DOM es el que se quiere (etiqueta, título, texto, fecha, botón, beneficios). */
-.hero--join { padding-top: 48px; padding-bottom: 64px; }
-.join { display: grid; gap: 44px; align-items: center; }
-.join__copy { container-type: inline-size; min-width: 0; }
-
+/* Participa: hero ------------------------------------------------------------
+   Velo crema para que los tacos queden de textura; beneficios como boleto horizontal. */
+.hero--join {
+  background: transparent;
+  /* Ocupa lo que queda de la pantalla debajo del encabezado (~69px) */
+  min-height: calc(100vh - 69px);
+  min-height: calc(100svh - 69px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero--join .hero__copy { container-type: inline-size; }
 @media (min-width: 920px) {
-  .hero--join { padding-top: 72px; padding-bottom: 96px; }
-  .join { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(48px, 6vw, 88px); }
+  .hero--join .hero__grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+    align-items: center;
+  }
 }
-
-.join__tag {
-  display: inline-flex; align-items: center; gap: 10px;
-  margin: 0 0 22px;
-  font: 700 var(--t-eyebrow)/1 var(--f-body);
-  letter-spacing: .14em; text-transform: uppercase; color: var(--red);
-}
-.join__tag::before {
-  content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--red);
-  animation: join-pulse 2.2s ease-out infinite;
-}
-@keyframes join-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(173, 26, 44, .45); }
-  70%,
-  100% { box-shadow: 0 0 0 10px rgba(173, 26, 44, 0); }
-}
-
-/* Título: Anton a todo el ancho de la columna; tamaño ligado al ancho para que no cambie de forma en celular */
-.join__title {
-  font: 400 clamp(2.35rem, 13cqi, 5.6rem)/.96 var(--f-display);
-  letter-spacing: .005em;
-  text-transform: uppercase;
-  color: var(--green);
+/* Título largo: el tamaño sale del ancho de la columna y el texto se acomoda solo */
+.hero--join h1 {
+  font-size: clamp(2.6rem, 11cqi, 5.6rem);
+  line-height: 1.08;
   text-wrap: balance;
-  margin: 0 0 .42em;
+  margin-top: 0;
+  margin-bottom: .26em;
 }
-.join__title .hl { color: var(--red); }
-
-.join__lead {
-  max-width: 30em;
-  margin: 0 0 22px;
-  font-size: var(--t-lead);
+.hero--join .lead {
+  max-width: 31em;
+  margin: 0 0 16px;
   line-height: 1.5;
-  color: var(--ink-soft);
 }
 
-/* Fecha y sede */
+/* Pastilla destacada para fecha y sede */
 .hero-pill {
-  display: inline-flex; flex-direction: column; align-items: flex-start;
-  gap: 6px;
-  padding: 10px 18px;
-  margin-bottom: 28px;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 8px 18px;
+  margin-bottom: 22px;
   background: #ffffff;
   border: 1.5px solid rgba(16, 67, 42, .16);
-  border-radius: 16px;
+  border-radius: 999px;
   box-shadow: 0 2px 8px rgba(16, 67, 42, .06);
   color: var(--ink);
-  font: 600 .95rem/1.3 var(--f-body);
+  font: 600 .92rem/1.3 var(--f-body);
 }
-.hero-pill__item { display: inline-flex; align-items: center; gap: 7px; }
-.hero-pill__item .icon { color: var(--red); width: 1.15em; height: 1.15em; stroke-width: 2.2; }
-.hero-pill__sep { color: var(--line); font-weight: 700; user-select: none; }
-
-/* Botón principal: el más fuerte de la sección, con microinteracción al pasar el cursor */
-.join__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
-.join .btn--hero-join {
-  font-size: 1.08rem;
-  padding: 1.15em 2.2em;
-  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+.hero-pill__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
 }
-.join .btn--hero-join .icon--arrow { transition: transform .2s ease; }
-
-.join__help {
-  margin: 18px 0 0;
-  font-size: 1rem;
-  color: var(--ink-soft);
+.hero-pill__item .icon {
+  color: var(--red);
+  width: 1.15em;
+  height: 1.15em;
+  stroke-width: 2.2;
 }
-.join__help a {
-  color: var(--green);
+.hero-pill__sep {
+  color: var(--line);
   font-weight: 700;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-  transition: color .15s ease;
+  user-select: none;
 }
 
-/* Tarjeta de beneficios: verde oscuro con encabezado amarillo */
+/* CTA principal con más aire y presencia */
+.hero--join .cta {
+  display: flex;
+  align-items: center;
+  gap: 14px 22px;
+  margin-top: 4px;
+}
+.hero--join .btn--hero-join {
+  font-size: 1.06rem;
+  padding: 1.12em 2.1em;
+}
+.join__help { margin: 18px 0 0; font-size: 1rem; color: var(--ink-soft); }
+.join__help a {
+  color: var(--green); font-weight: 700;
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px;
+}
+
+/* Tarjeta de beneficios: proporción más horizontal, alto contenido y alto contraste */
+.hero--join .hero__art {
+  padding: 10px 0;
+}
+.perk-wrap {
+  position: relative;
+  width: min(100%, 460px);
+  transform: none;
+  filter: drop-shadow(0 18px 26px rgba(16, 67, 42, .24));
+}
+/* Sello "Lugares limitados" sobre la esquina inferior derecha de la tarjeta */
+.perk-wrap > .sticker {
+  right: -26px; left: auto; top: auto; bottom: -44px;
+  width: 136px; height: 136px; z-index: 3;
+  font-size: 1.05rem; line-height: 1.05; letter-spacing: .02em;
+  background: var(--red); color: #fff;
+  --rot: -8deg;
+  box-shadow: inset 0 0 0 4px var(--cream), inset 0 0 0 7px var(--red), 0 12px 24px -8px rgba(0, 0, 0, .35);
+}
+@media (max-width: 919px) {
+  .perk-wrap > .sticker { right: -12px; bottom: -36px; width: 118px; height: 118px; font-size: .92rem; }
+}
+
+/* La mascota asomándose desde arriba de la tarjeta */
+.perk__mascot {
+  position: absolute; z-index: 2; right: 18px; top: -111px;
+  width: 128px; height: auto; pointer-events: none;
+}
 .perk {
+  --notch: 13px;
+  --perf: 78px;
   background: var(--green);
   color: #ffffff;
-  border-radius: 26px;
-  overflow: hidden;
-  box-shadow: 0 18px 40px rgba(16, 67, 42, .22);
+  border-radius: 24px;
 }
 .perk__head {
-  background: var(--yellow);
-  padding: 22px 28px 20px;
+  position: relative;
+  height: var(--perf);
+  padding: 0 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
-.perk__head h2 {
-  font: 400 clamp(1.7rem, 3.4vw, 2.3rem)/1 var(--f-display);
-  letter-spacing: .01em;
+.perk__head::after {
+  content: "";
+  position: absolute;
+  left: var(--notch);
+  right: var(--notch);
+  bottom: 0;
+  border-top: 2px dashed rgba(251, 249, 238, .35);
+}
+.perk__head p {
+  margin: 0 0 .22em;
+  font: 700 var(--t-eyebrow)/1.2 var(--f-body);
+  letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--green);
+  color: rgba(251, 249, 238, .82);
 }
-.perk__list { list-style: none; margin: 0; padding: 6px 28px 10px; }
+.perk h2 {
+  margin: 0;
+  font: 400 1.85rem/1 var(--f-display);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+.perk__list {
+  list-style: none;
+  margin: 0;
+  padding: 14px 28px 18px;
+}
 .perk__list li {
-  display: flex; align-items: center; gap: 16px;
-  padding: 16px 0;
-  font: 500 1.1rem/1.35 var(--f-body);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 0;
+  font-weight: 500;
+  font-size: 1.02rem;
+  line-height: 1.35;
   color: #ffffff;
-  transition: transform .2s ease;
 }
-.perk__list li + li { border-top: 1px solid rgba(251, 249, 238, .14); }
+.perk__list li + li {
+  border-top: 1px solid rgba(251, 249, 238, .12);
+}
 .perk__icon {
-  display: grid; place-items: center; flex: none;
-  width: 46px; height: 46px; border-radius: 50%;
-  background: var(--yellow);
-  color: var(--green);
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(246, 188, 67, .2);
+  border: 1.5px solid rgba(246, 188, 67, .45);
+  color: var(--yellow);
 }
-.perk__icon .icon { width: 22px; height: 22px; stroke-width: 2.2; }
-
-@media (hover: hover) {
-  .join .btn--hero-join:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--red-700); }
-  .join .btn--hero-join:hover .icon--arrow { transform: translateX(4px); }
-  .join__help a:hover { color: var(--red); }
-  .perk__list li:hover { transform: translateX(4px); }
+.perk__icon .icon {
+  width: 19px;
+  height: 19px;
+  stroke-width: 2.2;
 }
 
-@media (max-width: 919px) {
-  .join__cta .btn { width: 100%; }
-  .perk { border-radius: 22px; }
-  .perk__head { padding: 18px 20px 16px; }
-  .perk__list { padding: 4px 20px 8px; }
-  .perk__list li { gap: 12px; padding: 13px 0; font-size: 1.02rem; }
-  .perk__icon { width: 40px; height: 40px; }
-  .perk__icon .icon { width: 19px; height: 19px; }
+@media (max-width: 599px) {
+  /* Participa: beneficios más compactos */
+  .hero-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 1rem;
+    margin-bottom: 18px;
+  }
+  .hero-pill__sep { display: none; }
+  .perk-wrap { width: 100%; }
+  .perk { --perf: 72px; border-radius: 20px; }
+  .perk__head { padding: 0 18px; }
+  .perk h2 { font-size: 1.6rem; }
+  .perk__list { padding: 10px 18px 14px; }
+  .perk__list li { gap: 10px; font-size: 1rem; padding: 7px 0; }
+  .perk__icon { width: 34px; height: 34px; }
+  .perk__icon .icon { width: 17px; height: 17px; }
+
 }
 
 /* 8. Footer ---------------------------------------------------------------- */

@@ -16,6 +16,18 @@ export default function Sede() {
 
           {/* Tres bloques separados por líneas punteadas, como el talón del boleto del hero */}
           <EventFacts className="reveal" />
+
+          {/* En escritorio queda bajo la tira de datos; en celular va al final, centrado */}
+          <Button
+            href="https://maps.app.goo.gl/1xTpajkpjDYfH3fy6"
+            variant="green"
+            className="venue__cta"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="pin" />
+            Abrir en Google Maps
+          </Button>
         </div>
 
         <div className="venue__media reveal">
@@ -32,18 +44,6 @@ export default function Sede() {
             decoding="async"
           />
         </div>
-
-        {/* Fuera de la tarjeta de foto: en celular va al final, centrado; en escritorio queda bajo la foto */}
-        <Button
-          href="https://maps.app.goo.gl/1xTpajkpjDYfH3fy6"
-          variant="green"
-          className="venue__cta"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Icon name="pin" />
-          Abrir en Google Maps
-        </Button>
       </div>
     </section>
   );

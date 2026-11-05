@@ -49,7 +49,7 @@ export default function Actividades() {
             <Tile icon="music" title="Música en vivo" tag="Por anunciar">
               Grupos musicales invitados para ambientar la feria.
             </Tile>
-            <Tile icon="dance" title="Danza tradicional" tag="Por confirmar">
+            <Tile icon="dance" title="Danza tradicional">
               Disfruta de bailes tradicionales.
             </Tile>
             <Tile icon="calendar" title="Eventos y actividades" tag="Por anunciar">
