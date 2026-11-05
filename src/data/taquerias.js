@@ -3,7 +3,7 @@
 
 // Pega aquí la URL de la aplicación web de Apps Script (termina en /exec).
 // Ver los pasos en apps-script/Code.gs.
-export const TAQUERIAS_API_URL = 'PEGA_AQUI_LA_URL_DE_TU_APLICACION_WEB';
+export const TAQUERIAS_API_URL = 'https://script.google.com/macros/s/AKfycbz2mvWKvMIcxzIuezFbm2fZbuFCnVtBFtsY4prlct__zyN8VvHc7svdKsSWuy67x_3V/exec';
 
 const CONFIGURADA = /^https:\/\/script\.google\.com\//.test(TAQUERIAS_API_URL);
 const MAX_ETIQUETAS = 5;

@@ -54,7 +54,7 @@
  * no importa el orden ni mayúsculas/acentos)
  * ------------------------------------------------------------------
  *   "Marca temporal"                      (obligatoria; define el orden de llegada)
- *   "Dirección de correo electrónico"     (obligatoria; NUNCA se publica)
+ *   "Dirección de correo electrónico"     (opcional; si existe, NUNCA se publica)
  *   contiene "nombre"                     (obligatoria)
  *   contiene "descrip"                    (obligatoria)
  *   contiene "venden"                     (obligatoria; etiquetas separadas por comas)
@@ -83,7 +83,7 @@ const MAX_ETIQUETAS = 5;
 // "exacto": true → el encabezado debe ser igual; si no, basta con que lo contenga.
 const COLUMNAS = {
   marca:      { buscar: 'marca temporal', obligatoria: true,  etiqueta: 'Marca temporal' },
-  correo:     { buscar: 'direccion de correo', obligatoria: true, etiqueta: 'Dirección de correo electrónico' },
+  correo:     { buscar: 'direccion de correo', obligatoria: false, etiqueta: 'Dirección de correo electrónico' },
   nombre:     { buscar: 'nombre',    obligatoria: true,  etiqueta: 'nombre' },
   descripcion:{ buscar: 'descrip',   obligatoria: true,  etiqueta: 'descripción' },
   venden:     { buscar: 'venden',    obligatoria: true,  etiqueta: 'venden (especialidades)' },
@@ -147,18 +147,22 @@ function leerTaquerias_() {
 
 // Solo se expone esta lista de campos. El correo y cualquier otra columna nunca salen.
 function filaATaqueria_(fila, numeroFila, mapa) {
+  // Obligatorios para publicar: nombre, foto y especialidades. Si falta alguno, la fila no sale.
   const nombre = texto_(fila[mapa.nombre]);
-  if (!nombre) return null;
+  const descripcion = texto_(fila[mapa.descripcion]).slice(0, MAX_DESCRIPCION).trim();
+  const foto = fotoUrl_(extraerIdDrive_(fila[mapa.foto]));
+  const etiquetas = parsearEtiquetas_(fila[mapa.venden]);
+  if (!nombre || !descripcion || !foto || etiquetas.length === 0) return null;
 
   return {
     id: numeroFila,
     nombre: nombre,
-    descripcion: texto_(fila[mapa.descripcion]).slice(0, MAX_DESCRIPCION).trim(),
-    etiquetas: parsearEtiquetas_(fila[mapa.venden]),
+    descripcion: descripcion,
+    etiquetas: etiquetas,
     facebook: normalizarLink_(valorOpcional_(fila, mapa.facebook)),
     instagram: normalizarLink_(valorOpcional_(fila, mapa.instagram)),
     maps: normalizarLink_(valorOpcional_(fila, mapa.maps)),
-    foto: fotoUrl_(extraerIdDrive_(fila[mapa.foto])),
+    foto: foto,
   };
 }
 
