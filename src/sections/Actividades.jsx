@@ -46,9 +46,22 @@ export default function Actividades() {
           </article>
 
           <div className="fiesta-side">
-            <Tile icon="music" title="Música en vivo" tag="Por anunciar">
-              Grupos musicales invitados para ambientar la feria.
-            </Tile>
+            <article className="artist reveal">
+              <img
+                className="artist__photo"
+                src={asset('assets/img/rafa-dluna.jpg')}
+                alt="Rafa D'Luna con sombrero y camisa de estampado"
+                width="446"
+                height="448"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="artist__body">
+                <p className="card-eyebrow">Música en vivo</p>
+                <h3>Rafa D'Luna</h3>
+                <p>Nuestro artista invitado para ambientar la feria.</p>
+              </div>
+            </article>
             <Tile icon="dance" title="Danza tradicional">
               Disfruta de bailes tradicionales.
             </Tile>
