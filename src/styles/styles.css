@@ -1672,3 +1672,10 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   .hero--join .cta { order: 4; width: 100%; justify-content: center; margin-top: 0; }
   .hero--join .join__help { order: 5; margin: 18px 0 0; text-align: center; }
 }
+
+/* Artista invitado: foto + nombre, arriba de las demás cards de "Qué habrá" */
+.artist { display: flex; align-items: center; gap: 18px; background: var(--cream); color: var(--ink); border-radius: var(--r); padding: 16px; }
+.artist__photo { width: 112px; height: 112px; flex: none; object-fit: cover; border-radius: var(--r); }
+.artist__body h3 { margin: 4px 0 6px; }
+.artist__body p:last-child { margin: 0; }
+@media (max-width: 599px) { .artist__photo { width: 88px; height: 88px; } }
