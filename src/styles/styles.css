@@ -397,7 +397,7 @@ h3 { font: 400 var(--t-h3)/1.2 var(--f-display); letter-spacing: .02em; }
   .fiesta-side .tile__tag { font-size: .75rem !important; letter-spacing: .04em; }   /* que quepa en una línea */
 }
 @media (min-width: 1024px) {
-  .fiesta-grid { grid-template-columns: 1.4fr 1fr; height: 400px; }
+  .fiesta-grid { grid-template-columns: 1.4fr 1fr; min-height: 400px; }
   .fiesta-side { grid-template-rows: repeat(3, 1fr); }
   .tile--row { display: grid; grid-template-columns: 44px 1fr; column-gap: 16px; align-content: center; }
   .tile--row > * { grid-column: 2; }
